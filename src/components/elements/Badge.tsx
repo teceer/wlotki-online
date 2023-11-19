@@ -1,11 +1,11 @@
-import { cn } from "@/lib/utils";
+import { cn } from "~/lib/utils";
 import { type ClassNameValue } from "tailwind-merge";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip";
+} from "~/components/ui/tooltip";
 
 export function Badge({
   children,
