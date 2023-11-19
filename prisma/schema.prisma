@@ -55,9 +55,9 @@ model Session {
 }
 
 model User {
-    id            String    @id @default(cuid())
+    id            String        @id @default(cuid())
     name          String?
-    email         String?   @unique
+    email         String?       @unique
     emailVerified DateTime?
     image         String?
     accounts      Account[]
@@ -65,6 +65,7 @@ model User {
     posts         Post[]
     Log           Log[]
     Event         Event[]
+    Participant   Participant[]
 }
 
 model VerificationToken {
@@ -114,4 +115,25 @@ model Log {
     eventId   String?
     action    String
     data      String?
+}
+
+model Ticket {
+    id            String       @id @default(cuid())
+    code          String       @unique
+    createdAt     DateTime     @default(now())
+    updatedAt     DateTime     @updatedAt
+    participant   Participant? @relation(fields: [participantId], references: [id])
+    participantId String?
+}
+
+model Participant {
+    id        String   @id @default(cuid())
+    firstName String
+    lastName  String
+    birthDate DateTime
+    user      User?    @relation(fields: [userId], references: [id])
+    userId    String?
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    Ticket    Ticket[]
 }

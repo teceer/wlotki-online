@@ -5,15 +5,14 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "@/components/ui/sheet";
+} from "~/components/ui/sheet";
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
+} from "~/components/ui/card";
 import { MoreVertical } from "lucide-react";
 import { Button } from "../ui/button";
 

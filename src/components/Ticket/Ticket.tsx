@@ -1,17 +1,19 @@
+/* eslint-disable @typescript-eslint/no-redundant-type-constituents */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import Image from "next/image";
 import React, { Suspense } from "react";
 import QRCode from "react-qr-code";
 import { BookmarkIcon, Clock, MapPin } from "lucide-react";
 import { Badge, BadgeGroup } from "../elements/Badge";
-import { cn } from "@/lib/utils";
+import { cn } from "~/lib/utils";
 import Hologram from "./Hologram";
 import DateString from "../global/DateString";
-import ActivateTicket from "./ActivateTicket";
 import TicketOptions from "./TicketOptions";
-import type { Participant } from "~/server/db/schema";
 import Link from "next/link";
 import TicketActions from "./TicketActions";
 import { Card, CardDescription, CardHeader, CardTitle } from "../ui/card";
+import { type Participant } from "@prisma/client";
 
 export type TicketStatusType =
   | "active"
