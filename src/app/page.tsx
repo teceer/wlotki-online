@@ -6,7 +6,6 @@ import Section from "~/components/global/Section";
 export default function Home() {
   return (
     <Section DivClassName="space-y-4">
-      <ImageUploadTest />
       <AddEvent />
       <div className="grid gap-4 sm:grid-cols-2 ">
         <EventCard isVertical />
@@ -16,7 +15,6 @@ export default function Home() {
         <EventCard />
         <EventCard />
         <EventCard />
-        {/* <Ticket code="ABCDEFG1" /> */}
       </div>
     </Section>
   );
