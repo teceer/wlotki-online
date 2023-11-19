@@ -67,16 +67,20 @@ export default function AddEventForm() {
       image: values.image,
     };
     toast
-      .promise(eventAction.mutateAsync(eventData), {
-        pending: "Dodawanie wydarzenia...",
-        success: "Wydarzenie dodane!",
-        error: "Nie udało się dodać wydarzenia.",
-      })
+      .promise(
+        eventAction.mutateAsync(eventData),
+        {
+          pending: "Dodawanie wydarzenia...",
+          success: "Wydarzenie dodane!",
+          error: "Nie udało się dodać wydarzenia.",
+        },
+        { autoClose: 2000 },
+      )
       .then((data) => {
         router.push("/events/" + data.id + "/edit");
       })
       .catch(() => {
-        toast.error("Nie udało się dodać wydarzenia.");
+        toast.error(eventAction.error?.message);
       });
   };
 
@@ -85,7 +89,15 @@ export default function AddEventForm() {
       schema={eventSchema}
       onSubmit={onSubmit}
       loading={eventAction.isLoading}
-      defaultValues={{}}
+      defaultValues={{
+        image:
+          "https://utfs.io/f/54fe5eea-739a-4dc2-a625-eb1fb3dc699b-8mzy81.png",
+        title: "Test",
+        subtitle: "Test",
+        startDateTime: "2021-10-20T10:00",
+        endDateTime: "2021-10-20T12:00",
+        description: "Test",
+      }}
       fieldConfig={fieldConfig}
       submitButtonText="Przejdź dalej ->"
     />
