@@ -89,7 +89,7 @@ export function NewEventForm<T extends z.ZodType<any, any, any>>({
                       <FormMessage />
                       <div className="hidden w-full flex-col space-y-1">
                         <FormControl>
-                          <Input {...field} />
+                          <Input {...field} value={imageUrl ?? ""} />
                         </FormControl>
                       </div>
                       {!imageUrl && (
@@ -100,8 +100,10 @@ export function NewEventForm<T extends z.ZodType<any, any, any>>({
                             }}
                             content={{
                               label: fieldConfig[fieldName]?.placeholder,
-                              button({ ready, isUploading }) {
+                              button({ ready, isUploading, uploadProgress }) {
                                 if (isUploading) return <div>Wysyłanie...</div>;
+                                if (uploadProgress)
+                                  return <div>Wysyłanie...</div>;
                                 if (ready) return <div>Wyślij zdjęcie</div>;
 
                                 return "Ładowanie...";
@@ -113,6 +115,10 @@ export function NewEventForm<T extends z.ZodType<any, any, any>>({
                               console.log("Files: ", res);
                               if (res && res.length > 0 && res[0]?.url) {
                                 setImageUrl(res[0]?.url);
+                                form.setValue(
+                                  fieldName as Path<z.TypeOf<T>>,
+                                  res[0]?.url as PathValue<z.TypeOf<T>, any>,
+                                );
                               }
                             }}
                             onUploadError={(error: Error) => {
@@ -144,6 +150,10 @@ export function NewEventForm<T extends z.ZodType<any, any, any>>({
                                 // Do something with the response
                                 console.log("Files: ", res);
                                 if (res && res.length > 0 && res[0]?.url) {
+                                  form.setValue(
+                                    fieldName as Path<z.TypeOf<T>>,
+                                    res[0]?.url as PathValue<z.TypeOf<T>, any>,
+                                  );
                                   setImageUrl(res[0]?.url);
                                 }
                                 alert(JSON.stringify(res));
