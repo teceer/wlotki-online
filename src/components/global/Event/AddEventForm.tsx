@@ -58,26 +58,26 @@ export default function AddEventForm() {
   const eventAction = api.event.create.useMutation({});
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onSubmit = (values: z.infer<typeof eventSchema>) => {
-    const eventData = {
-      title: values.title,
-      subtitle: values.subtitle,
-      startDateTime: new Date(values.startDateTime),
-      endDateTime: new Date(values.endDateTime),
-      description: values.description,
-      image: values.image,
-    };
-    toast
-      .promise(eventAction.mutateAsync(eventData), {
-        pending: "Dodawanie wydarzenia...",
-        success: "Wydarzenie dodane!",
-        error: "Nie udało się dodać wydarzenia.",
-      })
-      .then((data) => {
-        router.push("/events/" + data.id + "/edit");
-      })
-      .catch(() => {
-        toast.error("Nie udało się dodać wydarzenia.");
-      });
+    // const eventData = {
+    //   title: values.title,
+    //   subtitle: values.subtitle,
+    //   startDateTime: new Date(values.startDateTime),
+    //   endDateTime: new Date(values.endDateTime),
+    //   description: values.description,
+    //   image: values.image,
+    // };
+    // toast
+    //   .promise(eventAction.mutateAsync(eventData), {
+    //     pending: "Dodawanie wydarzenia...",
+    //     success: "Wydarzenie dodane!",
+    //     error: "Nie udało się dodać wydarzenia.",
+    //   })
+    //   .then((data) => {
+    //     router.push("/events/" + data.id + "/edit");
+    //   })
+    //   .catch(() => {
+    //     toast.error("Nie udało się dodać wydarzenia.");
+    //   });
   };
 
   return (
