@@ -27,9 +27,7 @@ export const ourFileRouter = {
       // This code RUNS ON YOUR SERVER after upload
       console.log("user id", metadata.userId);
       console.log("file url", file.url);
-      return JSON.stringify({
-        url: file.url,
-      });
+      return file.url;
       // !!! Whatever is returned here is sent to the clientside `onClientUploadComplete` callback
     }),
 } satisfies FileRouter;
