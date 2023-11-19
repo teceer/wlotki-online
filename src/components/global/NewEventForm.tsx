@@ -113,11 +113,14 @@ export function NewEventForm<T extends z.ZodType<any, any, any>>({
                             onClientUploadComplete={(res) => {
                               // Do something with the response
                               console.log("Files: ", res);
-                              if (res && res.length > 0 && res[0]?.url) {
-                                setImageUrl(res[0]?.url);
+                              if (res[0]?.serverData.fileUrl) {
+                                setImageUrl(res[0]?.serverData.fileUrl);
                                 form.setValue(
                                   fieldName as Path<z.TypeOf<T>>,
-                                  res[0]?.url as PathValue<z.TypeOf<T>, any>,
+                                  res[0]?.serverData.fileUrl as PathValue<
+                                    z.TypeOf<T>,
+                                    any
+                                  >,
                                 );
                               }
                             }}
@@ -149,12 +152,15 @@ export function NewEventForm<T extends z.ZodType<any, any, any>>({
                               onClientUploadComplete={(res) => {
                                 // Do something with the response
                                 console.log("Files: ", res);
-                                if (res && res.length > 0 && res[0]?.url) {
+                                if (res[0]?.serverData.fileUrl) {
+                                  setImageUrl(res[0]?.serverData.fileUrl);
                                   form.setValue(
                                     fieldName as Path<z.TypeOf<T>>,
-                                    res[0]?.url as PathValue<z.TypeOf<T>, any>,
+                                    res[0]?.serverData.fileUrl as PathValue<
+                                      z.TypeOf<T>,
+                                      any
+                                    >,
                                   );
-                                  setImageUrl(res[0]?.url);
                                 }
                                 alert(JSON.stringify(res));
                               }}
