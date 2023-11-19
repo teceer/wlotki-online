@@ -5,6 +5,7 @@ import {
   type NextAuthOptions,
 } from "next-auth";
 import DiscordProvider from "next-auth/providers/discord";
+import AppleProvider from "next-auth/providers/apple";
 
 import { env } from "~/env.mjs";
 import { db } from "~/server/db";
@@ -51,6 +52,10 @@ export const authOptions: NextAuthOptions = {
       clientId: env.DISCORD_CLIENT_ID,
       clientSecret: env.DISCORD_CLIENT_SECRET,
     }),
+    // AppleProvider({
+    //   clientId: env.APPLE_ID,
+    //   clientSecret: env.APPLE_SECRET,
+    // }),
     /**
      * ...add more providers here.
      *

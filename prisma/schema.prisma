@@ -63,6 +63,8 @@ model User {
     accounts      Account[]
     sessions      Session[]
     posts         Post[]
+    Log           Log[]
+    Event         Event[]
 }
 
 model VerificationToken {
@@ -71,4 +73,45 @@ model VerificationToken {
     expires    DateTime
 
     @@unique([identifier, token])
+}
+
+model Event {
+    id            String    @id @default(cuid())
+    title         String
+    subtitle      String?
+    image         String?
+    startDateTime DateTime
+    endDateTime   DateTime
+    description   String?
+    Location      Location? @relation(fields: [locationId], references: [id])
+    locationId    String?
+    createdAt     DateTime  @default(now())
+    updatedAt     DateTime  @updatedAt
+    Log           Log[]
+    createdBy     User?     @relation(fields: [createdById], references: [id])
+    createdById   String?
+}
+
+model Location {
+    id        String   @id @default(cuid())
+    name      String
+    city      String
+    street    String?
+    zip       String?
+    latitude  Float?
+    longitude Float?
+    Events    Event[]
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model Log {
+    id        String   @id @default(cuid())
+    createdAt DateTime @default(now())
+    user      User?    @relation(fields: [userId], references: [id])
+    userId    String?
+    event     Event?   @relation(fields: [eventId], references: [id])
+    eventId   String?
+    action    String
+    data      String?
 }
