@@ -7,7 +7,7 @@ import {
   type DefaultValues,
   type Path,
   useForm,
-  PathValue,
+  type PathValue,
 } from "react-hook-form";
 import { RotatingLines } from "react-loader-spinner";
 import { Button } from "~/components/ui/button";
