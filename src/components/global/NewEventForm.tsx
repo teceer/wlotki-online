@@ -3,7 +3,12 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
 // Create a generic form component that takes a schema and a submit callback
-import { type DefaultValues, type Path, useForm } from "react-hook-form";
+import {
+  type DefaultValues,
+  type Path,
+  useForm,
+  PathValue,
+} from "react-hook-form";
 import { RotatingLines } from "react-loader-spinner";
 import { Button } from "~/components/ui/button";
 import {
@@ -109,7 +114,7 @@ export function NewEventForm<T extends z.ZodType<any, any, any>>({
                               if (res && res.length > 0 && res[0]?.url) {
                                 form.setValue(
                                   fieldName as Path<z.TypeOf<T>>,
-                                  res[0]?.url,
+                                  res[0]?.url as PathValue<z.TypeOf<T>, any>,
                                 );
                                 setImageUrl(res[0]?.url);
                               }
@@ -145,7 +150,7 @@ export function NewEventForm<T extends z.ZodType<any, any, any>>({
                                 if (res && res.length > 0 && res[0]?.url) {
                                   form.setValue(
                                     fieldName as Path<z.TypeOf<T>>,
-                                    res[0]?.url,
+                                    res[0]?.url as PathValue<z.TypeOf<T>, any>,
                                   );
                                   setImageUrl(res[0]?.url);
                                 }
