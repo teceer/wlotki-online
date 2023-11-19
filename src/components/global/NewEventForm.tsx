@@ -112,10 +112,6 @@ export function NewEventForm<T extends z.ZodType<any, any, any>>({
                               // Do something with the response
                               console.log("Files: ", res);
                               if (res && res.length > 0 && res[0]?.url) {
-                                form.setValue(
-                                  fieldName as Path<z.TypeOf<T>>,
-                                  res[0]?.url as PathValue<z.TypeOf<T>, any>,
-                                );
                                 setImageUrl(res[0]?.url);
                               }
                             }}
@@ -148,10 +144,6 @@ export function NewEventForm<T extends z.ZodType<any, any, any>>({
                                 // Do something with the response
                                 console.log("Files: ", res);
                                 if (res && res.length > 0 && res[0]?.url) {
-                                  form.setValue(
-                                    fieldName as Path<z.TypeOf<T>>,
-                                    res[0]?.url as PathValue<z.TypeOf<T>, any>,
-                                  );
                                   setImageUrl(res[0]?.url);
                                 }
                                 alert(JSON.stringify(res));
