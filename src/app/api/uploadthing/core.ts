@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/require-await */
 /* eslint-disable @typescript-eslint/await-thenable */
+
 import { createUploadthing, type FileRouter } from "uploadthing/next";
 
 const f = createUploadthing();
@@ -25,6 +26,7 @@ export const ourFileRouter = {
       // This code RUNS ON YOUR SERVER after upload
       console.log("user id", metadata.userId);
       console.log("file url", file.url);
+      return { whatever: "you want" };
       // !!! Whatever is returned here is sent to the clientside `onClientUploadComplete` callback
     }),
 } satisfies FileRouter;
