@@ -4,13 +4,16 @@ import Image from "next/image";
 import React, { useEffect } from "react";
 import { type ClassNameValue } from "tailwind-merge";
 import Link from "next/link";
+import { Button } from "~/components/ui/button";
 
 export default function Topbar({
   className,
   invisible,
+  authComponent,
 }: {
   className?: ClassNameValue;
   invisible?: boolean;
+  authComponent?: React.ReactNode;
 }) {
   // hide topbar when scrolling down
   const [prevScrollPos, setPrevScrollPos] = React.useState(0);
@@ -76,6 +79,7 @@ export default function Topbar({
             </p>
           </div>
         )}
+        {authComponent}
       </div>
     </nav>
   );

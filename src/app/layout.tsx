@@ -10,6 +10,10 @@ import DotsTexture from "~/components/global/DotsTexture";
 import { extractRouterConfig } from "uploadthing/server";
 import { ourFileRouter } from "./api/uploadthing/core";
 import { ToastContainer } from "react-toastify";
+import { getServerAuthSession } from "~/server/auth";
+import AuthButton from "~/components/global/Auth/AuthButton";
+import { Suspense } from "react";
+import { Button } from "~/components/ui/button";
 
 export const metadata = {
   title: process.env.NEXT_PUBLIC_APP_NAME,
@@ -35,7 +39,20 @@ export default function RootLayout({
         />
         <TRPCReactProvider cookies={cookies().toString()}>
           <DotsTexture />
-          <Topbar className="absolute" />
+          <Topbar
+            className="absolute"
+            authComponent={
+              <Suspense
+                fallback={
+                  <Button className="animate-pulse" disabled>
+                    Zaloguj się
+                  </Button>
+                }
+              >
+                <AuthButton />
+              </Suspense>
+            }
+          />
           <main className="animate-slide-in flex min-h-[100svh] w-full flex-col overflow-hidden bg-gradient-to-t from-neutral-300 transition-all duration-500 ease-in-out dark:from-black">
             <Topbar invisible />
             <div className="w-full grow transition-all ease-in-out ">
