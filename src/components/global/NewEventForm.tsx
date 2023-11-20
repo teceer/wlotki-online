@@ -3,6 +3,7 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
 // Create a generic form component that takes a schema and a submit callback
+import autoAnimate from "@formkit/auto-animate";
 import {
   type DefaultValues,
   type Path,
@@ -22,7 +23,12 @@ import {
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
 import * as z from "zod";
-import { type HTMLInputTypeAttribute, useState } from "react";
+import {
+  type HTMLInputTypeAttribute,
+  useState,
+  useRef,
+  useEffect,
+} from "react";
 import { Textarea } from "../ui/textarea";
 import { UploadButton, UploadDropzone } from "~/lib/uploadthing";
 import Image from "next/image";
@@ -61,6 +67,7 @@ export function NewEventForm<T extends z.ZodType<any, any, any>>({
   defaultValues?: DefaultValues<z.infer<T>>;
   submitButtonText?: string;
 }) {
+  const parent = useRef(null);
   const form = useForm<z.infer<T>>({
     resolver: zodResolver({ ...schema, image: z.string().optional() }),
     defaultValues,
@@ -69,6 +76,10 @@ export function NewEventForm<T extends z.ZodType<any, any, any>>({
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const shape = (schema as unknown as z.ZodObject<any, any, any>).shape; // Access the shape property
+
+  useEffect(() => {
+    parent.current && autoAnimate(parent.current);
+  }, [parent]);
 
   return (
     <Form {...form}>
@@ -82,7 +93,7 @@ export function NewEventForm<T extends z.ZodType<any, any, any>>({
                   control={form.control}
                   name={fieldName as Path<z.TypeOf<T>>}
                   render={({ field }) => (
-                    <FormItem>
+                    <FormItem ref={parent}>
                       <FormLabel className="leading-none">
                         {fieldConfig[fieldName]?.displayName}
                       </FormLabel>
@@ -150,13 +161,12 @@ export function NewEventForm<T extends z.ZodType<any, any, any>>({
                                 // Do something with the response
                                 console.log("Files: ", res);
                                 if (res && res.length > 0 && res[0]?.url) {
+                                  setImageUrl(res[0]?.url);
                                   form.setValue(
                                     fieldName as Path<z.TypeOf<T>>,
                                     res[0]?.url as PathValue<z.TypeOf<T>, any>,
                                   );
-                                  setImageUrl(res[0]?.url);
                                 }
-                                alert(JSON.stringify(res));
                               }}
                               onUploadError={(error: Error) => {
                                 // Do something with the error.
@@ -240,6 +250,7 @@ function EventCardPlaceholder({
   isVertical?: boolean;
   imageUrl: string;
 }) {
+  const [isLoaded, setIsLoaded] = useState(false);
   return (
     <div
       className={cn(
@@ -275,13 +286,16 @@ function EventCardPlaceholder({
               isVertical && "h-full w-full shrink",
             )}
           >
-            <div className="absolute h-full w-full animate-pulse bg-gradient-to-tr from-foreground/20 to-transparent" />
+            {!isLoaded && (
+              <div className="absolute h-full w-full animate-pulse bg-gradient-to-tr from-foreground/20 to-transparent" />
+            )}
             <Image
               src={imageUrl}
               fill
               className="object-cover"
               alt=""
               priority
+              onLoadingComplete={() => setIsLoaded(true)}
             />
           </div>
         </div>

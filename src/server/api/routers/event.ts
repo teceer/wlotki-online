@@ -7,14 +7,6 @@ import {
 } from "~/server/api/trpc";
 
 export const eventRouter = createTRPCRouter({
-  hello: publicProcedure
-    .input(z.object({ text: z.string() }))
-    .query(({ input }) => {
-      return {
-        greeting: `Hello ${input.text}`,
-      };
-    }),
-
   create: protectedProcedure
     .input(
       z.object({
@@ -40,4 +32,12 @@ export const eventRouter = createTRPCRouter({
         },
       });
     }),
+
+  findById: publicProcedure.input(z.string()).mutation(({ ctx, input }) => {
+    return ctx.db.event.findUnique({
+      where: {
+        id: input,
+      },
+    });
+  }),
 });

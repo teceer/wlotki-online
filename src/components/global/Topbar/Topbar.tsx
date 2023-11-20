@@ -3,6 +3,7 @@ import { cn } from "~/lib/utils";
 import Image from "next/image";
 import React, { useEffect } from "react";
 import { type ClassNameValue } from "tailwind-merge";
+import Link from "next/link";
 
 export default function Topbar({ className }: { className?: ClassNameValue }) {
   // hide topbar when scrolling down
@@ -35,18 +36,20 @@ export default function Topbar({ className }: { className?: ClassNameValue }) {
           !visible && "invisible animate-out slide-out-to-top-full",
         )}
       >
-        <div className="flex items-center">
-          <Image
-            src="/logo.svg"
-            alt=""
-            width={24}
-            height={24}
-            className="h-[24px] w-[24px] dark:invert"
-          />
-          <p className="text-2xl font-bold tracking-tighter">
-            {process.env.NEXT_PUBLIC_APP_NAME}
-          </p>
-        </div>
+        <Link href="/">
+          <div className="flex items-center">
+            <Image
+              src="/logo.svg"
+              alt=""
+              width={24}
+              height={24}
+              className="h-[24px] w-[24px] dark:invert"
+            />
+            <p className="text-2xl font-bold tracking-tighter">
+              {process.env.NEXT_PUBLIC_APP_NAME}
+            </p>
+          </div>
+        </Link>
       </div>
     </nav>
   );
