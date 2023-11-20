@@ -3,13 +3,11 @@ import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
-import { Button } from "../ui/button";
 import { cn } from "~/lib/utils";
 
 // TODO: convert to form object and validation (zod and react-hook-form)
 
 export default function AddNewPool() {
-  const [additionalCount, setAdditionalCount] = React.useState(0);
   type NewPoolObject = {
     index: number;
     price: number;
