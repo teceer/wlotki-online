@@ -104,22 +104,22 @@ function ParticipantData({
 
 export default function Ticket({ code }: { code: string }) {
   const orderStatus = Math.random() > 0.5 ? "cancelled" : "processing";
-  const isBuyer = false;
-  const eventEndTime = new Date(2023, 10, 12, 1, 32);
-  const isScanned = true;
+  const isBuyer = true;
+  const eventEndTime = new Date(2023, 12, 12, 1, 32);
+  const isScanned = false;
   const isActive = true;
-  const isTransferred = true;
-  const isNewOwner = true;
-  const participant: Participant | null = null;
-  //   const participant: Participant | null = {
-  //     id: "dahe7d8ewndfwvsudhs",
-  //     firstName: "Jan",
-  //     lastName: "Kowalski",
-  //     birthDate: new Date(2000, 12, 7),
-  //     createdAt: new Date(),
-  //     updatedAt: new Date(),
-  //     userId: "user_dahyeufgw2",
-  //   };
+  const isTransferred = false;
+  const isNewOwner = false;
+  // const participant: Participant | null = null;
+    const participant: Participant | null = {
+      id: "dahe7d8ewndfwvsudhs",
+      firstName: "Jan",
+      lastName: "Kowalski",
+      birthDate: new Date(2000, 12, 7),
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      userId: "user_dahyeufgw2",
+    };
 
   const ticketCode = code;
   const orderId = "3462";

@@ -1,3 +1,4 @@
+import Ticket from "~/components/Ticket/Ticket";
 import AddEvent from "~/components/global/Event/AddEvent";
 import EventCard from "~/components/global/Event/EventCard";
 import ImageUploadTest from "~/components/global/ImageUploadTest";
@@ -15,6 +16,7 @@ export default function Home() {
         <EventCard />
         <EventCard />
         <EventCard />
+        <Ticket code="ABCD12345" />
       </div>
     </Section>
   );

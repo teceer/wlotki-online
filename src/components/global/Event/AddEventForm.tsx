@@ -89,15 +89,17 @@ export default function AddEventForm() {
       schema={eventSchema}
       onSubmit={onSubmit}
       loading={eventAction.isLoading}
-      defaultValues={{
-        image:
-          "https://utfs.io/f/54fe5eea-739a-4dc2-a625-eb1fb3dc699b-8mzy81.png",
-        title: "Test",
-        subtitle: "Test",
-        startDateTime: "2021-10-20T10:00",
-        endDateTime: "2021-10-20T12:00",
-        description: "Test",
-      }}
+      defaultValues={
+        {
+          // image:
+          //   "https://utfs.io/f/54fe5eea-739a-4dc2-a625-eb1fb3dc699b-8mzy81.png",
+          // title: "Test",
+          // subtitle: "Test",
+          // startDateTime: "2021-10-20T10:00",
+          // endDateTime: "2021-10-20T12:00",
+          // description: "Test",
+        }
+      }
       fieldConfig={fieldConfig}
       submitButtonText="Przejdź dalej ->"
     />

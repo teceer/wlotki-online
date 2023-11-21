@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/require-await */
 /* eslint-disable @typescript-eslint/await-thenable */
 
-import { NextResponse } from "next/server";
 import { createUploadthing, type FileRouter } from "uploadthing/next";
 
 const f = createUploadthing();
