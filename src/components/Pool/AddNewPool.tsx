@@ -42,7 +42,6 @@ export default function AddNewPool() {
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          {JSON.stringify(form.watch(), null, 2)}
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <div className="space-y-2">
               <PoolAdder isFirst index={0} key={0} form={form} />
@@ -60,6 +59,7 @@ export default function AddNewPool() {
           </form>
         </Form>
       </CardContent>
+      {/* <code className="p-4 text-xs opacity-30">{JSON.stringify(form.watch(), null, 2)}</code> */}
     </Card>
   );
 }

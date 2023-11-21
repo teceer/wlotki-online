@@ -1,6 +1,8 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
+// NOTE: https://prisma-editor.vercel.app
+
 generator client {
     provider = "prisma-client-js"
 }
@@ -55,17 +57,18 @@ model Session {
 }
 
 model User {
-    id            String        @id @default(cuid())
-    name          String?
-    email         String?       @unique
-    emailVerified DateTime?
-    image         String?
-    accounts      Account[]
-    sessions      Session[]
-    posts         Post[]
-    Log           Log[]
-    Event         Event[]
-    Participant   Participant[]
+    id                 String               @id @default(cuid())
+    name               String?
+    email              String?              @unique
+    emailVerified      DateTime?
+    image              String?
+    accounts           Account[]
+    sessions           Session[]
+    posts              Post[]
+    Log                Log[]
+    Event              Event[]
+    Participant        Participant[]
+    OrganizationMember OrganizationMember[]
 }
 
 model VerificationToken {
@@ -77,20 +80,22 @@ model VerificationToken {
 }
 
 model Event {
-    id            String    @id @default(cuid())
-    title         String
-    subtitle      String?
-    image         String?
-    startDateTime DateTime
-    endDateTime   DateTime
-    description   String?
-    Location      Location? @relation(fields: [locationId], references: [id])
-    locationId    String?
-    createdAt     DateTime  @default(now())
-    updatedAt     DateTime  @updatedAt
-    Log           Log[]
-    createdBy     User?     @relation(fields: [createdById], references: [id])
-    createdById   String?
+    id             String        @id @default(cuid())
+    title          String
+    subtitle       String?
+    image          String?
+    startDateTime  DateTime
+    endDateTime    DateTime
+    description    String?
+    Location       Location?     @relation(fields: [locationId], references: [id])
+    locationId     String?
+    createdAt      DateTime      @default(now())
+    updatedAt      DateTime      @updatedAt
+    Log            Log[]
+    createdBy      User?         @relation(fields: [createdById], references: [id])
+    createdById    String?
+    Organization   Organization? @relation(fields: [organizationId], references: [id])
+    organizationId String?
 }
 
 model Location {
@@ -104,17 +109,37 @@ model Location {
     Events    Event[]
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+    Log       Log[]
 }
 
 model Log {
-    id        String   @id @default(cuid())
-    createdAt DateTime @default(now())
-    user      User?    @relation(fields: [userId], references: [id])
-    userId    String?
-    event     Event?   @relation(fields: [eventId], references: [id])
-    eventId   String?
-    action    String
-    data      String?
+    id                 String            @id @default(cuid())
+    createdAt          DateTime          @default(now())
+    action             String
+    data               String?
+    user               User?             @relation(fields: [userId], references: [id])
+    userId             String?
+    Event              Event?            @relation(fields: [eventId], references: [id])
+    eventId            String?
+    Ticket             Ticket?           @relation(fields: [ticketId], references: [id])
+    ticketId           String?
+    Participant        Participant?      @relation(fields: [participantId], references: [id])
+    participantId      String?
+    Pool               Pool?             @relation(fields: [poolId], references: [id])
+    poolId             String?
+    TicketType         TicketType?       @relation(fields: [ticketTypeId], references: [id])
+    ticketTypeId       String?
+    Organization       Organization?     @relation(fields: [organizationId], references: [id])
+    organizationId     String?
+    OrganizationRole   OrganizationRole? @relation(fields: [organizationRoleId], references: [id])
+    organizationRoleId String?
+    Privilege          Privilege?        @relation(fields: [privilegeId], references: [id])
+    privilegeId        String?
+    Location           Location?         @relation(fields: [locationId], references: [id])
+    locationId         String?
+
+    @@index([ticketId])
+    @@index([userId])
 }
 
 model Ticket {
@@ -124,6 +149,9 @@ model Ticket {
     updatedAt     DateTime     @updatedAt
     participant   Participant? @relation(fields: [participantId], references: [id])
     participantId String?
+    TicketType    TicketType   @relation(fields: [ticketTypeId], references: [id])
+    ticketTypeId  String
+    Log           Log[]
 }
 
 model Participant {
@@ -136,6 +164,7 @@ model Participant {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
     Ticket    Ticket[]
+    Log       Log[]
 }
 
 model TicketType {
@@ -146,6 +175,8 @@ model TicketType {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
     Pools     Pool[]
+    Ticket    Ticket[]
+    Log       Log[]
 }
 
 model Pool {
@@ -155,4 +186,47 @@ model Pool {
     updatedAt    DateTime    @updatedAt
     TicketType   TicketType? @relation(fields: [ticketTypeId], references: [id])
     ticketTypeId String?
+    Log          Log[]
+}
+
+model Organization {
+    id                 String               @id @default(cuid())
+    name               String
+    createdAt          DateTime             @default(now())
+    updatedAt          DateTime             @updatedAt
+    Events             Event[]
+    OrganizationMember OrganizationMember[]
+    Log                Log[]
+}
+
+model OrganizationMember {
+    id               String             @id @default(cuid())
+    userId           String
+    User             User               @relation(fields: [userId], references: [id])
+    createdAt        DateTime           @default(now())
+    updatedAt        DateTime           @updatedAt
+    Organization     Organization?      @relation(fields: [organizationId], references: [id])
+    organizationId   String?
+    OrganizationRole OrganizationRole[]
+}
+
+model OrganizationRole {
+    id                 String               @id @default(cuid())
+    OrganizationMember OrganizationMember[]
+    name               String
+    color              String?
+    createdAt          DateTime             @default(now())
+    updatedAt          DateTime             @updatedAt
+    privileges         Privilege[]
+    Log                Log[]
+}
+
+model Privilege {
+    id               String             @id @default(cuid())
+    OrganizationRole OrganizationRole[]
+    name             String
+    description      String?
+    createdAt        DateTime           @default(now())
+    updatedAt        DateTime           @updatedAt
+    Log              Log[]
 }

@@ -24,9 +24,9 @@ export default function PoolAdder({
 }) {
   const isEmpty =
     !isFirst &&
-    form.watch(`pools.${index}.price`) === undefined &&
-    form.watch(`pools.${index}.time`) === undefined &&
-    form.watch(`pools.${index}.type`) === undefined;
+    !form.watch(`pools.${index}.price`) &&
+    !form.watch(`pools.${index}.time`) &&
+    !form.watch(`pools.${index}.type`);
 
   return (
     <div
@@ -47,6 +47,7 @@ export default function PoolAdder({
               <Input
                 type="number"
                 inputMode="decimal"
+                required={!isEmpty}
                 {...field}
                 onChange={(e) => {
                   field.onChange(e);
@@ -70,6 +71,7 @@ export default function PoolAdder({
             <FormControl>
               <Input
                 type="time"
+                required={!isEmpty}
                 {...field}
                 className="rounded-none border-0 border-b text-left focus-visible:border-foreground focus-visible:ring-0"
                 defaultValue={
@@ -102,11 +104,14 @@ export default function PoolAdder({
         render={({ field }) => (
           <FormItem>
             {isFirst && (
-              <FormLabel className="text-xs opacity-70">Typ wejściówek</FormLabel>
+              <FormLabel className="text-xs opacity-70">
+                Typ wejściówek
+              </FormLabel>
             )}
             <FormControl>
               <Input
                 type="text"
+                required={!isEmpty}
                 {...field}
                 className="rounded-none border-0 border-b focus-visible:border-foreground focus-visible:ring-0"
               />
