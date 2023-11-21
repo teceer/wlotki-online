@@ -73,7 +73,9 @@ export default function PoolAdder({
                 {...field}
                 className="rounded-none border-0 border-b text-left focus-visible:border-foreground focus-visible:ring-0"
                 defaultValue={
-                  !isFirst && form.watch(`pools.0.time`) && form.watch(`pools.${index}.price`)
+                  !isFirst &&
+                  form.watch(`pools.0.time`) &&
+                  form.watch(`pools.${index}.price`)
                     ? new Date(
                         new Date(
                           "2000-01-01T" +
@@ -100,7 +102,7 @@ export default function PoolAdder({
         render={({ field }) => (
           <FormItem>
             {isFirst && (
-              <FormLabel className="text-xs opacity-70">Typ</FormLabel>
+              <FormLabel className="text-xs opacity-70">Typ wejściówek</FormLabel>
             )}
             <FormControl>
               <Input
