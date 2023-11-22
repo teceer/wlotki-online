@@ -42,13 +42,7 @@ export default function RootLayout({
           <Topbar
             className="absolute"
             authComponent={
-              <Suspense
-                fallback={
-                  <Button className="animate-pulse" disabled>
-                    Zaloguj się
-                  </Button>
-                }
-              >
+              <Suspense>
                 <AuthButton />
               </Suspense>
             }

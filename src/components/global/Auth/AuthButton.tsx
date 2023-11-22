@@ -1,6 +1,7 @@
 import Link from "next/link";
 import React from "react";
 import { Button } from "~/components/ui/button";
+import UserAvatar from "~/components/user/UserAvatar";
 import { getServerAuthSession } from "~/server/auth";
 
 export default async function AuthButton() {
@@ -11,10 +12,5 @@ export default async function AuthButton() {
         <Button variant="ghost">Zaloguj się</Button>
       </Link>
     );
-  if (session)
-    return (
-      <Link href={"/api/auth/signout"}>
-        <Button variant="ghost">Wyloguj się</Button>
-      </Link>
-    );
+  if (session) return <UserAvatar />;
 }

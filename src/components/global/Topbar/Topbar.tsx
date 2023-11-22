@@ -60,7 +60,7 @@ export default function Topbar({
                 height={24}
                 className="h-[24px] w-[24px] dark:invert"
               />
-              <p className="text-2xl font-bold tracking-tighter">
+              <p className="bg-gradient-to-tr from-foreground to-foreground/70 bg-clip-text text-xl font-medium tracking-tighter text-transparent">
                 {process.env.NEXT_PUBLIC_APP_NAME}
               </p>
             </div>
@@ -74,7 +74,7 @@ export default function Topbar({
               height={24}
               className="h-[24px] w-[24px] dark:invert"
             />
-            <p className="text-2xl font-bold tracking-tighter">
+            <p className="bg-gradient-to-tr from-foreground to-foreground/70 bg-clip-text text-xl font-medium tracking-tighter text-transparent">
               {process.env.NEXT_PUBLIC_APP_NAME}
             </p>
           </div>
