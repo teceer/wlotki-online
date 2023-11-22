@@ -26,7 +26,7 @@ export default function EventThumbnail() {
       />
       {/* <div className="absolute h-full w-full bg-gradient-to-t from-background via-transparent to-background" /> */}
       <div className="z-10 flex grow flex-col justify-between">
-        <div className="flex w-full flex-wrap gap-2  px-4 pb-2 backdrop-blur">
+        <div className="flex w-full flex-wrap gap-2  bg-gradient-to-b from-black/70 px-4 pb-2 backdrop-blur">
           <div className="flex flex-col items-center gap-1 text-white">
             <div className={cn("h-4 w-1 rounded-b-full", color())} />
             {status() === "selling" && (
