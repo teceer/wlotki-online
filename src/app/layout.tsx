@@ -10,10 +10,8 @@ import DotsTexture from "~/components/global/DotsTexture";
 import { extractRouterConfig } from "uploadthing/server";
 import { ourFileRouter } from "./api/uploadthing/core";
 import { ToastContainer } from "react-toastify";
-import { getServerAuthSession } from "~/server/auth";
 import AuthButton from "~/components/global/Auth/AuthButton";
 import { Suspense } from "react";
-import { Button } from "~/components/ui/button";
 
 export const metadata = {
   title: process.env.NEXT_PUBLIC_APP_NAME,

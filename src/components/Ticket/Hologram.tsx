@@ -29,7 +29,6 @@ function HologramObject() {
 
 export default function Hologram() {
   const [randomCharacters, setRandomCharacters] = useState("");
-  const [randomColor, setRandomColor] = useState("");
   const barsQuantity = 25;
   const charactersQuantity = 4;
 
@@ -46,13 +45,6 @@ export default function Hologram() {
   useEffect(() => {
     const interval = setInterval(
       () => {
-        setRandomColor(
-          Array.from(Array(6).keys())
-            .map(() => {
-              return Math.floor(Math.random() * 16).toString(16);
-            })
-            .join(""),
-        );
         setRandomCharacters(
           Array.from(Array(charactersQuantity).keys())
             .map(() => {

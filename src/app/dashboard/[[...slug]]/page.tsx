@@ -1,7 +1,6 @@
 import React from "react";
 import EventsSection from "~/components/admin/EventsSection";
 import Section from "~/components/global/Section";
-import { PageTitle } from "~/components/global/Typography";
 import { ScrollArea, ScrollBar } from "~/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 

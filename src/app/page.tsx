@@ -1,7 +1,6 @@
 import Ticket from "~/components/Ticket/Ticket";
 import AddEvent from "~/components/global/Event/AddEvent";
 import EventCard from "~/components/global/Event/EventCard";
-import ImageUploadTest from "~/components/global/ImageUploadTest";
 import Section from "~/components/global/Section";
 
 export default function Home() {

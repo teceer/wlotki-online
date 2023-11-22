@@ -4,7 +4,6 @@ import Image from "next/image";
 import React, { useEffect } from "react";
 import { type ClassNameValue } from "tailwind-merge";
 import Link from "next/link";
-import { Button } from "~/components/ui/button";
 
 export default function Topbar({
   className,

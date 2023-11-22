@@ -5,7 +5,6 @@ import {
   type NextAuthOptions,
 } from "next-auth";
 import DiscordProvider from "next-auth/providers/discord";
-import AppleProvider from "next-auth/providers/apple";
 
 import { env } from "~/env.mjs";
 import { db } from "~/server/db";

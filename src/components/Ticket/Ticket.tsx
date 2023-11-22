@@ -63,11 +63,9 @@ function TicketStatus({ status }: { status: TicketStatusType }) {
 function ParticipantData({
   participant,
   status,
-  allowTransfer,
 }: {
   participant: Participant | null;
   status: TicketStatusType;
-  allowTransfer?: boolean;
 }) {
   if (participant)
     return (
@@ -93,10 +91,6 @@ function ParticipantData({
     return (
       <div className="leading-none">
         <p className="text-xl font-semibold">Brak uczestnika</p>
-        {/* <div className="flex items-center text-sm leading-none text-yellow-500">
-          Uzupełnij wymagane dane
-          {allowTransfer && " lub przekaż wlotkę innej osobie."}
-        </div> */}
       </div>
     );
   }
@@ -111,15 +105,15 @@ export default function Ticket({ code }: { code: string }) {
   const isTransferred = false;
   const isNewOwner = false;
   // const participant: Participant | null = null;
-    const participant: Participant | null = {
-      id: "dahe7d8ewndfwvsudhs",
-      firstName: "Jan",
-      lastName: "Kowalski",
-      birthDate: new Date(2000, 12, 7),
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      userId: "user_dahyeufgw2",
-    };
+  const participant: Participant | null = {
+    id: "dahe7d8ewndfwvsudhs",
+    firstName: "Jan",
+    lastName: "Kowalski",
+    birthDate: new Date(2000, 12, 7),
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    userId: "user_dahyeufgw2",
+  };
 
   const ticketCode = code;
   const orderId = "3462";
