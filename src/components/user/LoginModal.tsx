@@ -46,8 +46,8 @@ export default function LoginModal() {
       <DialogTrigger asChild>
         <Button variant="ghost">Zaloguj się</Button>
       </DialogTrigger>
-      <DialogContent>
-        <DialogHeader>
+      <DialogContent className="gap-8 sm:rounded-2xl w-[90%] rounded-2xl">
+        <DialogHeader className="text-left">
           <DialogTitle>
             {mode === "signin" ? "Zaloguj się" : "Zarejestruj się"}
           </DialogTitle>
@@ -68,13 +68,18 @@ export default function LoginModal() {
           <div className="space-y-4">
             <div className="space-y-1">
               <Label htmlFor="email">Adres email</Label>
-              <Input type="email" placeholder="Email" id="email" />
+              <Input type="email" id="email" />
             </div>
             <Button className="w-full">Kontynuuj</Button>
           </div>
-          <div className="flex items-center gap-2 text-sm">
-            <p>Nie masz konta?</p>
-            <p className="cursor-pointer text-blue-500">Zarejestruj się</p>
+          <div className="flex items-baseline gap-2 text-sm">
+            <p>{mode === "signin" ? "Nie masz konta?" : "Masz już konto?"}</p>
+            <p
+              className="cursor-pointer font-medium text-blue-500 hover:underline"
+              onClick={() => setMode(mode === "signin" ? "signup" : "signin")}
+            >
+              {mode === "signin" ? "Zarejestruj się" : "Zaloguj się"}
+            </p>
           </div>
         </div>
       </DialogContent>
