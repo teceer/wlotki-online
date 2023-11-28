@@ -110,8 +110,6 @@ export default function Ticket({ code }: { code: string }) {
     firstName: "Jan",
     lastName: "Kowalski",
     birthDate: new Date(2000, 12, 7),
-    createdAt: new Date(),
-    updatedAt: new Date(),
     userId: "user_dahyeufgw2",
   };
 
