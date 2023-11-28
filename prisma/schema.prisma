@@ -66,7 +66,6 @@ model User {
     sessions           Session[]
     posts              Post[]
     Log                Log[]
-    Event              Event[]
     Participant        Participant[]
     OrganizationMember OrganizationMember[]
 }
@@ -80,26 +79,33 @@ model VerificationToken {
 }
 
 model Event {
-    id             String        @id @default(cuid())
-    title          String
-    subtitle       String?
-    image          String?
-    startDateTime  DateTime
-    endDateTime    DateTime
-    description    String?
-    Location       Location?     @relation(fields: [locationId], references: [id])
-    locationId     String?
-    createdAt      DateTime      @default(now())
-    updatedAt      DateTime      @updatedAt
-    Log            Log[]
-    createdBy      User?         @relation(fields: [createdById], references: [id])
-    createdById    String?
-    Organization   Organization? @relation(fields: [organizationId], references: [id])
-    organizationId String?
+    id              String         @id @default(cuid())
+    status          EventStatus    @default(DRAFT)
+    title           String
+    subtitle        String?
+    image           String?
+    totalTickets    Int?
+    startDateTime   DateTime
+    endDateTime     DateTime
+    description     String?
+    Location        Location?      @relation(fields: [locationId], references: [id])
+    locationId      String?
+    Log             Log[]
+    Organization    Organization?  @relation(fields: [organizationId], references: [id])
+    organizationId  String?
+    Drop            Drop[]
+    EventSettings   EventSettings? @relation(fields: [eventSettingsId], references: [id])
+    eventSettingsId String?
+}
+
+enum EventStatus {
+    DRAFT
+    PUBLISHED
+    HIDDEN
 }
 
 model Location {
-    id        String   @id @default(cuid())
+    id        String  @id @default(cuid())
     name      String
     city      String
     street    String?
@@ -107,8 +113,6 @@ model Location {
     latitude  Float?
     longitude Float?
     Events    Event[]
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
     Log       Log[]
 }
 
@@ -137,6 +141,10 @@ model Log {
     privilegeId        String?
     Location           Location?         @relation(fields: [locationId], references: [id])
     locationId         String?
+    Drop               Drop?             @relation(fields: [dropId], references: [id])
+    dropId             String?
+    EventSettings      EventSettings?    @relation(fields: [eventSettingsId], references: [id])
+    eventSettingsId    String?
 
     @@index([ticketId])
     @@index([userId])
@@ -149,8 +157,8 @@ model Ticket {
     updatedAt     DateTime     @updatedAt
     participant   Participant? @relation(fields: [participantId], references: [id])
     participantId String?
-    TicketType    TicketType   @relation(fields: [ticketTypeId], references: [id])
-    ticketTypeId  String
+    Pool          Pool?        @relation(fields: [poolId], references: [id])
+    poolId        String?
     Log           Log[]
 }
 
@@ -161,39 +169,34 @@ model Participant {
     birthDate DateTime
     user      User?    @relation(fields: [userId], references: [id])
     userId    String?
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
     Ticket    Ticket[]
     Log       Log[]
 }
 
 model TicketType {
-    id        String   @id @default(cuid())
-    name      String
-    color     String?
-    image     String?
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    Pools     Pool[]
-    Ticket    Ticket[]
-    Log       Log[]
+    id    String  @id @default(cuid())
+    name  String
+    color String?
+    image String?
+    Pools Pool[]
+    Log   Log[]
 }
 
 model Pool {
     id           String      @id @default(cuid())
     name         String
-    createdAt    DateTime    @default(now())
-    updatedAt    DateTime    @updatedAt
+    totalTickets Int?
     TicketType   TicketType? @relation(fields: [ticketTypeId], references: [id])
     ticketTypeId String?
+    Drop         Drop?       @relation(fields: [dropId], references: [id])
+    dropId       String?
     Log          Log[]
+    Ticket       Ticket[]
 }
 
 model Organization {
     id                 String               @id @default(cuid())
     name               String
-    createdAt          DateTime             @default(now())
-    updatedAt          DateTime             @updatedAt
     Events             Event[]
     OrganizationMember OrganizationMember[]
     Log                Log[]
@@ -203,8 +206,6 @@ model OrganizationMember {
     id               String             @id @default(cuid())
     userId           String
     User             User               @relation(fields: [userId], references: [id])
-    createdAt        DateTime           @default(now())
-    updatedAt        DateTime           @updatedAt
     Organization     Organization?      @relation(fields: [organizationId], references: [id])
     organizationId   String?
     OrganizationRole OrganizationRole[]
@@ -215,8 +216,6 @@ model OrganizationRole {
     OrganizationMember OrganizationMember[]
     name               String
     color              String?
-    createdAt          DateTime             @default(now())
-    updatedAt          DateTime             @updatedAt
     privileges         Privilege[]
     Log                Log[]
 }
@@ -226,7 +225,35 @@ model Privilege {
     OrganizationRole OrganizationRole[]
     name             String
     description      String?
-    createdAt        DateTime           @default(now())
-    updatedAt        DateTime           @updatedAt
     Log              Log[]
+}
+
+model Drop {
+    id            String    @id @default(cuid())
+    name          String?
+    startDateTime DateTime
+    endDateTime   DateTime?
+    Log           Log[]
+    Pool          Pool[]
+    Event         Event?    @relation(fields: [eventId], references: [id])
+    eventId       String?
+}
+
+model EventSettings {
+    id                            String   @id @default(cuid())
+    Event                         Event[]
+    name                          String
+    availabilityIndicatorOverride Int?
+    buttonText                    String?
+    remainingTicketsText          String?
+    dropSoldOutText               String?
+    eventSoldOutText              String?
+    showAvailabilityIndicator     Boolean?
+    showRemainingTickets          Boolean?
+    showTotalTickets              Boolean?
+    facebookLink                  String?
+    instagramLink                 String?
+    spotifyLink                   String?
+    showSpotifyPlaylist           Boolean?
+    Log                           Log[]
 }
