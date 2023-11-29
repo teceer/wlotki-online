@@ -45,19 +45,21 @@ export default async function EventCard({
 
   const image = event.image ?? "/banner-default-bg.jpg";
 
+  const vertical = isVertical ?? event.EventSettings?.verticalOverride ?? false;
+
   return (
     <div
       className={cn(
         "flex flex-col overflow-hidden rounded-xl border shadow-lg",
         className,
-        isVertical && "row-span-2",
+        vertical && "row-span-2",
       )}
     >
       <div className="grow border-b bg-background">
         <div
           className={cn(
             "flex gap-2 sm:h-full sm:min-h-[280px] sm:flex-col-reverse sm:gap-0",
-            isVertical && "h-full min-h-[280px] flex-col-reverse gap-0",
+            vertical && "h-full min-h-[280px] flex-col-reverse gap-0",
           )}
         >
           <div className="grow space-y-2 p-4">
@@ -93,7 +95,7 @@ export default async function EventCard({
           <div
             className={cn(
               "relative aspect-square w-1/3 shrink-0 grow sm:w-full sm:shrink",
-              isVertical && "aspect-square w-full shrink",
+              vertical && "aspect-square w-full shrink",
             )}
           >
             <ImageLoader />

@@ -255,5 +255,6 @@ model EventSettings {
     instagramLink                 String?
     spotifyLink                   String?
     showSpotifyPlaylist           Boolean?
+    verticalOverride              Boolean?
     Log                           Log[]
 }
