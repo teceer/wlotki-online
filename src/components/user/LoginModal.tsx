@@ -13,6 +13,7 @@ import { FaApple, FaFacebook, FaGoogle, FaDiscord } from "react-icons/fa";
 import { Separator } from "../ui/separator";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
+import { cn } from "~/lib/utils";
 
 function LoginButton(props: {
   variant: "apple" | "google" | "facebook" | "discord";
@@ -46,10 +47,24 @@ export default function LoginModal() {
       <DialogTrigger asChild>
         <Button variant="ghost">Zaloguj się</Button>
       </DialogTrigger>
-      <DialogContent className="gap-8 sm:rounded-2xl w-[90%] rounded-2xl">
+      <DialogContent
+        className={cn(
+          "w-[90%] gap-8 rounded-2xl transition-all ease-in-out sm:rounded-2xl",
+          {
+            "border-blue-500 bg-gradient-to-t from-blue-500/10 to-10% shadow-lg shadow-blue-500/50":
+              mode === "signin",
+          },
+          {
+            "border-violet-500 bg-gradient-to-t from-violet-500/10 to-10% shadow-lg shadow-violet-500/50":
+              mode === "signup",
+          },
+        )}
+      >
         <DialogHeader className="text-left">
           <DialogTitle>
-            {mode === "signin" ? "Zaloguj się" : "Zarejestruj się"}
+            <p className="text-xl font-medium">
+              {mode === "signin" ? "Zaloguj się" : "Zarejestruj się"}
+            </p>
           </DialogTitle>
           <DialogDescription>aby kontynuować na {appName}</DialogDescription>
         </DialogHeader>
@@ -70,15 +85,18 @@ export default function LoginModal() {
               <Label htmlFor="email">Adres email</Label>
               <Input type="email" id="email" />
             </div>
-            <Button className="w-full">Kontynuuj</Button>
+            <Button className="w-full" variant="outline">Kontynuuj</Button>
           </div>
           <div className="flex items-baseline gap-2 text-sm">
             <p>{mode === "signin" ? "Nie masz konta?" : "Masz już konto?"}</p>
             <p
-              className="cursor-pointer font-medium text-blue-500 hover:underline"
+              className={cn(
+                "cursor-pointer font-medium transition-all",
+                mode === "signin" ? "text-blue-500" : "text-violet-500",
+              )}
               onClick={() => setMode(mode === "signin" ? "signup" : "signin")}
             >
-              {mode === "signin" ? "Zarejestruj się" : "Zaloguj się"}
+              {mode === "signin" ? "Zarejestruj się" : "Przejdź do logowania"}
             </p>
           </div>
         </div>

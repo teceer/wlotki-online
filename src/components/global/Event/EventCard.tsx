@@ -101,10 +101,10 @@ export default async function EventCard({
           >
             <ImageLoader />
             <Image src={image} fill className="object-cover" alt="" priority />
-            <div className="absolute w-full h-full backdrop-blur-xl"/>
+            <div className="absolute h-full w-full backdrop-blur-xl" />
             <div
               className={cn(
-                "relative aspect-square w-full h-max shrink-0 sm:w-full sm:shrink",
+                "relative aspect-square h-max w-full shrink-0 sm:w-full sm:shrink",
                 vertical && "aspect-square w-full shrink",
               )}
             >
