@@ -53,13 +53,12 @@ export default async function EventCard({
       className={cn(
         "group flex flex-col overflow-hidden rounded-xl border subpixel-antialiased shadow-lg",
         className,
-        vertical && "row-span-2",
       )}
     >
       <div className="grow border-b bg-background">
         <div
           className={cn(
-            "flex gap-2 sm:h-full sm:min-h-[280px] sm:flex-col-reverse sm:gap-0",
+            "flex gap-1 sm:h-full sm:min-h-[280px] sm:flex-col-reverse sm:gap-0",
             vertical && "h-full min-h-[280px] flex-col-reverse gap-0",
           )}
         >
@@ -70,12 +69,12 @@ export default async function EventCard({
                   <DateString date={eventStartDate} format="EEEE, P" />
                 </p>
               </div>
-              <Inter className="line-clamp-2 text-lg font-bold leading-none tracking-tighter sm:text-2xl">
+              <Inter className="line-clamp-2 text-lg font-bold leading-tight tracking-tighter sm:text-2xl">
                 {eventTitle}
               </Inter>
               <p
                 className={cn(
-                  "line-clamp-3 text-sm leading-none opacity-70 sm:text-base ",
+                  "text-xs leading-tight opacity-70 sm:text-base ",
                   !eventSubtitle && "invisible",
                 )}
               >
@@ -95,16 +94,13 @@ export default async function EventCard({
           </div>
           <div
             className={cn(
-              "relative aspect-square w-2/5 shrink-0 sm:w-full sm:shrink",
+              "relative flex aspect-square w-2/5 shrink-0 flex-col sm:w-full sm:shrink",
               vertical && "aspect-square w-full shrink",
             )}
           >
-            <ImageLoader />
-            <Image src={image} fill className="object-cover" alt="" priority />
-            <div className="absolute h-full w-full backdrop-blur-xl" />
             <div
               className={cn(
-                "relative aspect-square h-max w-full shrink-0 sm:w-full sm:shrink",
+                "relative z-10 aspect-square h-max w-full shrink-0 sm:w-full sm:shrink",
                 vertical && "aspect-square w-full shrink",
               )}
             >
@@ -123,6 +119,16 @@ export default async function EventCard({
                 alt=""
                 priority
               />
+            </div>
+            <div className="relative w-full grow opacity-30 dark:opacity-60 blur-[1px] overflow-hidden">
+              <Image
+                src={image}
+                fill
+                className="-scale-y-100 object-cover object-bottom"
+                alt=""
+                priority
+              />
+              <div className="absolute h-full w-full bg-gradient-to-t from-background from-50% via-transparent to-background via-90%" />
             </div>
           </div>
         </div>
