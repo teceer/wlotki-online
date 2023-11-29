@@ -94,7 +94,7 @@ export default async function EventCard({
           </div>
           <div
             className={cn(
-              "relative aspect-square w-1/3 shrink-0 grow sm:w-full sm:shrink",
+              "relative aspect-square w-2/5 shrink-0  sm:w-full sm:shrink",
               vertical && "aspect-square w-full shrink",
             )}
           >
