@@ -8,6 +8,7 @@ import { type ClassNameValue } from "tailwind-merge";
 import type { Event, EventSettings } from "@prisma/client";
 import { db } from "~/server/db";
 import ImageLoader from "../ImageLoader";
+import { Inter } from "../Typography";
 
 export default async function EventCard({
   event,
@@ -50,7 +51,7 @@ export default async function EventCard({
   return (
     <div
       className={cn(
-        "flex flex-col overflow-hidden rounded-xl border shadow-lg",
+        "group flex flex-col overflow-hidden rounded-xl border subpixel-antialiased shadow-lg",
         className,
         vertical && "row-span-2",
       )}
@@ -69,12 +70,12 @@ export default async function EventCard({
                   <DateString date={eventStartDate} format="EEEE, P" />
                 </p>
               </div>
-              <p className="text-lg font-semibold leading-none tracking-tighter sm:text-2xl">
+              <Inter className="line-clamp-2 text-lg font-bold leading-none tracking-tighter sm:text-2xl">
                 {eventTitle}
-              </p>
+              </Inter>
               <p
                 className={cn(
-                  "text-sm leading-none opacity-70",
+                  "line-clamp-3 text-sm leading-none opacity-70 sm:text-base ",
                   !eventSubtitle && "invisible",
                 )}
               >
@@ -94,7 +95,7 @@ export default async function EventCard({
           </div>
           <div
             className={cn(
-              "relative aspect-square w-2/5 h-max shrink-0 sm:w-full sm:shrink",
+              "relative aspect-square w-2/5 shrink-0 sm:w-full sm:shrink", // add h-max to make it square
               vertical && "aspect-square w-full shrink",
             )}
           >
@@ -111,7 +112,7 @@ export default async function EventCard({
           </div>
         )}
         <Button
-          className="shrink-0 rounded-none hover:bg-gradient-to-l"
+          className="shrink-0 rounded-none group-hover:bg-gradient-to-l"
           size="lg"
           variant="secondary"
         >
