@@ -62,12 +62,14 @@ export default async function EventCard({
         >
           <div className="grow space-y-2 p-4">
             <div className="space-y-1 px-1">
-              <div className="flex flex-wrap gap-2 text-xs">
+              <div className="flex flex-wrap gap-2 text-xs sm:text-base">
                 <p className="leading-none opacity-70">
                   <DateString date={eventStartDate} format="EEEE, P" />
                 </p>
               </div>
-              <p className="text-lg font-bold leading-none">{eventTitle}</p>
+              <p className="text-lg font-semibold leading-none tracking-tighter sm:text-2xl">
+                {eventTitle}
+              </p>
               <p
                 className={cn(
                   "text-sm leading-none opacity-70",
@@ -90,7 +92,7 @@ export default async function EventCard({
           </div>
           <div
             className={cn(
-              "relative w-1/4 shrink-0 grow sm:aspect-square sm:w-full sm:shrink",
+              "relative aspect-square w-1/3 shrink-0 grow sm:w-full sm:shrink",
               isVertical && "aspect-square w-full shrink",
             )}
           >
