@@ -14,10 +14,14 @@ import { Separator } from "../ui/separator";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { cn } from "~/lib/utils";
+import { signIn } from "next-auth/react";
+import { TailSpin } from "react-loader-spinner";
+import { Loader, Loader2 } from "lucide-react";
 
 function LoginButton(props: {
   variant: "apple" | "google" | "facebook" | "discord";
 }) {
+  const [loading, setLoading] = useState(false);
   const icon = () => {
     switch (props.variant) {
       case "apple":
@@ -32,9 +36,25 @@ function LoginButton(props: {
         return null;
     }
   };
+
+  const handleLogin = async () => {
+    setLoading(true);
+    await signIn(props.variant);
+    setLoading(false);
+  };
+
   return (
-    <Button variant="outline" className="h-fit w-full rounded-lg py-4 text-xl">
-      {icon()}
+    <Button
+      variant="outline"
+      className="flex h-fit w-full items-center justify-center rounded-lg py-4 text-xl"
+      onClick={handleLogin}
+      disabled={
+        props.variant === "facebook" ||
+        props.variant === "apple" ||
+        props.variant === "google"
+      }
+    >
+      {loading ? <Loader2 size={20} className="animate-spin" /> : icon()}
     </Button>
   );
 }
@@ -85,7 +105,9 @@ export default function LoginModal() {
               <Label htmlFor="email">Adres email</Label>
               <Input type="email" id="email" />
             </div>
-            <Button className="w-full" variant="outline">Kontynuuj</Button>
+            <Button className="w-full" variant="outline">
+              Kontynuuj
+            </Button>
           </div>
           <div className="flex items-baseline gap-2 text-sm">
             <p>{mode === "signin" ? "Nie masz konta?" : "Masz już konto?"}</p>
