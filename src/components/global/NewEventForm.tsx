@@ -33,6 +33,7 @@ import { Textarea } from "../ui/textarea";
 import { UploadButton, UploadDropzone } from "~/lib/uploadthing";
 import Image from "next/image";
 import { cn } from "~/lib/utils";
+import EventCard from "./Event/EventCard";
 
 type FieldConfig<T extends z.ZodType<any, any, any>> = {
   [key in keyof z.infer<T>]: {
@@ -142,12 +143,49 @@ export function NewEventForm<T extends z.ZodType<any, any, any>>({
                       {imageUrl && (
                         <div className="flex flex-col space-y-2">
                           <div className="flex flex-col space-y-4">
-                            <div className="grid gap-4 sm:grid-cols-2 ">
-                              <EventCardPlaceholder
+                            <div className="grid gap-4 sm:grid-cols-2">
+                              {/* <EventCardPlaceholder
                                 imageUrl={imageUrl}
                                 isVertical
                               />
-                              <EventCardPlaceholder imageUrl={imageUrl} />
+                              <EventCardPlaceholder imageUrl={imageUrl} /> */}
+                              <EventCard
+                                event={{
+                                  description: "Opis wydarzenia",
+                                  title: "Tytuł wydarzenia",
+                                  subtitle: "Podtytuł wydarzenia",
+                                  locationId: null,
+                                  startDateTime: new Date(),
+                                  endDateTime: new Date(),
+                                  image: imageUrl,
+                                  eventSettingsId: null,
+                                  organizationId: null,
+                                  id: "placeholder1",
+                                  status: "DRAFT",
+                                  totalTickets: 100,
+                                  Location: null,
+                                  EventSettings: null,
+                                }}
+                              />
+                              <EventCard
+                                isVertical
+                                event={{
+                                  description: "Opis wydarzenia",
+                                  title: "Tytuł wydarzenia",
+                                  subtitle: "Podtytuł wydarzenia",
+                                  locationId: null,
+                                  startDateTime: new Date(),
+                                  endDateTime: new Date(),
+                                  image: imageUrl,
+                                  eventSettingsId: null,
+                                  organizationId: null,
+                                  id: "placeholder1",
+                                  status: "DRAFT",
+                                  totalTickets: 100,
+                                  Location: null,
+                                  EventSettings: null,
+                                }}
+                              />
                             </div>
                             <UploadButton
                               content={{

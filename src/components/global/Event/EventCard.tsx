@@ -5,31 +5,22 @@ import React from "react";
 import AvailabilityIndicator from "./AvailabilityIndicator";
 import DateString from "../DateString";
 import { type ClassNameValue } from "tailwind-merge";
-import type { Event, EventSettings } from "@prisma/client";
-import { db } from "~/server/db";
+import type { Event, EventSettings, Location } from "@prisma/client";
 import ImageLoader from "../ImageLoader";
 import { Inter } from "../Typography";
 
-export default async function EventCard({
+export default function EventCard({
   event,
   isVertical,
   className,
 }: {
-  event: Event & { EventSettings: EventSettings | null };
+  event: Event & { EventSettings: EventSettings | null, Location: Location | null };
   isVertical?: boolean;
   className?: ClassNameValue;
 }) {
   const eventTitle = event.title;
 
   const eventSubtitle = event.subtitle;
-
-  const eventLocation = event.locationId
-    ? (
-        await db.location.findFirst({
-          where: { id: event.locationId },
-        })
-      )?.name
-    : undefined;
 
   const eventStartDate = event.startDateTime;
 
@@ -47,6 +38,8 @@ export default async function EventCard({
   const image = event.image ?? "/banner-default-bg.jpg";
 
   const vertical = isVertical ?? event.EventSettings?.verticalOverride ?? false;
+
+  const location = event.Location?.name;
 
   return (
     <div
@@ -85,10 +78,10 @@ export default async function EventCard({
               <p
                 className={cn(
                   "rounded-full border px-2 py-1",
-                  !eventLocation && "invisible",
+                  !location && "invisible",
                 )}
               >
-                {eventLocation}
+                {location}
               </p>
             </div>
           </div>

@@ -5,7 +5,7 @@ import EventCard from "./EventCard";
 export default async function Events() {
   const events = await db.event.findMany({
     where: { status: "PUBLISHED" },
-    include: { EventSettings: true },
+    include: { EventSettings: true, Location: true },
   });
   return (
     <>
