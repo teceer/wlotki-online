@@ -33,11 +33,23 @@ export const eventRouter = createTRPCRouter({
       });
     }),
 
-  findById: publicProcedure.input(z.string()).mutation(({ ctx, input }) => {
-    return ctx.db.event.findUnique({
-      where: {
-        id: input,
-      },
-    });
-  }),
+  getCommonData: publicProcedure
+    .input(z.string())
+    .mutation(({ ctx, input }) => {
+      return ctx.db.event.findUnique({
+        where: {
+          id: input,
+        },
+        select: {
+          title: true,
+          subtitle: true,
+          image: true,
+          startDateTime: true,
+          endDateTime: true,
+          description: true,
+          locationId: true,
+          status: true,
+        },
+      });
+    }),
 });

@@ -8,13 +8,17 @@ import { type ClassNameValue } from "tailwind-merge";
 import type { Event, EventSettings, Location } from "@prisma/client";
 import ImageLoader from "../ImageLoader";
 import { Inter } from "../Typography";
+import Link from "next/link";
 
 export default function EventCard({
   event,
   isVertical,
   className,
 }: {
-  event: Event & { EventSettings: EventSettings | null, Location: Location | null };
+  event: Event & {
+    EventSettings: EventSettings | null;
+    Location: Location | null;
+  };
   isVertical?: boolean;
   className?: ClassNameValue;
 }) {
@@ -91,29 +95,31 @@ export default function EventCard({
               vertical && "aspect-square w-full shrink",
             )}
           >
-            <div
-              className={cn(
-                "relative z-10 aspect-square h-max w-full shrink-0 sm:w-full sm:shrink",
-                vertical && "aspect-square w-full shrink",
-              )}
-            >
-              <ImageLoader />
-              <Image
-                src={image}
-                fill
-                className="object-cover blur"
-                alt=""
-                priority
-              />
-              <Image
-                src={image}
-                fill
-                className="object-cover"
-                alt=""
-                priority
-              />
-            </div>
-            <div className="relative w-full grow opacity-30 dark:opacity-60 blur-[1px] overflow-hidden">
+            <Link href={`/event/${event.id}`}>
+              <div
+                className={cn(
+                  "relative z-10 aspect-square h-max w-full shrink-0 sm:w-full sm:shrink",
+                  vertical && "aspect-square w-full shrink",
+                )}
+              >
+                <ImageLoader />
+                <Image
+                  src={image}
+                  fill
+                  className="object-cover blur"
+                  alt=""
+                  priority
+                />
+                <Image
+                  src={image}
+                  fill
+                  className="object-cover"
+                  alt=""
+                  priority
+                />
+              </div>
+            </Link>
+            <div className="relative w-full grow overflow-hidden opacity-30 blur-[1px] dark:opacity-60">
               <Image
                 src={image}
                 fill
@@ -121,7 +127,7 @@ export default function EventCard({
                 alt=""
                 priority
               />
-              <div className="absolute h-full w-full bg-gradient-to-t from-background from-50% via-transparent to-background via-90%" />
+              <div className="absolute h-full w-full bg-gradient-to-t from-background from-50% via-transparent via-90% to-background" />
             </div>
           </div>
         </div>
@@ -137,8 +143,9 @@ export default function EventCard({
           className="shrink-0 rounded-none group-hover:bg-gradient-to-l"
           size="lg"
           variant="secondary"
+          asChild
         >
-          {buyButtonText}
+          <Link href={`/event/${event.id}`}>{buyButtonText}</Link>
         </Button>
       </div>
     </div>

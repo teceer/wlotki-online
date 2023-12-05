@@ -77,7 +77,7 @@ export default function AddEventForm() {
         { autoClose: 2000 },
       )
       .then((data) => {
-        router.push("/events/" + data.id + "/edit");
+        router.push("/event/" + data.id + "/edit");
       })
       .catch(() => {
         toast.error(eventAction.error?.message);

@@ -11,7 +11,17 @@ export function H1({
   children: React.ReactNode;
   className?: ClassNameValue;
 }) {
-  return <div className={cn("text-xl font-bold", className)}>{children}</div>;
+  return (
+    <div
+      className={cn(
+        "text-xl font-bold md:text-3xl",
+        inter.className,
+        className,
+      )}
+    >
+      {children}
+    </div>
+  );
 }
 
 export function PageTitle({
