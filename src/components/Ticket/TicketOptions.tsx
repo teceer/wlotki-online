@@ -82,14 +82,14 @@ export default function TicketOptions(props: {
       <SheetTrigger>
         <MoreVertical />
       </SheetTrigger>
-      <SheetContent>
+      <SheetContent className="flex h-full flex-col">
         <SheetHeader className="pb-4">
           <SheetTitle className="text-left">Opcje wlotki</SheetTitle>
           <SheetDescription className="text-left">
             Poniżej znajdziesz akcje, które możesz wykonać na tej wlotce.
           </SheetDescription>
         </SheetHeader>
-        <div className="space-y-2">
+        <div className="no-scrollbar grow space-y-2 overflow-y-scroll pb-4">
           {props.resetTicket && <ResetTicket />}
           {props.returnTicket && <ReturnTicket />}
           {props.getHelp && <GetHelp />}

@@ -3,6 +3,7 @@ import EventsSection from "~/components/admin/EventsSection";
 import Section from "~/components/global/Section";
 import { ScrollArea, ScrollBar } from "~/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
+import Settings from "./Settings";
 
 export default function page({
   searchParams,
@@ -38,6 +39,9 @@ export default function page({
           </TabsContent>
           <TabsContent value="organizations">
             Change your password here.
+          </TabsContent>
+          <TabsContent value="settings">
+            <Settings />
           </TabsContent>
         </div>
       </Tabs>

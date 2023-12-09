@@ -19,7 +19,6 @@ export const metadata = {
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
-
 export default function RootLayout({
   children,
 }: {
@@ -49,7 +48,7 @@ export default function RootLayout({
           />
           <main className="animate-slide-in flex min-h-[100svh] w-full flex-col overflow-hidden bg-gradient-to-t from-neutral-300 transition-all duration-500 ease-in-out dark:from-black">
             <Topbar invisible />
-            <div className="w-full grow transition-all ease-in-out ">
+            <div className="flex w-full grow flex-col transition-all ease-in-out">
               {children}
             </div>
           </main>

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import React from "react";
+import React, { Suspense } from "react";
 import Section from "~/components/global/Section";
 import { H1 } from "~/components/global/Typography";
 import { api } from "~/trpc/server";
@@ -17,25 +17,66 @@ export default async function page({
       </Section>
     );
   }
-  return (
-    <section>
-      <div className="relative flex h-40 w-full flex-col items-center justify-end">
-        <div className="absolute w-full h-full -z-50">
-          {event.image && (
-            <Image
-              alt=""
-              src={event.image}
-              fill
-              className="-z-50 object-cover"
-            />
-          )}
-          <div className="absolute -z-50 h-full w-full bg-gradient-to-t from-background backdrop-blur-sm" />
+
+  function Fallback() {
+    return (
+      <section className="h-full grow bg-gradient-to-t from-transparent from-50% to-background to-70%">
+        <div className="absolute w-full">
+          <div className="relative flex h-40 w-full flex-col items-center justify-end md:h-64">
+            <div className="absolute h-full w-full">
+              <div className="h-full w-full animate-pulse bg-gradient-to-tr from-accent opacity-70" />
+            </div>
+          </div>
         </div>
-        <H1 className="w-full max-w-7xl p-4 md:p-8 md:px-0">{event.title}</H1>
-      </div>
-      <Section>
-        <p>test</p>
-      </Section>
-    </section>
+        <Section DivClassName="z-10">
+          <div className="flex items-end justify-between gap-4">
+            <div className="pb-8 md:pb-12">
+              <div className="h-6 w-32 animate-pulse rounded-lg bg-gradient-to-tr from-accent opacity-70" />
+            </div>
+            <div className="relative aspect-square w-40 shrink-0 animate-pulse rounded-lg bg-gradient-to-tr from-accent opacity-70 md:w-64" />
+          </div>
+        </Section>
+      </section>
+    );
+  }
+
+  return (
+    <Suspense fallback={<Fallback />}>
+      <section className="h-full grow bg-gradient-to-t from-transparent from-50% to-background to-70%">
+        <div className="absolute w-full">
+          <div className="relative flex h-40 w-full flex-col items-center justify-end md:h-64">
+            <div className="absolute h-full w-full">
+              {event.image && (
+                <Image alt="" src={event.image} fill className="object-cover" />
+              )}
+              <div className="absolute h-full w-full bg-gradient-to-t from-background backdrop-blur-sm" />
+            </div>
+          </div>
+        </div>
+        <Section DivClassName="z-10">
+          <div className="flex items-end justify-between gap-4">
+            <H1 className="pb-8 md:pb-12">{event.title}</H1>
+            <div className="relative aspect-square w-40 shrink-0 md:w-64">
+              {event.image && (
+                <>
+                  <Image
+                    alt=""
+                    src={event.image}
+                    fill
+                    className="rounded-lg object-cover blur"
+                  />
+                  <Image
+                    alt=""
+                    src={event.image}
+                    fill
+                    className="rounded-lg object-cover"
+                  />
+                </>
+              )}
+            </div>
+          </div>
+        </Section>
+      </section>
+    </Suspense>
   );
 }

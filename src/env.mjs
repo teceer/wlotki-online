@@ -35,6 +35,9 @@ export const env = createEnv({
     APPLE_SECRET: z.string(),
     UPLOADTHING_SECRET: z.string(),
     UPLOADTHING_APP_ID: z.string(),
+    RESEND_API_KEY: z.string(),
+    ADMIN_EMAIL: z.string().email(),
+    SYSTEM_EMAIL: z.string().email(),
   },
 
   /**
@@ -63,6 +66,9 @@ export const env = createEnv({
     UPLOADTHING_SECRET: process.env.UPLOADTHING_SECRET,
     UPLOADTHING_APP_ID: process.env.UPLOADTHING_APP_ID,
     NEXT_PUBLIC_APP_NAME: process.env.NEXT_PUBLIC_APP_NAME,
+    RESEND_API_KEY: process.env.RESEND_API_KEY,
+    ADMIN_EMAIL: process.env.ADMIN_EMAIL,
+    SYSTEM_EMAIL: process.env.SYSTEM_EMAIL,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially
