@@ -9,7 +9,7 @@ export default async function page({
 }: {
   params: { eventId: string };
 }) {
-  const event = await api.event.findById.mutate(params.eventId);
+  const event = await api.event.getCommonData.mutate(params.eventId);
   if (!event) {
     return (
       <Section DivClassName="items-center justify-center">
