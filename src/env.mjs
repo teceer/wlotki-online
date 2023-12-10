@@ -38,6 +38,10 @@ export const env = createEnv({
     RESEND_API_KEY: z.string(),
     ADMIN_EMAIL: z.string().email(),
     SYSTEM_EMAIL: z.string().email(),
+    PAYU_POS_ID: z.string(),
+    PAYU_MD5: z.string(),
+    PAYU_CLIENT_ID: z.string(),
+    PAYU_CLIENT_SECRET: z.string(),
   },
 
   /**
@@ -69,6 +73,10 @@ export const env = createEnv({
     RESEND_API_KEY: process.env.RESEND_API_KEY,
     ADMIN_EMAIL: process.env.ADMIN_EMAIL,
     SYSTEM_EMAIL: process.env.SYSTEM_EMAIL,
+    PAYU_POS_ID: process.env.PAYU_POS_ID,
+    PAYU_MD5: process.env.PAYU_MD5,
+    PAYU_CLIENT_ID: process.env.PAYU_CLIENT_ID,
+    PAYU_CLIENT_SECRET: process.env.PAYU_CLIENT_SECRET,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially
