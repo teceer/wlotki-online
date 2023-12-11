@@ -1,5 +1,6 @@
 "use server";
 import { Resend } from "resend";
+import { Email } from "emails/Info";
 import { env } from "~/env.mjs";
 import { randomUUID } from "crypto";
 
@@ -15,16 +16,15 @@ export default async function sendEmail() {
       from: `${fromName} <${fromEmail}>`,
       to: toEmail,
       subject: "Hello world!",
-      text: "Hello world! " + randomUUID(),
-      // react: Email({
-      //   previewText: "Email testowy",
-      //   heading: "Email testowy!",
-      //   text: "To jest testowy email o ID: " + randomUUID(),
-      //   cta: {
-      //     text: "Kliknij tutaj",
-      //     link: env.NEXTAUTH_URL + "/dashboard",
-      //   },
-      // }) as React.ReactElement,
+      react: Email({
+        previewText: "Email testowy",
+        heading: "Email testowy!",
+        text: "To jest testowy email o ID: " + randomUUID(),
+        cta: {
+          text: "Kliknij tutaj",
+          link: env.NEXTAUTH_URL + "/dashboard",
+        },
+      }) as React.ReactElement,
     });
 
     console.log(data);
