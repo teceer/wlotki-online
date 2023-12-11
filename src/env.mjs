@@ -42,6 +42,7 @@ export const env = createEnv({
     PAYU_MD5: z.string(),
     PAYU_CLIENT_ID: z.string(),
     PAYU_CLIENT_SECRET: z.string(),
+    PAYU_API_HOST: z.string().url(),
   },
 
   /**
@@ -77,6 +78,7 @@ export const env = createEnv({
     PAYU_MD5: process.env.PAYU_MD5,
     PAYU_CLIENT_ID: process.env.PAYU_CLIENT_ID,
     PAYU_CLIENT_SECRET: process.env.PAYU_CLIENT_SECRET,
+    PAYU_API_HOST: process.env.PAYU_API_HOST,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

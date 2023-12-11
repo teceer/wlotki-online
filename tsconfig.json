@@ -37,6 +37,6 @@
     "**/*.cjs",
     "**/*.mjs",
     ".next/types/**/*.ts"
-  ],
+, ".react-email/emails/Test.tsx"  ],
   "exclude": ["node_modules"]
 }

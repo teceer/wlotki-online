@@ -1,7 +1,8 @@
 "use server";
 import { Resend } from "resend";
-import { EmailTemplate } from "~/components/email-templates/Info";
+import { Email } from "emails/Info";
 import { env } from "~/env.mjs";
+import { randomUUID } from "crypto";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -14,8 +15,16 @@ export default async function sendEmail() {
     const data = await resend.emails.send({
       from: `${fromName} <${fromEmail}>`,
       to: toEmail,
-      subject: "Hello world",
-      react: EmailTemplate({ firstName: "John" }) as React.ReactElement,
+      subject: "Hello world!",
+      react: Email({
+        previewText: "Email testowy",
+        heading: "Email testowy!",
+        text: "To jest testowy email o ID: " + randomUUID(),
+        cta: {
+          text: "Kliknij tutaj",
+          link: env.NEXTAUTH_URL + "/dashboard",
+        },
+      }) as React.ReactElement,
     });
 
     console.log(data);

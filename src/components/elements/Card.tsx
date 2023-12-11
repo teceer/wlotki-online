@@ -13,7 +13,7 @@ export default function Card(props: {
   return (
     <div
       className={cn(
-        "group relative flex min-h-[80px] overflow-hidden rounded-xl border bg-background shadow transition-all hover:border-foreground/30",
+        "group relative flex min-h-[80px] cursor-pointer overflow-hidden rounded-xl border bg-background shadow transition-all hover:border-foreground/30",
         props.className,
       )}
       onClick={props.onClick}
