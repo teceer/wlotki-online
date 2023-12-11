@@ -22,7 +22,7 @@ export default async function sendEmail() {
         text: "To jest testowy email o ID: " + randomUUID(),
         cta: {
           text: "Kliknij tutaj",
-          link: env.NEXTAUTH_URL + "/dashboard",
+          link: env.APP_URL + "/dashboard",
         },
       }) as React.ReactElement,
     });
