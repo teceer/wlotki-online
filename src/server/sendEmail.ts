@@ -1,6 +1,6 @@
 "use server";
 import { Resend } from "resend";
-import { Email } from "emails/Info";
+import { Email } from "~/components/emails/Info";
 import { env } from "~/env.mjs";
 import { randomUUID } from "crypto";
 

@@ -140,6 +140,9 @@ dependencies:
   geist:
     specifier: ^1.1.0
     version: 1.1.0(next@14.0.3)
+  html-to-text:
+    specifier: ^9.0.5
+    version: 9.0.5
   lucide-react:
     specifier: ^0.292.0
     version: 0.292.0(react@18.2.0)
