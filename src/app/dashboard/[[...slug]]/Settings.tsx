@@ -70,6 +70,7 @@ function TestPayment(props: { session?: Session }) {
     if (!customerIp.ip) return toast.error("Nie udało się pobrać adresu IP.");
     try {
       const data = await createOrder({
+        host: window.location.origin,
         order: {
           customerIp: customerIp.ip,
           description: "Testowa płatność",
