@@ -5,6 +5,7 @@ import { ScrollArea, ScrollBar } from "~/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import Settings from "./Settings";
 import { getServerAuthSession } from "~/server/auth";
+import Spline from '@splinetool/react-spline';
 
 export default async function page({
   searchParams,
@@ -40,9 +41,9 @@ export default async function page({
             <EventsSection />
           </TabsContent>
           <TabsContent value="organizations">
-            Change your password here.
+            
           </TabsContent>
-          <TabsContent value="settings" className="grid grid-cols-2 gap-2">
+          <TabsContent value="settings" className="grid grid-cols-1 gap-2">
             <Settings session={session ?? undefined} />
           </TabsContent>
         </div>

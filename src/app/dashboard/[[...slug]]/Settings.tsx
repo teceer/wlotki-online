@@ -1,4 +1,5 @@
 "use client";
+import Spline from "@splinetool/react-spline";
 import { Coins, Mail } from "lucide-react";
 import { Session } from "next-auth";
 import { useRouter } from "next/navigation";
@@ -15,6 +16,7 @@ export default function Settings(props: { session?: Session }) {
       <TestEmail />
       <TestPayment session={props.session} />
       <TestPaymentToken />
+      <Spline scene="https://prod.spline.design/zThT14XZpAKKzeBO/scene.splinecode" />
     </>
   );
 }
