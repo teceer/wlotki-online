@@ -1,5 +1,4 @@
 "use server";
-export const dynamic = "force-dynamic";
 import { env } from "~/env.mjs";
 import createOAuthToken from "./createOAuthToken";
 
