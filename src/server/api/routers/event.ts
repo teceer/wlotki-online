@@ -33,7 +33,7 @@ export const eventRouter = createTRPCRouter({
       });
     }),
 
-  getCommonData: publicProcedure
+  findById: publicProcedure
     .input(z.string())
     .mutation(({ ctx, input }) => {
       return ctx.db.event.findUnique({
