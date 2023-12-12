@@ -1,7 +1,6 @@
 "use client";
-import Spline from "@splinetool/react-spline";
 import { Coins, Mail } from "lucide-react";
-import { Session } from "next-auth";
+import type { Session } from "next-auth";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { toast } from "react-toastify";
