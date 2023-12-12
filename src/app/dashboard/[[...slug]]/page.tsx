@@ -39,10 +39,8 @@ export default async function page({
           <TabsContent value="events">
             <EventsSection />
           </TabsContent>
-          <TabsContent value="organizations">
-            
-          </TabsContent>
-          <TabsContent value="settings" className="grid grid-cols-1 gap-2">
+          <TabsContent value="organizations"></TabsContent>
+          <TabsContent value="settings" className="grid grid-cols-1 md:grid-cols-2 gap-2">
             <Settings session={session ?? undefined} />
           </TabsContent>
         </div>

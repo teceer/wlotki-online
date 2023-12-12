@@ -16,7 +16,6 @@ export default function Settings(props: { session?: Session }) {
       <TestEmail />
       <TestPayment session={props.session} />
       <TestPaymentToken />
-      <Spline scene="https://prod.spline.design/zThT14XZpAKKzeBO/scene.splinecode" />
     </>
   );
 }
@@ -55,6 +54,7 @@ function TestEmail() {
       title="sendEmail.ts"
       icon={<Mail className="text-blue-500" />}
       onClick={onClick}
+      loadingClassName="to-blue-500"
       loading={loading}
     />
   );
@@ -108,6 +108,7 @@ function TestPayment(props: { session?: Session }) {
       title="payU /createOrder.ts"
       icon={<Coins className="text-blue-500" />}
       onClick={onClick}
+      loadingClassName="to-blue-500"
       loading={loading}
     />
   );
@@ -130,6 +131,7 @@ function TestPaymentToken() {
     <Card
       title="payU /createOAuthToken.ts"
       icon={<Coins className="text-blue-500" />}
+      loadingClassName="to-blue-500"
       onClick={onClick}
       loading={loading}
     />
