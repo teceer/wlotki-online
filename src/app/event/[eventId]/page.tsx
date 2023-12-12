@@ -14,6 +14,7 @@ export default async function page({
   const event = await db.event.findFirst({
     where: { id: params.eventId },
   });
+  
   if (!event) {
     return (
       <Section DivClassName="items-center justify-center">
