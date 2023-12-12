@@ -4,12 +4,14 @@ import Section from "~/components/global/Section";
 import { ScrollArea, ScrollBar } from "~/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import Settings from "./Settings";
+import { getServerAuthSession } from "~/server/auth";
 
-export default function page({
+export default async function page({
   searchParams,
 }: {
   searchParams: Record<string, string | string[] | undefined>;
 }) {
+  const session = await getServerAuthSession();
   const defaultTab = () => {
     const defaultTab = searchParams.t;
     if (defaultTab === "events") return "events";
@@ -40,8 +42,8 @@ export default function page({
           <TabsContent value="organizations">
             Change your password here.
           </TabsContent>
-          <TabsContent value="settings">
-            <Settings />
+          <TabsContent value="settings" className="grid grid-cols-2 gap-2">
+            <Settings session={session ?? undefined} />
           </TabsContent>
         </div>
       </Tabs>

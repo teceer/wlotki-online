@@ -2,28 +2,34 @@
 import { Resend } from "resend";
 import { Email } from "emails/Info";
 import { env } from "~/env.mjs";
-import { randomUUID } from "crypto";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-const fromName = env.NEXT_PUBLIC_APP_NAME;
-const fromEmail = env.SYSTEM_EMAIL;
-const toEmail = env.ADMIN_EMAIL;
-
-export default async function sendEmail() {
+export default async function sendEmail(props: {
+  subject: string;
+  heading: string;
+  text: string;
+  cta?: {
+    text: string;
+    link: string;
+  };
+  previewText?: string;
+  fromName?: string;
+  fromEmail?: string;
+  toEmail?: string;
+}) {
   try {
     const data = await resend.emails.send({
-      from: `${fromName} <${fromEmail}>`,
-      to: toEmail,
-      subject: "Hello world!",
+      from: `${props.fromName ?? env.NEXT_PUBLIC_APP_NAME} <${
+        props.fromEmail ?? env.SYSTEM_EMAIL
+      }>`,
+      to: props.toEmail ?? env.ADMIN_EMAIL,
+      subject: props.subject,
       react: Email({
-        previewText: "Email testowy",
-        heading: "Email testowy!",
-        text: "To jest testowy email o ID: " + randomUUID(),
-        cta: {
-          text: "Kliknij tutaj",
-          link: env.APP_URL + "/dashboard",
-        },
+        previewText: props.previewText,
+        heading: props.heading,
+        text: props.text,
+        cta: props.cta,
       }) as React.ReactElement,
     });
 

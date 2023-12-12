@@ -7,7 +7,10 @@ export default function Card(props: {
   title: string;
   description?: string;
   image?: string;
+  icon?: React.ReactNode;
   className?: ClassNameValue;
+  iconClassName?: ClassNameValue;
+  loading?: boolean;
   onClick?: () => void;
 }) {
   return (
@@ -26,9 +29,32 @@ export default function Card(props: {
           className="absolute z-0 object-cover"
         />
       )}
-      <div className="absolute h-full w-full bg-gradient-to-tr" />
-      {/* <div className="absolute h-full w-full bg-gradient-to-t from-background via-transparent to-background" /> */}
       <div className="z-10 flex grow flex-col justify-end">
+        {props.icon && (
+          <div className={cn("relative h-16 w-full", props.iconClassName)}>
+            <div className="absolute -z-10 h-full w-full bg-gradient-to-tr from-secondary to-background" />
+            <div className="absolute h-full w-full">
+              <div
+                className={cn(
+                  "flex h-full w-full items-center p-4",
+                  props.loading && "animate-pulse",
+                )}
+              >
+                {props.icon}
+              </div>
+            </div>
+            <div className="absolute h-full w-full">
+              <div
+                className={cn(
+                  "flex h-full w-full items-center p-4 opacity-70 blur",
+                  props.loading && "animate-pulse",
+                )}
+              >
+                {props.icon}
+              </div>
+            </div>
+          </div>
+        )}
         <div className="flex flex-col justify-end bg-background px-4 py-2">
           <p className="text-sm font-medium">{props.title}</p>
         </div>

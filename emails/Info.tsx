@@ -18,27 +18,17 @@ interface VercelInviteUserEmailProps {
   previewText?: string;
   heading: string;
   text: string;
-  cta: {
+  cta?: {
     text: string;
     link: string;
   };
 }
 
-const defaultProps = {
-  previewText: "Zaproszenie do współpracy",
-  heading: "Witaj!",
-  text: "Zostałeś zaproszony do współpracy w projekcie.",
-  cta: {
-    link: "https://vercel.com/login",
-    text: "Zaloguj się",
-  },
-};
-
 export const Email = (props: VercelInviteUserEmailProps) => {
-  const previewText = props.previewText ?? defaultProps.previewText;
-  const heading = props.heading ?? defaultProps.heading;
-  const text = props.text ?? defaultProps.text;
-  const cta = props.cta ?? defaultProps.cta;
+  const previewText = props.previewText;
+  const heading = props.heading;
+  const text = props.text;
+  const cta = props.cta;
 
   return (
     <Html>
@@ -47,17 +37,17 @@ export const Email = (props: VercelInviteUserEmailProps) => {
       <Tailwind>
         <Body className="mx-auto my-auto bg-white font-sans">
           <Section className="mx-auto my-[40px] w-[465px] rounded-xl border border-solid border-[#eaeaea] shadow-lg">
-            <Row className="m-0 px-8 py-4">
+            <Section className="m-0 px-8 py-4">
               <Heading className="p-0 text-[24px] font-bold text-black">
                 {heading}
               </Heading>
-            </Row>
+            </Section>
             <Hr className="m-0 w-full border-[0.5px] border-solid border-[#eaeaea] p-0" />
-            <Row className="m-0 px-8 py-4">
+            <Section className="m-0 px-8 py-4">
               <Text className="text-[14px] leading-[24px] text-black">
                 {text}
               </Text>
-            </Row>
+            </Section>
             {cta && (
               <Section className="px-8 py-4">
                 <Button
@@ -76,11 +66,11 @@ export const Email = (props: VercelInviteUserEmailProps) => {
               </Section>
             )}
             <Hr className="m-0 w-full border-[0.5px] border-solid border-[#eaeaea] p-0" />
-            <Row className="m-0 px-8 py-4">
+            <Section className="m-0 px-8 py-4">
               <Text className="text-[12px] leading-[24px] text-[#666666]">
                 Wiadomość wysłana automatycznie.
               </Text>
-            </Row>
+            </Section>
           </Section>
         </Body>
       </Tailwind>
