@@ -2,14 +2,18 @@ import React, { Suspense } from "react";
 import AddNewPool from "~/components/Pool/AddNewPool";
 import Section from "~/components/global/Section";
 import { H1 } from "~/components/global/Typography";
-import { api } from "~/trpc/server";
+import { db } from "~/server/db";
+// import { api } from "~/trpc/server";
 
 export default async function page({
   params,
 }: {
   params: { eventId: string };
 }) {
-  const event = await api.event.findById.mutate(params.eventId);
+  // const event = await api.event.findById.mutate(params.eventId);
+  const event = await db.event.findFirst({
+    where: { id: params.eventId },
+  });
   if (!event) {
     return (
       <Section DivClassName="items-center justify-center">

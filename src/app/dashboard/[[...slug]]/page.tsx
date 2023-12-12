@@ -5,7 +5,6 @@ import { ScrollArea, ScrollBar } from "~/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import Settings from "./Settings";
 import { getServerAuthSession } from "~/server/auth";
-import Spline from '@splinetool/react-spline';
 
 export default async function page({
   searchParams,
