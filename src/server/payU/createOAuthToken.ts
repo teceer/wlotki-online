@@ -56,6 +56,7 @@ export default async function createOAuthToken<T extends GrantType>(
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
       },
+      cache: "no-cache",
       body: new URLSearchParams(
         body() as unknown as Record<string, string>,
       ).toString(),
@@ -65,7 +66,6 @@ export default async function createOAuthToken<T extends GrantType>(
   const responseData = (await response.json()) as OAuthToken | OAuthTokenError;
 
   console.log(responseData);
-
   if (response.status != 200) {
     throw new Error(JSON.stringify(responseData));
   }

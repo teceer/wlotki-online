@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import { toast } from "react-toastify";
 import Card from "~/components/elements/Card";
+import createOAuthToken from "~/server/payU/createOAuthToken";
 import createOrder from "~/server/payU/order";
 import sendEmail from "~/server/sendEmail";
 
@@ -13,6 +14,7 @@ export default function Settings(props: { session?: Session }) {
     <>
       <TestEmail />
       <TestPayment session={props.session} />
+      <TestPaymentToken />
     </>
   );
 }
@@ -48,7 +50,7 @@ function TestEmail() {
   };
   return (
     <Card
-      title="sendEmail()"
+      title="sendEmail.ts"
       icon={<Mail className="text-blue-500" />}
       onClick={onClick}
       loading={loading}
@@ -68,7 +70,6 @@ function TestPayment(props: { session?: Session }) {
     if (!customerIp.ip) return toast.error("Nie udało się pobrać adresu IP.");
     try {
       const data = await createOrder({
-        host: window.location.origin,
         order: {
           customerIp: customerIp.ip,
           description: "Testowa płatność",
@@ -93,7 +94,7 @@ function TestPayment(props: { session?: Session }) {
         "Pomyślnie zarejestrowano płatność. " + JSON.stringify(data),
       );
       setLoading(false);
-      return router.replace(data.redirectUri);
+      return router.push(data.redirectUri);
     } catch (e: unknown) {
       setLoading(false);
       toast.error(JSON.stringify(e));
@@ -101,7 +102,30 @@ function TestPayment(props: { session?: Session }) {
   };
   return (
     <Card
-      title="createOAuthToken()"
+      title="payU /createOrder.ts"
+      icon={<Coins className="text-blue-500" />}
+      onClick={onClick}
+      loading={loading}
+    />
+  );
+}
+
+function TestPaymentToken() {
+  const [loading, setLoading] = React.useState(false);
+  const onClick = async () => {
+    setLoading(true);
+    try {
+      const data = await createOAuthToken("client_credentials", {});
+      toast.success("Pomyślnie uzyskano token PayU. " + data.data.access_token);
+      setLoading(false);
+    } catch (e: unknown) {
+      setLoading(false);
+      toast.error(JSON.stringify(e));
+    }
+  };
+  return (
+    <Card
+      title="payU /createOAuthToken.ts"
       icon={<Coins className="text-blue-500" />}
       onClick={onClick}
       loading={loading}
