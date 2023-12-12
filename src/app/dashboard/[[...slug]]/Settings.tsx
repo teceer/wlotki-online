@@ -63,8 +63,8 @@ function TestPayment(props: { session?: Session }) {
   const router = useRouter();
   const onClick = async () => {
     setLoading(true);
-    const customerIp = (await fetch("/api/v1/ip").then((res) =>
-      res.json(),
+    const customerIp = (await fetch("/api/v1/ip", { cache: "no-cache" }).then(
+      (res) => res.json(),
     )) as { ip?: string; error?: string };
     if (customerIp.error) return toast.error(JSON.stringify(customerIp.error));
     if (!customerIp.ip) return toast.error("Nie udało się pobrać adresu IP.");
