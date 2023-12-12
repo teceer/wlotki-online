@@ -40,16 +40,6 @@ export const eventRouter = createTRPCRouter({
         where: {
           id: input,
         },
-        select: {
-          title: true,
-          subtitle: true,
-          image: true,
-          startDateTime: true,
-          endDateTime: true,
-          description: true,
-          locationId: true,
-          status: true,
-        },
       });
     }),
-});
+  });
