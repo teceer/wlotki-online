@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/require-await */
 "use server";
+export const dynamic = "force-dynamic";
 import type { NextRequest } from "next/server";
 
 export async function GET(req: NextRequest) {
