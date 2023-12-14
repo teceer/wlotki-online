@@ -15,6 +15,7 @@ export async function POST(req: NextRequest) {
       | NotificationCompleted
       | NotificationCancelled;
     console.log("notificationBody: ", notificationBody);
+    return NextResponse.json({ status: 200 });
   } catch (error) {
     // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
     return NextResponse.json({ error: `${error}`, status: 400 });
