@@ -3,6 +3,7 @@ export const dynamic = "force-dynamic";
 import { NextResponse, type NextRequest } from "next/server";
 import { env } from "~/env.mjs";
 import md5 from "md5";
+import crypto from "crypto";
 
 export async function POST(req: NextRequest) {
   try {
@@ -20,7 +21,7 @@ export async function POST(req: NextRequest) {
   }
 }
 
-function getSignature(req: NextRequest): string {
+function getSignature(req: NextRequest): Signature {
   const openPayUSignature = req.headers.get("OpenPayu-Signature");
   if (typeof openPayUSignature === "string") {
     // Parse the header to extract the signature
@@ -34,28 +35,44 @@ function getSignature(req: NextRequest): string {
     );
 
     // Access the signature value
-    const signature = parts.signature;
-
     // Use the signature value as needed
-    console.log("Signature:", signature);
-    if (!signature) throw new Error("Invalid signature", parts);
-    return signature;
+    console.log("Signature:", JSON.stringify(parts, null, 2));
+    if (!parts) throw new Error("Invalid signature", parts);
+    return parts as unknown as Signature;
   }
   throw new Error("Invalid signature");
 }
 
 function checkSignature(req: NextRequest, data: Notification): boolean {
   const signature = getSignature(req);
-  const concatenated = JSON.stringify(data).trim() + env.PAYU_MD5;
+  const concatenated = JSON.stringify(data, null) + env.PAYU_MD5;
   console.log("concatenated: ", concatenated);
-  const expectedSignature = md5(concatenated);
-  if (expectedSignature !== signature) {
-    console.log("Expected signature:", expectedSignature);
-    console.log("Received signature:", signature);
+  const expectedSignature = () => {
+    switch (signature.algorithm) {
+      case "MD5":
+        return md5(concatenated);
+      case "SHA256":
+        return crypto.createHash("sha256").update(concatenated).digest("hex");
+      case "SHA1":
+        return crypto.createHash("sha1").update(concatenated).digest("hex");
+      default:
+        throw new Error("Unknown signature algorithm");
+    }
+  };
+  if (expectedSignature() !== signature.signature) {
+    console.log("Expected signature:", expectedSignature());
+    console.log("Received signature:", signature.signature);
     throw new Error("Signature not matching the expected value");
   }
   return true;
 }
+
+type Signature = {
+  algorithm: string;
+  signature: string;
+  sender: string;
+  content: string;
+};
 
 type Notification = NotificationCompleted | NotificationCancelled;
 
