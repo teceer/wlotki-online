@@ -1,9 +1,9 @@
 import Image from "next/image";
 import React, { Suspense } from "react";
+import NotFound from "~/components/global/404";
 import Section from "~/components/global/Section";
 import { H1 } from "~/components/global/Typography";
 import { db } from "~/server/db";
-import { api } from "~/trpc/server";
 
 export default async function page({
   params,
@@ -14,11 +14,11 @@ export default async function page({
   const event = await db.event.findFirst({
     where: { id: params.eventId },
   });
-  
+
   if (!event) {
     return (
       <Section DivClassName="items-center justify-center">
-        <H1>404</H1>
+        <NotFound />
       </Section>
     );
   }
