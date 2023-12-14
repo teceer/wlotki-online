@@ -22,16 +22,16 @@ export async function POST(req: NextRequest) {
         console.log("Order confirmed: ", data.order.orderId);
         break;
       case "CANCELED":
-        console.log("Order cancelled", data.order.orderId);
+        console.log("Order cancelled: ", data.order.orderId);
         break;
       case "COMPLETED":
-        console.log("Order completed", data.order.orderId);
+        console.log("Order completed: ", data.order.orderId);
         break;
       case "NEW":
-        console.log("Order new", data.order.orderId);
+        console.log("Order new: ", data.order.orderId);
         break;
       case "PENDING":
-        console.log("Order pending", data.order.orderId);
+        console.log("Order pending: ", data.order.orderId);
         break;
       default:
         throw new Error("Unknown order status");
