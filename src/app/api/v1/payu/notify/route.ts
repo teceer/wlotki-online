@@ -59,9 +59,9 @@ function checkSignature(req: NextRequest, data: Notification): boolean {
         throw new Error("Unknown signature algorithm");
     }
   };
+  console.log("Expected signature:", expectedSignature());
+  console.log("Received signature:", signature.signature);
   if (expectedSignature() !== signature.signature) {
-    console.log("Expected signature:", expectedSignature());
-    console.log("Received signature:", signature.signature);
     throw new Error("Signature not matching the expected value");
   }
   return true;
