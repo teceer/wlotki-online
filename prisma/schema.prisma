@@ -176,12 +176,13 @@ model Participant {
 }
 
 model TicketType {
-    id    String  @id @default(cuid())
-    name  String
-    color String?
-    image String?
-    Pools Pool[]
-    Log   Log[]
+    id          String  @id @default(cuid())
+    name        String
+    description String?
+    color       String?
+    image       String?
+    Pools       Pool[]
+    Log         Log[]
 }
 
 model Pool {

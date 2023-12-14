@@ -1,5 +1,6 @@
 import React, { Suspense } from "react";
 import AddNewPool from "~/components/Pool/AddNewPool";
+import AddNewPoolType from "~/components/Pool/AddNewPoolType";
 import Section from "~/components/global/Section";
 import { H1 } from "~/components/global/Typography";
 import { db } from "~/server/db";
@@ -30,6 +31,7 @@ export default async function page({
       >
         <H1>{event.title}</H1>
       </Suspense>
+      <AddNewPoolType />
       <AddNewPool />
     </Section>
   );

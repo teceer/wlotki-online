@@ -24,6 +24,22 @@ export function H1({
   );
 }
 
+export function H2({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: ClassNameValue;
+}) {
+  return (
+    <div
+      className={cn("text-md font-bold md:text-xl", inter.className, className)}
+    >
+      {children}
+    </div>
+  );
+}
+
 export function PageTitle({
   children,
   className,

@@ -19,6 +19,7 @@ export async function POST(req: NextRequest) {
         console.log("Waiting for confirmation of order: ", data.order.orderId);
         const orderConfirmed = await confirmOrder(data.order.orderId);
         if (!orderConfirmed) throw new Error("Order not confirmed");
+
         console.log("Order confirmed: ", data.order.orderId);
         break;
       case "CANCELED":
