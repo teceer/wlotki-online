@@ -1,10 +1,10 @@
-import { Event } from "@prisma/client";
+import type { Event } from "@prisma/client";
 import { AlertTriangle, Clock, DollarSign } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { cn } from "~/lib/utils";
-import { Badge, BadgeGroup } from "../elements/Badge";
+import { Badge } from "../elements/Badge";
 
 export default function EventThumbnail({ event }: { event: Event }) {
   const isSelling = Math.random() > 0.5;

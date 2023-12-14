@@ -59,6 +59,7 @@
     "date-fns": "^2.30.0",
     "geist": "^1.1.0",
     "lucide-react": "^0.292.0",
+    "md5": "^2.3.0",
     "next": "^14.0.4",
     "next-auth": "^4.24.4",
     "next-logger": "^3.0.2",
@@ -84,6 +85,7 @@
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.10",
     "@types/eslint": "^8.44.2",
+    "@types/md5": "^2.3.5",
     "@types/node": "^18.16.0",
     "@types/react": "^18.2.33",
     "@types/react-dom": "^18.2.14",
