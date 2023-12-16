@@ -17,9 +17,14 @@ export default function Card(props: {
   return (
     <div className="relative min-h-[80px] cursor-pointer">
       {props.loading && (
-        <div className="absolute flex h-full w-full items-center justify-center overflow-hidden rounded-xl opacity-70 blur-sm animate-pulse">
+        <div className="absolute flex h-full w-full animate-pulse items-center justify-center overflow-hidden rounded-xl opacity-70 blur-sm">
           <div className="relative aspect-square w-full scale-110">
-            <div className={cn("duration-2000 absolute h-full w-full animate-spin rounded-full bg-gradient-to-bl from-transparent from-50% to-white to-50%", props.loadingClassName)} />
+            <div
+              className={cn(
+                "duration-2000 absolute h-full w-full animate-spin rounded-full bg-gradient-to-bl from-transparent from-50% to-white to-50%",
+                props.loadingClassName,
+              )}
+            />
           </div>
           <div className="absolute h-full w-full backdrop-blur-xl" />
         </div>
@@ -66,7 +71,7 @@ export default function Card(props: {
             </div>
           )}
           <div className="flex flex-col justify-end bg-background px-4 py-2">
-            <p className="text-sm font-medium">{props.title}</p>
+            <p className="text-start text-sm font-medium">{props.title}</p>
           </div>
         </div>
       </div>

@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Form } from "../ui/form";
 import PoolAdder from "./PoolAdder";
 import { Button } from "../ui/button";
+import { DialogClose } from "../ui/dialog";
 
 export const formSchema = z.object({
   // allow the pool array to be empty
@@ -36,30 +37,25 @@ export default function AddNewPool() {
     ?.filter((pool) => pool.price ?? pool.time ?? pool.type);
 
   return (
-    <Card>
-      <CardHeader>
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <CardTitle>Dodaj pule biletowe</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-            <div className="space-y-2">
-              <PoolAdder isFirst index={0} key={0} form={form} />
-              {!!poolsArray?.length &&
-                poolsArray.map((_, i) => (
-                  <PoolAdder key={i + 1} index={i + 1} form={form} />
-                ))}
-            </div>
-            <div className="flex justify-between">
-              <Button type="button" variant="outline">
-                Anuluj
-              </Button>
-              <Button type="submit">Zapisz</Button>
-            </div>
-          </form>
-        </Form>
-      </CardContent>
-      {/* <code className="p-4 text-xs opacity-30">{JSON.stringify(form.watch(), null, 2)}</code> */}
-    </Card>
+        <div className="space-y-2">
+          <PoolAdder isFirst index={0} key={0} form={form} />
+          {!!poolsArray?.length &&
+            poolsArray.map((_, i) => (
+              <PoolAdder key={i + 1} index={i + 1} form={form} />
+            ))}
+        </div>
+        <div className="flex justify-between">
+          <DialogClose asChild>
+            <Button type="button" variant="outline">
+              Anuluj
+            </Button>
+          </DialogClose>
+          <Button type="submit">Zapisz</Button>
+        </div>
+      </form>
+    </Form>
   );
 }

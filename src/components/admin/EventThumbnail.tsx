@@ -55,19 +55,19 @@ export default function EventThumbnail({ event }: { event: Event }) {
             className="absolute z-0 object-cover"
           />
         )}
-        <div className="absolute h-full w-full bg-gradient-to-t from-background via-transparent to-background" />
+        <div className="absolute h-full w-full from-background via-transparent to-background dark:bg-gradient-to-t" />
         <div className="z-10 flex grow flex-col justify-between">
-          <div className="flex w-full flex-wrap justify-between gap-2 bg-gradient-to-b from-black/70 px-4 pb-2 backdrop-blur">
+          <div className="flex w-full flex-wrap justify-between gap-2 bg-white from-black/70 px-4 pb-2 backdrop-blur dark:bg-transparent dark:bg-gradient-to-b">
             <div className="flex flex-col items-center gap-1 text-white">
               <div className={cn("h-4 w-1 rounded-b-full", color())} />
               {sellingStatus() === "selling" && (
-                <DollarSign className="h-4 w-4 opacity-70" />
+                <DollarSign className="h-4 w-4 text-green-500 opacity-70" />
               )}
               {sellingStatus() === "countdown" && (
-                <Clock className="h-4 w-4 opacity-70" />
+                <Clock className="h-4 w-4 text-blue-500 opacity-70" />
               )}
               {sellingStatus() === "soldout" && (
-                <AlertTriangle className="h-4 w-4 opacity-70" />
+                <AlertTriangle className="h-4 w-4 text-red-500 opacity-70" />
               )}
             </div>
           </div>

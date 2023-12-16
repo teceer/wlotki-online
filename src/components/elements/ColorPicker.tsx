@@ -6,20 +6,16 @@ import {
   type RGBColor,
 } from "react-color";
 
-export const ColorPicker = () => {
-  const [state, setState] = useState<{
+export const ColorPicker = ({
+  state,
+  setState,
+}: {
+  state: {
     displayColorPicker: boolean;
     color: RGBColor;
-  }>({
-    displayColorPicker: false,
-    color: {
-      r: 241,
-      g: 112,
-      b: 19,
-      a: 1,
-    },
-  });
-
+  };
+  setState: (state: { displayColorPicker: boolean; color: RGBColor }) => void;
+}) => {
   const handleClick = () => {
     setState({ ...state, displayColorPicker: !state.displayColorPicker });
   };
@@ -46,12 +42,16 @@ export const ColorPicker = () => {
         />
       </div>
       {state.displayColorPicker ? (
-        <div className="absolute z-[2]">
+        <div className="absolute z-[2] overflow-hidden rounded-xl border bg-background text-black">
           <div
             className="fixed bottom-0 left-0 right-0 top-0"
             onClick={handleClose}
           />
-          <SketchPicker color={state.color} onChange={handleChange} />
+          <SketchPicker
+            // styles={{ default: { picker: { background: "white" } } }}
+            color={state.color}
+            onChange={handleChange}
+          />
         </div>
       ) : null}
     </div>

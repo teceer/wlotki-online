@@ -1,10 +1,20 @@
 import React, { Suspense } from "react";
 import AddNewPool from "~/components/Pool/AddNewPool";
-import AddNewPoolType from "~/components/Pool/AddNewPoolType";
+import AddNewTicketType from "~/components/Pool/AddNewTicketType";
 import Section from "~/components/global/Section";
 import { H1 } from "~/components/global/Typography";
 import { db } from "~/server/db";
-// import { api } from "~/trpc/server";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogProvider,
+  DialogTitle,
+  DialogTrigger,
+} from "~/components/ui/dialog";
+import Card from "~/components/elements/Card";
+import { Tags, Ticket } from "lucide-react";
 
 export default async function page({
   params,
@@ -31,8 +41,34 @@ export default async function page({
       >
         <H1>{event.title}</H1>
       </Suspense>
-      <AddNewPoolType />
-      <AddNewPool />
+      <div className="grid grid-cols-2 gap-2 md:grid-cols-2">
+        <DialogProvider>
+          <Dialog>
+            <DialogTrigger>
+              <Card
+                title="Dodaj typ biletów"
+                icon={<Tags className="text-blue-500" />}
+              />
+            </DialogTrigger>
+            <DialogContent className="autofocus-0 w-[90vw] rounded-xl border">
+              <AddNewTicketType />
+            </DialogContent>
+          </Dialog>
+        </DialogProvider>
+        <DialogProvider>
+          <Dialog>
+            <DialogTrigger>
+              <Card
+                title="Dodaj pule biletowe"
+                icon={<Ticket className="text-blue-500" />}
+              />
+            </DialogTrigger>
+            <DialogContent className="autofocus-0 w-[90vw] rounded-xl border">
+              <AddNewPool />
+            </DialogContent>
+          </Dialog>
+        </DialogProvider>
+      </div>
     </Section>
   );
 }

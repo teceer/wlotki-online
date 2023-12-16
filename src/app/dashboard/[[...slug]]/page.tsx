@@ -1,5 +1,5 @@
 import React from "react";
-import EventsSection from "./EventsSection"
+import EventsSection from "./EventsSection";
 import Section from "~/components/global/Section";
 import { ScrollArea, ScrollBar } from "~/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
@@ -40,7 +40,10 @@ export default async function page({
             <EventsSection />
           </TabsContent>
           <TabsContent value="organizations"></TabsContent>
-          <TabsContent value="settings" className="grid grid-cols-1 md:grid-cols-2 gap-2">
+          <TabsContent
+            value="settings"
+            className="grid grid-cols-1 gap-2 md:grid-cols-2"
+          >
             <Settings session={session ?? undefined} />
           </TabsContent>
         </div>
