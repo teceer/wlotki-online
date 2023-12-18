@@ -56,7 +56,7 @@ export const ticketTypeRouter = createTRPCRouter({
     return "you can now see this secret message!";
   }),
 
-  getAll: publicProcedure.query(({ ctx }) => {
+  getAll: protectedProcedure.query(({ ctx }) => {
     return ctx.db.ticketType.findMany();
   }),
 
