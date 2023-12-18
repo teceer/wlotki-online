@@ -1,3 +1,4 @@
+import { get } from "http";
 import { z } from "zod";
 
 import {
@@ -54,4 +55,30 @@ export const ticketTypeRouter = createTRPCRouter({
   getSecretMessage: protectedProcedure.query(() => {
     return "you can now see this secret message!";
   }),
+
+  getAll: publicProcedure.query(({ ctx }) => {
+    return ctx.db.ticketType.findMany();
+  }),
+
+  deleteMany: protectedProcedure
+    .input(z.array(z.string()))
+    .mutation(async ({ ctx, input }) => {
+      await ctx.db.ticketType.deleteMany({
+        where: {
+          id: {
+            in: input,
+          },
+        },
+      });
+
+      await ctx.db.log.create({
+        data: {
+          action: "delete TicketType",
+          userId: ctx.session.user.id,
+          data: JSON.stringify(input),
+        },
+      });
+
+      return input;
+    }),
 });

@@ -3,7 +3,7 @@
 import * as React from "react";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { Cross2Icon } from "@radix-ui/react-icons";
-import { createContext, useState, ReactNode } from "react";
+import { createContext, useState, type ReactNode } from "react";
 
 import { cn } from "src/lib/utils";
 
@@ -14,6 +14,7 @@ const Dialog = React.forwardRef<
   const { open } = React.useContext(DialogContext);
   return <DialogPrimitive.Root {...props} open={open} />;
 });
+Dialog.displayName = DialogPrimitive.Root.displayName;
 
 const DialogTrigger = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Trigger>,
@@ -29,6 +30,7 @@ const DialogTrigger = React.forwardRef<
     />
   );
 });
+DialogTrigger.displayName = DialogPrimitive.Trigger.displayName;
 
 const DialogPortal = DialogPrimitive.Portal;
 
@@ -46,6 +48,7 @@ const DialogClose = React.forwardRef<
     />
   );
 });
+DialogClose.displayName = DialogPrimitive.Close.displayName;
 
 const DialogOverlay = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Overlay>,
@@ -188,7 +191,9 @@ export function DialogProvider({ children }: { children: ReactNode }) {
 
 export const DialogContext = createContext<DialogContextProps>({
   open: false,
-  setOpen: () => {},
+  setOpen: () => {
+    /* do nothing */
+  },
 });
 
 export interface DialogContextProps {

@@ -15,6 +15,7 @@ import {
 } from "~/components/ui/dialog";
 import Card from "~/components/elements/Card";
 import { Tags, Ticket } from "lucide-react";
+import TicketTypeTable from "~/components/admin/lists/ticketType/component";
 
 export default async function page({
   params,
@@ -69,6 +70,7 @@ export default async function page({
           </Dialog>
         </DialogProvider>
       </div>
+      <TicketTypeTable />
     </Section>
   );
 }

@@ -21,6 +21,7 @@ import { CardTitle } from "../ui/card";
 import { DialogClose, DialogContext } from "../ui/dialog";
 import { api } from "~/trpc/react";
 import { toast } from "react-toastify";
+import revalidatePath from "~/lib/revalidatePath";
 
 const formSchema = z.object({
   name: z.string().min(2).max(30),
@@ -29,7 +30,7 @@ const formSchema = z.object({
 });
 
 export default function AddNewTicketType() {
-  const { mutate, error, mutateAsync } = api.ticketType.create.useMutation();
+  const { mutateAsync } = api.ticketType.create.useMutation();
   const { setOpen } = useContext(DialogContext);
   // const [color, setColor] = useState<{
   //   displayColorPicker: boolean;
@@ -53,7 +54,7 @@ export default function AddNewTicketType() {
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setOpen(false);
-    toast.promise(
+    await toast.promise(
       mutateAsync(values),
       {
         pending: "Dodawanie...",
@@ -68,6 +69,7 @@ export default function AddNewTicketType() {
         pauseOnHover: true,
       },
     );
+    return revalidatePath(window.location.pathname);
   }
 
   return (
