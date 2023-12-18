@@ -70,7 +70,9 @@ export default async function page({
           </Dialog>
         </DialogProvider>
       </div>
-      <TicketTypeTable />
+      <Suspense>
+        <TicketTypeTable />
+      </Suspense>
     </Section>
   );
 }
