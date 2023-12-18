@@ -15,3 +15,5 @@ export default async function TicketTypeTable() {
     </div>
   );
 }
+
+//TODO: TRPC Having problems on the production server with this component
