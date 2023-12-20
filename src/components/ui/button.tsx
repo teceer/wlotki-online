@@ -19,7 +19,7 @@ const buttonVariants = cva(
           "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
-        blue: "bg-transparent border-blue-500 border-2 text-white shadow-sm hover:bg-blue-500/70 bg-blue-500/30 drop-shadow",
+        blue: "bg-transparent border-blue-500 border text-white shadow-sm hover:bg-blue-500/70 bg-blue-500/30 drop-shadow",
       },
       size: {
         default: "h-9 px-4 py-2",
@@ -48,7 +48,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     if (variant === "blue")
       return (
         <div className="relative">
-          <div className="absolute left-0 top-0 blur">
+          <div className="absolute left-0 top-0 blur-sm">
             <Comp
               className={cn(
                 buttonVariants({ variant, size, className }),

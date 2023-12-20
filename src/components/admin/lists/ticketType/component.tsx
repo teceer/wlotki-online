@@ -8,7 +8,7 @@ export default async function TicketTypeTable() {
   const data = await api.ticketType.getAll.query();
 
   return (
-    <div className="space-y-4 rounded-xl border p-4 backdrop-blur">
+    <div className="space-y-4 rounded-xl border p-4 backdrop-blur bg-background/70">
       <div className="flex items-center justify-between">
         <H2>Typy biletów</H2>
       </div>

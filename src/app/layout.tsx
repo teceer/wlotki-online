@@ -46,7 +46,7 @@ export default function RootLayout({
               </Suspense>
             }
           />
-          <main className="animate-slide-in flex min-h-[100svh] w-full flex-col overflow-hidden bg-gradient-to-t from-neutral-300 transition-all duration-500 ease-in-out dark:from-black">
+          <main className="animate-slide-in flex min-h-[100svh] w-full flex-col overflow-hidden bg-gradient-to-t from-neutral-100 transition-all duration-500 ease-in-out dark:from-black">
             <Topbar invisible />
             <div className="flex w-full grow flex-col transition-all ease-in-out">
               {children}
