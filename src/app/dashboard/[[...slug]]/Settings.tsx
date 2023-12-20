@@ -91,7 +91,6 @@ function TestPayment(props: { session?: Session }) {
             email: props.session?.user?.email ?? undefined,
             firstName: props.session?.user?.name?.split(" ")[0] ?? undefined,
             lastName: props.session?.user?.name?.split(" ")[1] ?? undefined,
-            phone: props.session?.user?.phoneNumber ?? undefined,
           },
         },
       });
