@@ -92,7 +92,7 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center gap-2">
+      <div className="flex items-center justify-end gap-2">
         <Input
           placeholder="Szukaj..."
           value={table.getColumn("name")?.getFilterValue() as string}
@@ -132,7 +132,7 @@ export function DataTable<TData, TValue>({
         <DialogProvider>
           <Dialog>
             <DialogTrigger asChild>
-              <Button className="ml-auto">
+              <Button variant="blue">
                 <Plus />
               </Button>
             </DialogTrigger>

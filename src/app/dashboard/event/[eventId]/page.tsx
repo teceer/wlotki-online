@@ -3,29 +3,24 @@ import AddNewPool from "~/components/Pool/AddNewPool";
 import AddNewTicketType from "~/components/Pool/AddNewTicketType";
 import Section from "~/components/global/Section";
 import { H1 } from "~/components/global/Typography";
-import { db } from "~/server/db";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogHeader,
   DialogProvider,
-  DialogTitle,
   DialogTrigger,
 } from "~/components/ui/dialog";
 import Card from "~/components/elements/Card";
 import { Tags, Ticket } from "lucide-react";
 import TicketTypeTable from "~/components/admin/lists/ticketType/component";
+import { api } from "~/trpc/server";
 
 export default async function page({
   params,
 }: {
   params: { eventId: string };
 }) {
-  // const event = await api.event.findById.mutate(params.eventId);
-  const event = await db.event.findFirst({
-    where: { id: params.eventId },
-  });
+  const event = await api.event.findById.query(params.eventId);
+
   if (!event) {
     return (
       <Section DivClassName="items-center justify-center">

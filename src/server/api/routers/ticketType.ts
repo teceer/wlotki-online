@@ -56,7 +56,9 @@ export const ticketTypeRouter = createTRPCRouter({
   }),
 
   getAll: protectedProcedure.query(({ ctx }) => {
-    return ctx.db.ticketType.findMany();
+    const ticketTypes = ctx.db.ticketType.findMany();
+    console.log(ticketTypes);
+    return ticketTypes;
   }),
 
   deleteMany: protectedProcedure

@@ -6,6 +6,7 @@ import { H2 } from "~/components/global/Typography";
 
 export default async function TicketTypeTable() {
   const data = await api.ticketType.getAll.query();
+
   return (
     <div className="space-y-4 rounded-xl border p-4 backdrop-blur">
       <div className="flex items-center justify-between">

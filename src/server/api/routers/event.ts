@@ -3,7 +3,6 @@ import { z } from "zod";
 import {
   createTRPCRouter,
   protectedProcedure,
-  publicProcedure,
 } from "~/server/api/trpc";
 
 export const eventRouter = createTRPCRouter({
@@ -33,7 +32,7 @@ export const eventRouter = createTRPCRouter({
       });
     }),
 
-  findById: publicProcedure.input(z.string()).mutation(({ ctx, input }) => {
+  findById: protectedProcedure.input(z.string()).query(({ ctx, input }) => {
     const events = ctx.db.event.findUnique({
       where: {
         id: input,
