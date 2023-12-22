@@ -35,9 +35,9 @@ import {
   DialogProvider,
   DialogTrigger,
 } from "~/components/ui/dialog";
-import AddNewTicketType from "~/components/Pool/AddNewTicketType";
-import DeleteTicketTypesButton from "./DeleteTicketTypesButton";
-import { type TicketType } from "@prisma/client";
+import DeleteTicketPoolsButton from "./DeleteTicketPoolsButton";
+import { type Pool, type TicketType } from "@prisma/client";
+import AddNewPool from "~/components/Pool/AddNewPool";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -48,7 +48,9 @@ export function DataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
-  const [mutationData, setMutationData] = React.useState<TicketType[]>([]);
+  const [mutationData, setMutationData] = React.useState<
+    (Pool & { TicketType: TicketType | null })[]
+  >([]);
   const [rowSelection, setRowSelection] = React.useState<
     Record<string, boolean>
   >({});
@@ -65,7 +67,9 @@ export function DataTable<TData, TValue>({
   }, []);
 
   useEffect(() => {
-    setMutationData(data as unknown as TicketType[]);
+    setMutationData(
+      data as unknown as (Pool & { TicketType: TicketType | null })[],
+    );
   }, [data]);
 
   const table = useReactTable({
@@ -121,9 +125,7 @@ export function DataTable<TData, TValue>({
                       column.toggleVisibility(!!value)
                     }
                   >
-                    {column.columnDef.header
-                      ? column.columnDef.header?.toString()
-                      : column.id}
+                    {column.columnDef?.header?.toString()}
                   </DropdownMenuCheckboxItem>
                 );
               })}
@@ -137,7 +139,7 @@ export function DataTable<TData, TValue>({
               </Button>
             </DialogTrigger>
             <DialogContent className="autofocus-0 w-[90vw] rounded-xl border">
-              <AddNewTicketType />
+              <AddNewPool />
             </DialogContent>
           </Dialog>
         </DialogProvider>
@@ -193,9 +195,9 @@ export function DataTable<TData, TValue>({
         </Table>
       </div>
       {!!selectedIds.length && (
-        <DeleteTicketTypesButton idArray={selectedIds}>
+        <DeleteTicketPoolsButton idArray={selectedIds}>
           <Button variant="destructive">Usuń ({selectedIds.length})</Button>
-        </DeleteTicketTypesButton>
+        </DeleteTicketPoolsButton>
       )}
       <div className="flex items-center justify-between">
         <div className="flex-1 text-sm text-muted-foreground">

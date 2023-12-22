@@ -74,7 +74,7 @@ export const ticketTypeRouter = createTRPCRouter({
 
       await ctx.db.log.create({
         data: {
-          action: "delete TicketType",
+          action: "delete TicketTypes",
           userId: ctx.session.user.id,
           data: JSON.stringify(input),
         },

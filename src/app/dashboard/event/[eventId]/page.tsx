@@ -11,8 +11,13 @@ import {
 } from "~/components/ui/dialog";
 import Card from "~/components/elements/Card";
 import { Tags, Ticket } from "lucide-react";
-import TicketTypeTable from "~/components/admin/lists/ticketType/component";
+import TicketTypeTable, {
+  TicketTypeTableSkeleton,
+} from "~/components/admin/lists/ticketType/component";
 import { api } from "~/trpc/server";
+import TicketPoolTable, {
+  TicketPoolTableSkeleton,
+} from "~/components/admin/lists/ticketPool/component";
 
 export default async function page({
   params,
@@ -65,7 +70,10 @@ export default async function page({
           </Dialog>
         </DialogProvider>
       </div>
-      <Suspense>
+      <Suspense fallback={<TicketPoolTableSkeleton />}>
+        <TicketPoolTable />
+      </Suspense>
+      <Suspense fallback={<TicketTypeTableSkeleton />}>
         <TicketTypeTable />
       </Suspense>
     </Section>

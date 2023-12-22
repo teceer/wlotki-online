@@ -8,7 +8,7 @@ import { Form } from "~/components/ui/form";
 import revalidatePath from "~/lib/revalidatePath";
 import { api } from "~/trpc/react";
 
-export default function DeleteTicketPoolsButton({
+export default function DeleteTicketTypesButton({
   idArray,
   children,
 }: {

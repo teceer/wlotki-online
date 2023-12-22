@@ -7,24 +7,24 @@ import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
 import { PanelLeftInactive, Plus } from "lucide-react";
 
-export default async function TicketTypeTable() {
-  const data = await api.ticketType.getAll.query();
+export default async function TicketPoolTable() {
+  const data = await api.ticketPool.getAll.query();
 
   return (
     <div className="space-y-4 rounded-xl border bg-background/70 p-4 backdrop-blur">
       <div className="flex items-center justify-between">
-        <CardTitle>Typy biletów</CardTitle>
+        <CardTitle>Pule biletowe</CardTitle>
       </div>
       <DataTable columns={columns} data={data} />
     </div>
   );
 }
 
-export function TicketTypeTableSkeleton() {
+export function TicketPoolTableSkeleton() {
   return (
     <div className="space-y-4 rounded-xl border bg-background/70 p-4 backdrop-blur">
       <div className="flex items-center justify-between">
-        <CardTitle>Typy biletów</CardTitle>
+        <CardTitle>Pule biletowe</CardTitle>
       </div>
       <div className="flex items-center justify-end gap-2">
         <Input placeholder="Szukaj..." className="max-w-sm" disabled />

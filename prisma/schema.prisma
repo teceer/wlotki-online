@@ -197,6 +197,7 @@ model Pool {
     dropId       String?
     Log          Log[]
     Ticket       Ticket[]
+    Discount     Discount[]
 }
 
 model Organization {
@@ -262,4 +263,19 @@ model EventSettings {
     showSpotifyPlaylist           Boolean?
     verticalOverride              Boolean?
     Log                           Log[]
+}
+
+model Discount {
+    code           String       @id @default(cuid())
+    type           DiscountType
+    amount         Int
+    Pools          Pool[]
+    availableTotal Int?
+    color          String?
+    isActive       Boolean      @default(true)
+}
+
+enum DiscountType {
+    PERCENTAGE
+    AMOUNT
 }

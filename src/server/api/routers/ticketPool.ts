@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { env } from "~/env.mjs";
 
 import {
   createTRPCRouter,
@@ -34,7 +35,12 @@ export const ticketPoolRouter = createTRPCRouter({
           const newData = {
             price: +pool.price,
             time: pool.time
-              ? new Date(`2000-01-01T${pool.time}:00.000Z`)
+              ? new Date(
+                  new Date(`2000-01-01T${pool.time}:00.000Z`).setHours(
+                    new Date(`2000-01-01T${pool.time}:00.000Z`).getHours() -
+                      +env.TZ_OFFSET,
+                  ),
+                )
               : null,
             name: pool.name ? pool.name : null,
             typeId: pool.typeId,
@@ -76,15 +82,15 @@ export const ticketPoolRouter = createTRPCRouter({
   }),
 
   getAll: protectedProcedure.query(({ ctx }) => {
-    const ticketTypes = ctx.db.ticketType.findMany();
-    console.log(ticketTypes);
-    return ticketTypes;
+    const ticketPools = ctx.db.pool.findMany({ include: { TicketType: true } });
+    console.log(ticketPools);
+    return ticketPools;
   }),
 
   deleteMany: protectedProcedure
     .input(z.array(z.string()))
     .mutation(async ({ ctx, input }) => {
-      await ctx.db.ticketType.deleteMany({
+      await ctx.db.pool.deleteMany({
         where: {
           id: {
             in: input,
@@ -94,7 +100,7 @@ export const ticketPoolRouter = createTRPCRouter({
 
       await ctx.db.log.create({
         data: {
-          action: "delete TicketType",
+          action: "delete TicketPools",
           userId: ctx.session.user.id,
           data: JSON.stringify(input),
         },

@@ -1,6 +1,6 @@
 "use client";
 
-import type { TicketType } from "@prisma/client";
+import type { Pool, TicketType } from "@prisma/client";
 import type { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
 import { Button } from "~/components/ui/button";
@@ -14,9 +14,11 @@ import {
 } from "~/components/ui/dropdown-menu";
 import { Checkbox } from "~/components/ui/checkbox";
 import { Inter } from "~/components/global/Typography";
-import DeleteTicketPoolsButton from "./DeleteTicketTypesButton";
+import DeleteTicketPoolsButton from "./DeleteTicketPoolsButton";
+import DateString from "~/components/global/DateString";
+import price from "~/components/global/price";
 
-export const columns: ColumnDef<TicketType>[] = [
+export const columns: ColumnDef<Pool & { TicketType: TicketType | null }>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -46,15 +48,59 @@ export const columns: ColumnDef<TicketType>[] = [
     enableHiding: false,
   },
   {
+    accessorKey: "price",
+    header: "Cena",
+    enableSorting: true,
+    enableHiding: true,
+    cell: ({ row }) => {
+      const data = row.original;
+      return (
+        <div className="flex w-full grow items-center">
+          <span className="font-medium">{price(data.price)}</span>
+        </div>
+      );
+    },
+  },
+  {
     accessorKey: "name",
     header: "Nazwa",
+    enableSorting: true,
+    enableHiding: true,
+    cell: ({ row }) => {
+      const data = row.original;
+      return (
+        <div className="flex w-full grow items-center">
+          <span className="font-medium">{data.name}</span>
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "time",
+    header: "Godzina",
+    enableSorting: true,
+    enableHiding: true,
+    cell: ({ row }) => {
+      const data = row.original;
+      return (
+        <div className="flex w-full grow items-center">
+          <span className="font-medium">
+            {data.time && <DateString date={data.time} format="HH:mm" />}
+          </span>
+        </div>
+      );
+    },
+  },
+  {
+    accessorKey: "TicketType.name",
+    header: "Typ",
     enableSorting: true,
     enableHiding: false,
     cell: ({ row }) => {
       const data = row.original;
       return (
         <div className="flex w-full grow items-center">
-          <span className="font-medium">{data.name}</span>
+          <span className="font-medium">{data.TicketType?.name}</span>
         </div>
       );
     },
@@ -91,10 +137,10 @@ export const columns: ColumnDef<TicketType>[] = [
                 Kopiuj ID
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Edytuj typ biletu</DropdownMenuItem>
+              <DropdownMenuItem>Edytuj pulę biletową</DropdownMenuItem>
               <DropdownMenuItem className="text-red-500">
                 <DeleteTicketPoolsButton idArray={[data.id]}>
-                  Usuń typ biletu
+                  Usuń pulę biletową
                 </DeleteTicketPoolsButton>
               </DropdownMenuItem>
             </DropdownMenuContent>

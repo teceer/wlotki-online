@@ -16,7 +16,10 @@ export const formSchema = z.object({
   // allow the pool array to be empty
   pools: z.array(
     z.object({
-      price: z.string().optional(),
+      price: z
+        .string()
+        .regex(/^\d+(\.\d{1,2})?$/)
+        .optional(), // optional price field in 0.00 format
       time: z.string().optional(),
       typeId: z.string().optional(),
     }),
@@ -37,7 +40,7 @@ export default function AddNewPool() {
       .map((pool) => {
         if (pool.price && pool.typeId) {
           return {
-            price: pool.price,
+            price: (+pool.price * 100).toString(),
             time: pool.time,
             typeId: pool.typeId,
           };
