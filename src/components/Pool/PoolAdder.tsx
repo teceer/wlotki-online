@@ -134,7 +134,7 @@ export default function PoolAdder({
                     role="combobox"
                     disabled={isLoading}
                     className={cn(
-                      "w-full items-center transition-all justify-between overflow-hidden rounded-none border-0 border-b focus-visible:border-foreground focus-visible:ring-0",
+                      "w-full items-center justify-between overflow-hidden rounded-none border-0 border-b transition-all focus-visible:border-foreground focus-visible:ring-0",
                       !field.value && "text-muted-foreground",
                     )}
                   >
@@ -153,13 +153,15 @@ export default function PoolAdder({
                   <CommandEmpty>No framework found.</CommandEmpty>
                   <CommandGroup>
                     {!isLoading &&
-                      data &&
-                      data.map((ticketType) => (
+                      data?.map((ticketType) => (
                         <CommandItem
                           value={ticketType.id}
                           key={ticketType.id}
                           onSelect={() => {
-                            form.setValue(`pools.${index}.typeId`, ticketType.id);
+                            form.setValue(
+                              `pools.${index}.typeId`,
+                              ticketType.id,
+                            );
                           }}
                         >
                           {ticketType.name}

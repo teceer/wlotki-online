@@ -31,7 +31,7 @@ export const ticketPoolRouter = createTRPCRouter({
     )
     .mutation(async ({ ctx, input }) => {
       const data = input.map((pool) => {
-        if (pool && pool.price && pool.typeId && (pool.time || pool.name)) {
+        if (pool?.price && pool?.typeId && (pool?.time ?? pool?.name)) {
           const newData = {
             price: +pool.price,
             time: pool.time
