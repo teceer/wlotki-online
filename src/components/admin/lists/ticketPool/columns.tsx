@@ -70,7 +70,9 @@ export const columns: ColumnDef<Pool & { TicketType: TicketType | null }>[] = [
       const data = row.original;
       return (
         <div className="flex w-full grow items-center">
-          <span className="font-medium">{data.name}</span>
+          <span className="font-medium">
+            {data.name ?? <div className="h-[1px] w-8 bg-foreground/30" />}
+          </span>
         </div>
       );
     },
