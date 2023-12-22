@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useContext } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
@@ -7,7 +7,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Form } from "../ui/form";
 import PoolAdder from "./PoolAdder";
 import { Button } from "../ui/button";
-import { DialogClose } from "../ui/dialog";
+import { DialogClose, DialogContext } from "../ui/dialog";
+import { api } from "~/trpc/react";
+import { toast } from "react-toastify";
+import revalidatePath from "~/lib/revalidatePath";
 
 export const formSchema = z.object({
   // allow the pool array to be empty
@@ -15,26 +18,53 @@ export const formSchema = z.object({
     z.object({
       price: z.string().optional(),
       time: z.string().optional(),
-      type: z.string().optional(),
+      typeId: z.string().optional(),
     }),
   ),
 });
 
 export default function AddNewPool() {
+  const { mutateAsync } = api.ticketPool.createMany.useMutation();
+  const { setOpen } = useContext(DialogContext);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {},
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    setOpen(false);
+    const data = values.pools
+      .map((pool) => {
+        if (pool.price && pool.typeId) {
+          return {
+            price: pool.price,
+            time: pool.time,
+            typeId: pool.typeId,
+          };
+        }
+      })
+      .filter((pool) => pool?.price && pool?.typeId);
+    await toast.promise(
+      mutateAsync(data),
+      {
+        pending: "Dodawanie...",
+        success: "Dodano!",
+        error: "Coś poszło nie tak",
+      },
+      {
+        position: "bottom-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+      },
+    );
+    return revalidatePath(window.location.pathname);
   }
 
   const poolsArray = form
     .watch("pools")
-    ?.filter((pool) => pool.price ?? pool.time ?? pool.type);
+    ?.filter((pool) => pool.price ?? pool.time);
 
   return (
     <Form {...form}>
@@ -53,7 +83,15 @@ export default function AddNewPool() {
               Anuluj
             </Button>
           </DialogClose>
-          <Button type="submit">Zapisz</Button>
+          <Button
+            type="submit"
+            disabled={
+              form.watch("pools")?.filter((pool) => pool.price && pool.typeId)
+                .length === 0
+            }
+          >
+            Zapisz
+          </Button>
         </div>
       </form>
     </Form>

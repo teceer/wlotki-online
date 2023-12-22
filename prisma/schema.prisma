@@ -187,7 +187,9 @@ model TicketType {
 
 model Pool {
     id           String      @id @default(cuid())
-    name         String
+    price        Int
+    time         DateTime?
+    name         String?
     totalTickets Int?
     TicketType   TicketType? @relation(fields: [ticketTypeId], references: [id])
     ticketTypeId String?

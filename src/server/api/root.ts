@@ -2,6 +2,7 @@ import { postRouter } from "~/server/api/routers/post";
 import { createTRPCRouter } from "~/server/api/trpc";
 import { eventRouter } from "~/server/api/routers/event";
 import { ticketTypeRouter } from "~/server/api/routers/ticketType";
+import { ticketPoolRouter } from "./routers/ticketPool";
 
 /**
  * This is the primary router for your server.
@@ -12,6 +13,7 @@ export const appRouter = createTRPCRouter({
   post: postRouter,
   event: eventRouter,
   ticketType: ticketTypeRouter,
+  ticketPool: ticketPoolRouter,
 });
 
 // export type definition of API

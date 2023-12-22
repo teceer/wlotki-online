@@ -11,7 +11,23 @@ import {
   FormLabel,
   FormMessage,
 } from "../ui/form";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+} from "~/components/ui/command";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "~/components/ui/popover";
 import { type formSchema } from "./AddNewPool";
+import { api } from "~/trpc/react";
+import { Button } from "../ui/button";
+import { CaretSortIcon } from "@radix-ui/react-icons";
+import { CheckIcon } from "lucide-react";
 
 export default function PoolAdder({
   index,
@@ -26,7 +42,9 @@ export default function PoolAdder({
     !isFirst &&
     !form.watch(`pools.${index}.price`) &&
     !form.watch(`pools.${index}.time`) &&
-    !form.watch(`pools.${index}.type`);
+    !form.watch(`pools.${index}.typeId`);
+
+  const { data, isLoading } = api.ticketType.getAll.useQuery();
 
   return (
     <div
@@ -100,7 +118,7 @@ export default function PoolAdder({
       />
       <FormField
         control={form.control}
-        name={`pools.${index}.type`}
+        name={`pools.${index}.typeId`}
         render={({ field }) => (
           <FormItem>
             {isFirst && (
@@ -108,14 +126,57 @@ export default function PoolAdder({
                 Typ wejściówek
               </FormLabel>
             )}
-            <FormControl>
-              <Input
-                type="text"
-                required={!isEmpty}
-                {...field}
-                className="rounded-none border-0 border-b focus-visible:border-foreground focus-visible:ring-0"
-              />
-            </FormControl>
+            <Popover>
+              <PopoverTrigger asChild>
+                <FormControl>
+                  <Button
+                    variant="outline"
+                    role="combobox"
+                    disabled={isLoading}
+                    className={cn(
+                      "w-full items-center transition-all justify-between overflow-hidden rounded-none border-0 border-b focus-visible:border-foreground focus-visible:ring-0",
+                      !field.value && "text-muted-foreground",
+                    )}
+                  >
+                    {!isLoading && data
+                      ? field.value
+                        ? data.find((data) => data.id === field.value)?.name
+                        : "Wybierz"
+                      : "Wybierz"}
+                    <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                  </Button>
+                </FormControl>
+              </PopoverTrigger>
+              <PopoverContent className="w-[200px] p-0">
+                <Command>
+                  <CommandInput placeholder="Szukaj..." className="h-9" />
+                  <CommandEmpty>No framework found.</CommandEmpty>
+                  <CommandGroup>
+                    {!isLoading &&
+                      data &&
+                      data.map((ticketType) => (
+                        <CommandItem
+                          value={ticketType.id}
+                          key={ticketType.id}
+                          onSelect={() => {
+                            form.setValue(`pools.${index}.typeId`, ticketType.id);
+                          }}
+                        >
+                          {ticketType.name}
+                          <CheckIcon
+                            className={cn(
+                              "ml-auto h-4 w-4",
+                              ticketType.id === field.value
+                                ? "opacity-100"
+                                : "opacity-0",
+                            )}
+                          />
+                        </CommandItem>
+                      ))}
+                  </CommandGroup>
+                </Command>
+              </PopoverContent>
+            </Popover>
             <FormMessage />
           </FormItem>
         )}

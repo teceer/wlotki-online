@@ -132,7 +132,7 @@ export function DataTable<TData, TValue>({
         <DialogProvider>
           <Dialog>
             <DialogTrigger asChild>
-              <Button variant="styled">
+              <Button variant="gradient">
                 <Plus />
               </Button>
             </DialogTrigger>

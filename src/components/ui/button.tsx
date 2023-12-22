@@ -20,7 +20,10 @@ const buttonVariants = cva(
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
         styled:
-          "bg-transparent dark:border-blue-500 border-white border dark:text-white/70 text-white shadow-sm hover:bg-blue-500/70 bg-neutral-500/30 dark:bg-blue-500/30 bg-blue-500 dark:drop-shadow shadow-md shadow-blue-900/30",
+          "bg-blue-500/20 dark:border-blue-500 border-blue-500 border dark:text-white/70 text-blue-500/70 hover:bg-blue-500/20 dark:bg-blue-500/30 dark:drop-shadow",
+        blue: "bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:from-blue-500/80 shadow-sm hover:to-blue-600",
+        gradient:
+          "bg-gradient-to-tr border to-background from-accent text-primary hover:from-background hover:to-background shadow-sm transition-all",
       },
       size: {
         default: "h-9 px-4 py-2",
@@ -48,8 +51,8 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
     if (variant === "styled")
       return (
-        <div className="relative">
-          <div className="absolute left-0 top-0 blur-sm dark:opacity-100 dark:blur-sm">
+        <div className="relative flex items-center justify-center">
+          <div className="absolute left-0 top-0 -z-10 blur-sm dark:opacity-100">
             <Comp
               className={cn(
                 buttonVariants({ variant, size, className }),
