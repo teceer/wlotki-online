@@ -9,7 +9,6 @@ import Topbar from "~/components/global/Topbar/Topbar";
 import DotsTexture from "~/components/global/DotsTexture";
 import { extractRouterConfig } from "uploadthing/server";
 import { ourFileRouter } from "./api/uploadthing/core";
-import { ToastContainer } from "react-toastify";
 import AuthButton from "~/components/global/Auth/AuthButton";
 import { Suspense } from "react";
 import { Toaster } from "~/components/ui/sonner";
@@ -54,16 +53,6 @@ export default function RootLayout({
             </div>
           </main>
           <Toaster richColors closeButton />
-          <ToastContainer
-            toastClassName="font-sans"
-            className={`${GeistSans.className} font-sans dark:invisible`}
-            theme="light"
-          />
-          <ToastContainer
-            toastClassName="font-sans"
-            className={`${GeistSans.className} invisible font-sans dark:visible`}
-            theme="dark"
-          />
         </TRPCReactProvider>
       </body>
     </html>

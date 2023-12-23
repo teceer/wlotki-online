@@ -75,7 +75,6 @@
     "react-loader-spinner": "^5.4.5",
     "react-qr-code": "^2.0.12",
     "react-spinners": "^0.13.8",
-    "react-toastify": "^9.1.3",
     "request-ip": "^3.3.0",
     "resend": "^2.1.0-canary.1",
     "sharp": "^0.32.6",
