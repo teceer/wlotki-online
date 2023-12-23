@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { env } from "~/env.mjs";
 
 import {
   createTRPCRouter,
@@ -23,4 +22,23 @@ export const dropRouter = createTRPCRouter({
       ],
     });
   }),
+
+  create: protectedProcedure
+    .input(
+      z.object({
+        eventId: z.string(),
+        name: z.string().optional(),
+        startDateTime: z.string(),
+        endDateTime: z.string().optional(),
+      }),
+    )
+    .mutation(({ ctx, input }) => {
+      return ctx.db.drop.create({
+        data: {
+          ...input,
+          startDateTime: new Date(input.startDateTime),
+          endDateTime: input.endDateTime ? new Date(input.endDateTime) : null,
+        },
+      });
+    }),
 });

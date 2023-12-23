@@ -9,8 +9,8 @@ import PoolAdder from "./PoolAdder";
 import { Button } from "../ui/button";
 import { DialogClose, DialogContext } from "../ui/dialog";
 import { api } from "~/trpc/react";
-import { toast } from "react-toastify";
 import revalidatePath from "~/lib/revalidatePath";
+import { toast } from "sonner";
 
 export const formSchema = z.object({
   // allow the pool array to be empty
@@ -47,21 +47,11 @@ export default function AddNewPool() {
         }
       })
       .filter((pool) => pool?.price && pool?.typeId);
-    await toast.promise(
-      mutateAsync(data),
-      {
-        pending: "Dodawanie...",
-        success: "Dodano!",
-        error: "Coś poszło nie tak",
-      },
-      {
-        position: "bottom-right",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-      },
-    );
+    toast.promise(mutateAsync(data), {
+      loading: "Dodawanie...",
+      success: "Dodano!",
+      error: "Coś poszło nie tak",
+    });
     return revalidatePath(window.location.pathname);
   }
 

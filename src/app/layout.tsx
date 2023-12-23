@@ -12,6 +12,7 @@ import { ourFileRouter } from "./api/uploadthing/core";
 import { ToastContainer } from "react-toastify";
 import AuthButton from "~/components/global/Auth/AuthButton";
 import { Suspense } from "react";
+import { Toaster } from "~/components/ui/sonner";
 
 export const metadata = {
   title: process.env.NEXT_PUBLIC_APP_NAME,
@@ -52,6 +53,7 @@ export default function RootLayout({
               {children}
             </div>
           </main>
+          <Toaster richColors closeButton />
           <ToastContainer
             toastClassName="font-sans"
             className={`${GeistSans.className} font-sans dark:invisible`}

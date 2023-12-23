@@ -10,7 +10,7 @@ import {
   DialogTrigger,
 } from "~/components/ui/dialog";
 import Card from "~/components/elements/Card";
-import { Tags, Ticket } from "lucide-react";
+import { CalendarClock, Tags, Ticket } from "lucide-react";
 import TicketTypeTable, {
   TicketTypeTableSkeleton,
 } from "~/components/admin/lists/ticketType/component";
@@ -18,6 +18,7 @@ import { api } from "~/trpc/server";
 import TicketPoolTable, {
   TicketPoolTableSkeleton,
 } from "~/components/admin/lists/ticketPool/component";
+import AddNewDrop from "~/components/Drop/AddNewDrop";
 
 export default async function page({
   params,
@@ -66,6 +67,19 @@ export default async function page({
             </DialogTrigger>
             <DialogContent className="autofocus-0 w-[90vw] rounded-xl border">
               <AddNewPool />
+            </DialogContent>
+          </Dialog>
+        </DialogProvider>
+        <DialogProvider>
+          <Dialog>
+            <DialogTrigger>
+              <Card
+                title="Zaplanuj drop"
+                icon={<CalendarClock className="text-blue-500" />}
+              />
+            </DialogTrigger>
+            <DialogContent className="autofocus-0 w-[90vw] rounded-xl border">
+              <AddNewDrop eventId={event.id} />
             </DialogContent>
           </Dialog>
         </DialogProvider>

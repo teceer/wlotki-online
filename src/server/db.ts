@@ -14,7 +14,4 @@ export const db =
       env.NODE_ENV === "development" ? ["query", "error", "warn"] : ["error"],
   }).$extends(dropExtender);
 
-const drop = await db.drop.findFirst({ select: { status: true } });
-console.log(drop?.status);
-
 if (env.NODE_ENV !== "production") globalForPrisma.prisma = db;

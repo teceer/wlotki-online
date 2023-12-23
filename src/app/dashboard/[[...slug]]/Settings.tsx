@@ -3,7 +3,7 @@ import { Coins, Mail } from "lucide-react";
 import type { Session } from "next-auth";
 import { useRouter } from "next/navigation";
 import React from "react";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import Card from "~/components/elements/Card";
 import createOAuthToken from "~/server/payU/createOAuthToken";
 import createOrder from "~/server/payU/order";

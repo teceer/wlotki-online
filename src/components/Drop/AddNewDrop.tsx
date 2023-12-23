@@ -20,35 +20,24 @@ import { Input } from "~/components/ui/input";
 import { CardTitle } from "../ui/card";
 import { DialogClose, DialogContext } from "../ui/dialog";
 import { api } from "~/trpc/react";
-import { toast } from "sonner";
 import revalidatePath from "~/lib/revalidatePath";
+import { toast } from "sonner";
 
 const formSchema = z.object({
-  name: z.string().min(2).max(30),
-  color: z.string().optional(),
-  description: z.string().optional(),
+  eventId: z.string(),
+  startDateTime: z.string(),
+  endDateTime: z.string().optional(),
+  name: z.string().optional(),
 });
 
-export default function AddNewTicketType() {
-  const { mutateAsync } = api.ticketType.create.useMutation();
+export default function AddNewDrop({ eventId }: { eventId: string }) {
+  const { mutateAsync } = api.drop.create.useMutation();
   const { setOpen } = useContext(DialogContext);
-  // const [color, setColor] = useState<{
-  //   displayColorPicker: boolean;
-  //   color: RGBColor;
-  // }>({
-  //   displayColorPicker: false,
-  //   color: {
-  //     r: 0,
-  //     g: 0,
-  //     b: 0,
-  //     a: 0,
-  //   },
-  // });
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {},
+    defaultValues: { eventId },
   });
 
   // 2. Define a submit handler.
@@ -65,15 +54,15 @@ export default function AddNewTicketType() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <CardTitle>Dodaj nowy typ biletów</CardTitle>
+        <CardTitle>Dodaj nowy drop biletów</CardTitle>
         <FormField
           control={form.control}
           name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Nazwa</FormLabel>
+              <FormLabel>Nazwa (opcjonalnie)</FormLabel>
               <FormControl>
-                <Input placeholder="Bilet normalny" {...field} />
+                <Input {...field} />
               </FormControl>
               <FormDescription>
                 Ta nazwa będzie widoczna dla kupujących.
@@ -84,19 +73,31 @@ export default function AddNewTicketType() {
         />
         <FormField
           control={form.control}
-          name="description"
+          name="startDateTime"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Opis (opcjonalnie)</FormLabel>
+              <FormLabel>Rozpoczęcie</FormLabel>
               <FormControl>
-                <Textarea
-                  placeholder="Ten bilet uprawnia do ..."
-                  className="_resize-none min-h-[100px]"
-                  {...field}
-                />
+                <Input type="datetime-local" {...field} />
               </FormControl>
               <FormDescription>
-                Ten opis będzie widoczny dla kupujących.
+                Data i godzina rozpoczęcia dropu.
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="endDateTime"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Zakończenie (opcjonalnie)</FormLabel>
+              <FormControl>
+                <Input type="datetime-local" {...field} />
+              </FormControl>
+              <FormDescription>
+                Data i godzina zakończenia dropu.
               </FormDescription>
               <FormMessage />
             </FormItem>

@@ -161,6 +161,9 @@ dependencies:
   next-logger:
     specifier: ^3.0.2
     version: 3.0.2(next@14.0.4)(typescript@5.2.2)
+  next-themes:
+    specifier: ^0.2.1
+    version: 0.2.1(next@14.0.4)(react-dom@18.2.0)(react@18.2.0)
   react:
     specifier: 18.2.0
     version: 18.2.0
@@ -203,6 +206,9 @@ dependencies:
   sharp:
     specifier: ^0.32.6
     version: 0.32.6
+  sonner:
+    specifier: ^1.2.4
+    version: 1.2.4(react-dom@18.2.0)(react@18.2.0)
   superjson:
     specifier: ^1.13.1
     version: 1.13.3
@@ -5600,6 +5606,18 @@ packages:
       - typescript
     dev: false
 
+  /next-themes@0.2.1(next@14.0.4)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-B+AKNfYNIzh0vqQQKqQItTS8evEouKD7H5Hj3kmuPERwddR2TxvDSFZuTj6T7Jfn1oyeUyJMydPl1Bkxkh0W7A==}
+    peerDependencies:
+      next: '*'
+      react: '*'
+      react-dom: '*'
+    dependencies:
+      next: 14.0.4(@babel/core@7.23.3)(react-dom@18.2.0)(react@18.2.0)
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
   /next@14.0.4(@babel/core@7.23.3)(react-dom@18.2.0)(react@18.2.0):
     resolution: {integrity: sha512-qbwypnM7327SadwFtxXnQdGiKpkuhaRLE2uq62/nRul9cj9KhQ5LhHmlziTNqUidZotw/Q1I9OjirBROdUJNgA==}
     engines: {node: '>=18.17.0'}
@@ -6785,6 +6803,16 @@ packages:
     resolution: {integrity: sha512-IudtNvSqA/ObjN97tfgNmOKyDOs4dNcg4cUUsHDebqsgb8wGBBwb31LIgShNO8fye0dFI52X1+tFoKKI6Rq1Gg==}
     dependencies:
       atomic-sleep: 1.0.0
+    dev: false
+
+  /sonner@1.2.4(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-WGLP2QQnomgewaCTsK7YWiLcy5n1Yj83vsL5cP4zHMmpSkmFsCYTpQKhlXJrPE5kzjwbqCkCFXcOpbKc4vaUaA==}
+    peerDependencies:
+      react: ^18.0.0
+      react-dom: ^18.0.0
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
     dev: false
 
   /source-map-js@1.0.2:

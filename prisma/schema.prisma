@@ -235,18 +235,21 @@ model Privilege {
 }
 
 model Drop {
-    id            String      @id @default(cuid())
+    id            String     @id @default(cuid())
     name          String?
     startDateTime DateTime
     endDateTime   DateTime?
     Log           Log[]
     Pool          Pool[]
-    Event         Event?      @relation(fields: [eventId], references: [id])
+    Event         Event?     @relation(fields: [eventId], references: [id])
     eventId       String?
-    status        DropStatus? @default(dbgenerated()) // prisma/extenders.ts
+    status        DropStatus @default(DRAFT) // prisma/extenders.ts
 }
 
 enum DropStatus {
+    DRAFT
+    ARCHIVED
+    PUBLISHED
     UPCOMING
     ACTIVE
     ENDED
