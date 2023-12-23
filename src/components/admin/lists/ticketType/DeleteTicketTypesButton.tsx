@@ -2,7 +2,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import { z } from "zod";
 import { Form } from "~/components/ui/form";
 import revalidatePath from "~/lib/revalidatePath";
@@ -36,10 +36,10 @@ export default function DeleteTicketTypesButton({
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const { ids, path } = values;
     // return console.log(JSON.parse(ids));
-    await toast.promise(mutateAsync(JSON.parse(ids) as string[]), {
-      pending: "Usuwanie...",
-      success: "Usunięto!",
-      error: "Nie udało się usunąć.",
+    toast.promise(mutateAsync(JSON.parse(ids) as string[]), {
+      loading: "Dodawanie...",
+      success: "Dodano!",
+      error: "Coś poszło nie tak",
     });
     return await revalidatePath(path);
   }

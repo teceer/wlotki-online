@@ -41,4 +41,26 @@ export const dropRouter = createTRPCRouter({
         },
       });
     }),
+
+  deleteMany: protectedProcedure
+    .input(z.array(z.string()))
+    .mutation(async ({ ctx, input }) => {
+      await ctx.db.drop.deleteMany({
+        where: {
+          id: {
+            in: input,
+          },
+        },
+      });
+
+      await ctx.db.log.create({
+        data: {
+          action: "delete Drops",
+          userId: ctx.session.user.id,
+          data: JSON.stringify(input),
+        },
+      });
+
+      return input;
+    }),
 });

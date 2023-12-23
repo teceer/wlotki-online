@@ -19,6 +19,9 @@ import TicketPoolTable, {
   TicketPoolTableSkeleton,
 } from "~/components/admin/lists/ticketPool/component";
 import AddNewDrop from "~/components/Drop/AddNewDrop";
+import DropTable, {
+  DropTableSkeleton,
+} from "~/components/admin/lists/drop/component";
 
 export default async function page({
   params,
@@ -84,6 +87,9 @@ export default async function page({
           </Dialog>
         </DialogProvider>
       </div>
+      <Suspense fallback={<DropTableSkeleton />}>
+        <DropTable eventId={event.id} />
+      </Suspense>
       <Suspense fallback={<TicketPoolTableSkeleton />}>
         <TicketPoolTable />
       </Suspense>

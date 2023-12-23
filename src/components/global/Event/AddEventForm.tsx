@@ -3,7 +3,7 @@ import * as z from "zod";
 import { NewEventForm } from "../NewEventForm";
 import { useRouter } from "next/navigation";
 import { api } from "~/trpc/react";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 
 const eventSchema = z.object({
   image: z.string({ required_error: "Wymagane" }),
@@ -66,22 +66,20 @@ export default function AddEventForm() {
       description: values.description,
       image: values.image,
     };
-    toast
-      .promise(
-        eventAction.mutateAsync(eventData),
-        {
-          pending: "Dodawanie wydarzenia...",
-          success: "Wydarzenie dodane!",
-          error: "Nie udało się dodać wydarzenia.",
-        },
-        { autoClose: 2000 },
-      )
-      .then((data) => {
-        router.push("/event/" + data.id + "/edit");
-      })
-      .catch(() => {
-        toast.error(eventAction.error?.message);
-      });
+
+    toast.promise(
+      async () => {
+        const data = await eventAction.mutateAsync(eventData);
+        if (data) {
+          router.push(`/dashboard/event/${data.id}`);
+        }
+      },
+      {
+        loading: "Dodawanie wydarzenia...",
+        success: "Wydarzenie dodane!",
+        error: "Nie udało się dodać wydarzenia.",
+      },
+    );
   };
 
   return (

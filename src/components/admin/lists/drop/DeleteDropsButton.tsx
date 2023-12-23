@@ -8,7 +8,7 @@ import { Form } from "~/components/ui/form";
 import revalidatePath from "~/lib/revalidatePath";
 import { api } from "~/trpc/react";
 
-export default function DeleteTicketPoolsButton({
+export default function DeleteDropsButton({
   idArray,
   children,
 }: {
@@ -31,7 +31,7 @@ export default function DeleteTicketPoolsButton({
     form.setValue("ids", JSON.stringify(idArray));
   }, [idArray, form]);
 
-  const { mutateAsync } = api.ticketPool.deleteMany.useMutation();
+  const { mutateAsync } = api.drop.deleteMany.useMutation();
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const { ids, path } = values;

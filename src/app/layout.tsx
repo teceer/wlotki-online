@@ -51,7 +51,7 @@ export default function RootLayout({
               {children}
             </div>
           </main>
-          <Toaster richColors closeButton />
+          <Toaster richColors closeButton position="top-left" />
         </TRPCReactProvider>
       </body>
     </html>
