@@ -15,6 +15,25 @@ export default async function DropSection({ eventId }: { eventId: string }) {
     if (x === 2) return "bottom-1 rotate-[2deg]";
     if (x === 3) return "bottom-1 left-1 rotate-[-10deg]";
   };
+
+  if (!data.length)
+    return (
+      <Section SectionClassName="px-0 pt-0">
+        <Tabs defaultValue="no_data">
+          <div className="flex">
+            <ScrollArea className="whitespace-nowrap" dir="ltr">
+              <TabsList className="mx-4">
+                <TabsTrigger value="no_data">
+                  Brak dostępnych pul biletowych.
+                </TabsTrigger>
+              </TabsList>
+              <ScrollBar orientation="horizontal" className="invisible" />
+            </ScrollArea>
+          </div>
+        </Tabs>
+      </Section>
+    );
+
   return (
     <Section SectionClassName="px-0 pt-0">
       <Tabs

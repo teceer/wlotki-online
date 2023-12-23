@@ -27,7 +27,7 @@ export default function EventHeader({
         SectionClassName="pt-0 pl-0 md:pl-0 md:py-0"
       >
         <div className="flex h-full grow justify-between gap-4">
-          <div className="flex h-max items-end rounded-br-lg border-b border-r bg-background/70 p-4 backdrop-blur md:pl-36 md:pr-8 md:pt-8">
+          <div className="flex h-max w-full items-end rounded-br-lg border-b border-r bg-background/70 p-4 backdrop-blur md:pl-36 md:pr-8 md:pt-8">
             <H1>{title}</H1>
           </div>
           <div className="relative mt-[18px] aspect-square w-28 shrink-0 rotate-6 md:mt-8 md:w-64">
