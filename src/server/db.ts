@@ -8,10 +8,11 @@ const globalForPrisma = globalThis as unknown as {
 };
 
 export const db =
-  globalForPrisma.prisma ??
+  globalForPrisma.prisma.$extends(dropExtender) ??
   new PrismaClient({
     log:
       env.NODE_ENV === "development" ? ["query", "error", "warn"] : ["error"],
   }).$extends(dropExtender);
 
-if (env.NODE_ENV !== "production") globalForPrisma.prisma = db;
+if (env.NODE_ENV !== "production")
+  globalForPrisma.prisma = db as unknown as PrismaClient;
