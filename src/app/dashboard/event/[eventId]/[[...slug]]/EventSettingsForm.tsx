@@ -22,10 +22,11 @@ import { RadioGroup } from "~/components/ui/radio-group";
 import type { ClassNameValue } from "tailwind-merge";
 import { toast } from "sonner";
 import { api } from "~/trpc/react";
+import revalidatePath from "~/lib/revalidatePath";
 
 const formSchema = z.object({
   title: z.string().min(2).max(30),
-  status: z.enum(["DRAFT", "PUBLISHED", "HIDDEN"]),
+  status: z.string(),
 });
 
 export default function EventSettingsForm({
@@ -36,6 +37,7 @@ export default function EventSettingsForm({
   isDialog?: boolean;
 }) {
   const { setOpen } = useContext(DialogContext);
+  const { mutateAsync } = api.event.update.useMutation();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -45,18 +47,20 @@ export default function EventSettingsForm({
     },
   });
 
-  const { mutateAsync } = api.event.update.useMutation();
-
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    isDialog && setOpen(false);
-    return (
-      toast.promise(mutateAsync({ id: event.id, ...values })),
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    // isDialog && setOpen(false);
+    toast.promise(
+      mutateAsync({
+        id: event.id,
+        ...values,
+      }),
       {
         loading: "Zapisywanie...",
         success: "Zapisano!",
         error: "Coś poszło nie tak",
-      }
+      },
     );
+    return await revalidatePath(window.location.pathname);
   }
 
   function RadioGroupItem({
@@ -140,7 +144,7 @@ export default function EventSettingsForm({
                   <FormItem className="flex items-center space-x-3 space-y-0">
                     <FormControl>
                       <RadioGroupItem
-                        value="ARCHIVE"
+                        value="HIDDEN"
                         field={field}
                         text="Zarchiwizowany"
                         className="ring-red-500"

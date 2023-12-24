@@ -37,8 +37,8 @@ export default function DeleteTicketTypesButton({
     const { ids, path } = values;
     // return console.log(JSON.parse(ids));
     toast.promise(mutateAsync(JSON.parse(ids) as string[]), {
-      loading: "Dodawanie...",
-      success: "Dodano!",
+      loading: "Usuwanie...",
+      success: "Usunięto!",
       error: "Coś poszło nie tak",
     });
     return await revalidatePath(path);

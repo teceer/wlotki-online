@@ -1,3 +1,4 @@
+import { EventStatus } from "@prisma/client";
 import { z } from "zod";
 
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
@@ -51,24 +52,30 @@ export const eventRouter = createTRPCRouter({
           })
           .optional(),
         subtitle: z.string().optional(),
-        startDateTime: z.date({ required_error: "Wymagane" }).optional(),
-        endDateTime: z.date({ required_error: "Wymagane" }).optional(),
         description: z.string().optional(),
+        status: z.string().optional(),
       }),
     )
-    .mutation(({ ctx, input }) => {
-      return ctx.db.event.update({
+    .mutation(async ({ ctx, input }) => {
+      const data = await ctx.db.event.update({
         where: {
           id: input.id,
         },
         data: {
-          title: input.title,
-          subtitle: input.subtitle,
-          image: input.image,
-          startDateTime: input.startDateTime,
-          endDateTime: input.endDateTime,
-          description: input.description,
+          ...input,
+          status: input.status as EventStatus,
         },
       });
+
+      await ctx.db.log.create({
+        data: {
+          action: "update Event",
+          userId: ctx.session.user.id,
+          data: JSON.stringify(input),
+          eventId: input.id,
+        },
+      });
+
+      return data;
     }),
 });
