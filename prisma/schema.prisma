@@ -243,7 +243,7 @@ model Drop {
     Pool          Pool[]
     Event         Event?     @relation(fields: [eventId], references: [id])
     eventId       String?
-    status        DropStatus @default(DRAFT) // prisma/extenders.ts
+    status        DropStatus? @default(DRAFT) // prisma/extenders.ts
 }
 
 enum DropStatus {

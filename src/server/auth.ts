@@ -1,6 +1,9 @@
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import type { PrismaClient } from "@prisma/client";
-import type { DefaultArgs, PrismaClientOptions } from "@prisma/client/runtime/library";
+import type {
+  DefaultArgs,
+  PrismaClientOptions,
+} from "@prisma/client/runtime/library";
 import {
   getServerSession,
   type DefaultSession,
@@ -50,7 +53,7 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   },
-  adapter: PrismaAdapter(db as unknown as PrismaClient<PrismaClientOptions, never, DefaultArgs>),
+  adapter: PrismaAdapter(db),
   providers: [
     DiscordProvider({
       clientId: env.DISCORD_CLIENT_ID,
