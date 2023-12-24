@@ -1,9 +1,6 @@
 import { z } from "zod";
 
-import {
-  createTRPCRouter,
-  protectedProcedure,
-} from "~/server/api/trpc";
+import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 
 export const eventRouter = createTRPCRouter({
   create: protectedProcedure
@@ -41,4 +38,37 @@ export const eventRouter = createTRPCRouter({
     console.log(events);
     return events;
   }),
+
+  update: protectedProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        image: z.string({ required_error: "Wymagane" }).optional(),
+        title: z
+          .string({ required_error: "Wymagane" })
+          .min(2, {
+            message: "Nazwa wydarzenia musi mieć co najmniej 2 znaki.",
+          })
+          .optional(),
+        subtitle: z.string().optional(),
+        startDateTime: z.date({ required_error: "Wymagane" }).optional(),
+        endDateTime: z.date({ required_error: "Wymagane" }).optional(),
+        description: z.string().optional(),
+      }),
+    )
+    .mutation(({ ctx, input }) => {
+      return ctx.db.event.update({
+        where: {
+          id: input.id,
+        },
+        data: {
+          title: input.title,
+          subtitle: input.subtitle,
+          image: input.image,
+          startDateTime: input.startDateTime,
+          endDateTime: input.endDateTime,
+          description: input.description,
+        },
+      });
+    }),
 });

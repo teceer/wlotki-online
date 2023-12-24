@@ -20,6 +20,8 @@ import { DialogClose, DialogContext } from "~/components/ui/dialog";
 import { cn } from "~/lib/utils";
 import { RadioGroup } from "~/components/ui/radio-group";
 import type { ClassNameValue } from "tailwind-merge";
+import { toast } from "sonner";
+import { api } from "~/trpc/react";
 
 const formSchema = z.object({
   title: z.string().min(2).max(30),
@@ -43,11 +45,18 @@ export default function EventSettingsForm({
     },
   });
 
+  const { mutateAsync } = api.event.update.useMutation();
+
   function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
-    setOpen(false);
+    isDialog && setOpen(false);
+    return (
+      toast.promise(mutateAsync({ id: event.id, ...values })),
+      {
+        loading: "Zapisywanie...",
+        success: "Zapisano!",
+        error: "Coś poszło nie tak",
+      }
+    );
   }
 
   function RadioGroupItem({
