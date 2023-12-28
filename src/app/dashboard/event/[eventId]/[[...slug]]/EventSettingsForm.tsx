@@ -48,7 +48,7 @@ export default function EventSettingsForm({
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    // isDialog && setOpen(false);
+    isDialog && setOpen(false);
     toast.promise(
       mutateAsync({
         id: event.id,
