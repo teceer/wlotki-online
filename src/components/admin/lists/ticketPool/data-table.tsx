@@ -42,11 +42,13 @@ import AddNewPool from "~/components/Pool/AddNewPool";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  dropId: string;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  dropId,
 }: DataTableProps<TData, TValue>) {
   const [mutationData, setMutationData] = React.useState<
     (Pool & { TicketType: TicketType | null })[]
@@ -139,7 +141,7 @@ export function DataTable<TData, TValue>({
               </Button>
             </DialogTrigger>
             <DialogContent className="autofocus-0 w-[90vw] rounded-xl border">
-              <AddNewPool />
+              <AddNewPool dropId={dropId} />
             </DialogContent>
           </Dialog>
         </DialogProvider>

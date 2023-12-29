@@ -1,7 +1,10 @@
 import { parseISO, format } from "date-fns";
 import pl from "date-fns/locale/pl";
 
-export default function DateString(props: { date: Date; format: string }) {
+export default function DateString(props: {
+  date: Date;
+  format: string;
+}) {
   const date = props.date;
 
   if (typeof date === "string") {

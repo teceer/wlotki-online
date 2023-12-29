@@ -26,7 +26,7 @@ export const formSchema = z.object({
   ),
 });
 
-export default function AddNewPool() {
+export default function AddNewPool({ dropId }: { dropId: string }) {
   const { mutateAsync } = api.ticketPool.createMany.useMutation();
   const { setOpen } = useContext(DialogContext);
   const form = useForm<z.infer<typeof formSchema>>({
@@ -43,6 +43,7 @@ export default function AddNewPool() {
             price: (+pool.price * 100).toString(),
             time: pool.time,
             typeId: pool.typeId,
+            dropId,
           };
         }
       })

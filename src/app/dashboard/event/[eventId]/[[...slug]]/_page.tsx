@@ -69,7 +69,7 @@ export default async function page({
               />
             </DialogTrigger>
             <DialogContent className="autofocus-0 w-[90vw] rounded-xl border">
-              <AddNewPool />
+              {/* <AddNewPool /> */}
             </DialogContent>
           </Dialog>
         </DialogProvider>

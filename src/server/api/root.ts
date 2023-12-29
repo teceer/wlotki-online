@@ -1,9 +1,10 @@
-import { postRouter } from "~/server/api/routers/post";
-import { createTRPCRouter } from "~/server/api/trpc";
-import { eventRouter } from "~/server/api/routers/event";
-import { ticketTypeRouter } from "~/server/api/routers/ticketType";
+import { postRouter } from "./routers/post";
+import { createTRPCRouter } from "./trpc";
+import { eventRouter } from "./routers/event";
+import { ticketTypeRouter } from "./routers/ticketType";
 import { ticketPoolRouter } from "./routers/ticketPool";
 import { dropRouter } from "./routers/drop";
+import { poolRouter } from "./routers/pool";
 
 /**
  * This is the primary router for your server.
@@ -16,6 +17,7 @@ export const appRouter = createTRPCRouter({
   ticketType: ticketTypeRouter,
   ticketPool: ticketPoolRouter,
   drop: dropRouter,
+  pool: poolRouter,
 });
 
 // export type definition of API

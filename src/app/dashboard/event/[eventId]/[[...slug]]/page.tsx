@@ -8,6 +8,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "~/components/ui/tabs";
 import { getServerAuthSession } from "~/server/auth";
 import EventAnalytics from "./EventAnalytics";
 import EventSettings from "./EventSettings";
+import { api } from "~/trpc/server";
+import DropCard from "~/components/admin/lists/drop/DropCard";
 
 export default async function page({
   searchParams,
@@ -17,9 +19,12 @@ export default async function page({
   params: { eventId: string };
 }) {
   const session = await getServerAuthSession();
+
   const defaultTab = () => {
     return searchParams.t ? searchParams.t.toString() : "settings";
   };
+
+  const data = await api.drop.getByEventId.query(params.eventId);
 
   return (
     <Section SectionClassName="px-0">
@@ -36,7 +41,8 @@ export default async function page({
           <TabsContent value="analytics">
             <EventAnalytics eventId={params.eventId} />
           </TabsContent>
-          <TabsContent value="drops">
+          <TabsContent value="drops" className="space-y-2">
+            {data?.map((drop) => <DropCard drop={drop} key={drop.id} />)}
             <Suspense fallback={<DropTableSkeleton />}>
               <DropTable eventId={params.eventId} />
             </Suspense>

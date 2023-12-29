@@ -25,6 +25,7 @@ export const ticketPoolRouter = createTRPCRouter({
             time: z.string().optional(),
             name: z.string().optional(),
             typeId: z.string().min(1),
+            dropId: z.string().min(1),
           })
           .optional(),
       ),
@@ -44,6 +45,7 @@ export const ticketPoolRouter = createTRPCRouter({
               : null,
             name: pool.name ? pool.name : null,
             typeId: pool.typeId,
+            dropId: pool.dropId,
           };
           console.log(newData);
           return newData;
@@ -56,6 +58,7 @@ export const ticketPoolRouter = createTRPCRouter({
           time: pool.time,
           name: pool.name,
           ticketTypeId: pool.typeId,
+          dropId: pool.dropId,
         })),
       });
 
