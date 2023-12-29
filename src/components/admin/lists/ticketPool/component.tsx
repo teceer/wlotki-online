@@ -7,7 +7,7 @@ import { Input } from "~/components/ui/input";
 import { Button } from "~/components/ui/button";
 import { PanelLeftInactive, Plus } from "lucide-react";
 
-export default async function TicketPoolTable() {
+export default async function TicketPoolTable({ dropId }: { dropId: string }) {
   const data = await api.ticketPool.getAll.query();
 
   return (
@@ -15,7 +15,7 @@ export default async function TicketPoolTable() {
       <div className="flex items-center justify-between">
         <CardTitle>Pule biletowe</CardTitle>
       </div>
-      <DataTable columns={columns} data={data} />
+      <DataTable columns={columns} data={data} dropId={dropId} />
     </div>
   );
 }
