@@ -237,7 +237,8 @@ model Privilege {
 model Drop {
     id            String     @id @default(cuid())
     name          String?
-    startDateTime DateTime
+    startDateTime DateTime?
+    totalTickets  Int?
     endDateTime   DateTime?
     Log           Log[]
     Pool          Pool[]

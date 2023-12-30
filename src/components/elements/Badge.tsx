@@ -34,7 +34,7 @@ export function Badge({
     return (
       <div
         className={cn(
-          "cursor-default rounded-full border px-3 py-1 pb-0.5 text-sm flex items-center justify-center",
+          "cursor-default w-max rounded-full border px-3 py-1 pb-0.5 text-sm flex items-center justify-center",
           className,
           color && colorClasses[color],
         )}

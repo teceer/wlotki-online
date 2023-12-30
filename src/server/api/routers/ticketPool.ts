@@ -90,6 +90,15 @@ export const ticketPoolRouter = createTRPCRouter({
     return ticketPools;
   }),
 
+  getByDropId: protectedProcedure.input(z.string()).query(({ ctx, input }) => {
+    const ticketPools = ctx.db.pool.findMany({
+      include: { TicketType: true },
+      where: { dropId: input },
+    });
+    console.log(ticketPools);
+    return ticketPools;
+  }),
+
   deleteMany: protectedProcedure
     .input(z.array(z.string()))
     .mutation(async ({ ctx, input }) => {

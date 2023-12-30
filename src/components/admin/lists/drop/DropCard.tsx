@@ -1,5 +1,5 @@
-import type { Drop, Pool } from "@prisma/client";
-import { Clock, Plus } from "lucide-react";
+import type { Drop } from "@prisma/client";
+import { Edit, Plus } from "lucide-react";
 import React from "react";
 import AddNewPool from "~/components/Pool/AddNewPool";
 import DateString from "~/components/global/DateString";
@@ -11,20 +11,98 @@ import {
   DialogTrigger,
 } from "~/components/ui/dialog";
 import { api } from "~/trpc/server";
+import TicketPoolTable from "../ticketPool/component";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "~/components/ui/card";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "~/components/ui/accordion";
+import { cn } from "~/lib/utils";
+import { Separator } from "~/components/ui/separator";
 
-export default function DropCard({ drop }: { drop: Drop }) {
+export default async function DropCard({
+  drop,
+  index,
+}: {
+  drop: Drop;
+  index?: number;
+}) {
+  function StartIndicatorFactory() {
+    if (drop.startDateTime) {
+      return <DateString date={drop.startDateTime} format="HH:mm P" />;
+    } else {
+      return <p className="text-blue-500">automatycznie</p>;
+    }
+  }
+
+  async function EndIndicatorFactory() {
+    const isLimited = await api.drop.isLimited.query(drop.id);
+    if (drop.endDateTime) {
+      return <DateString date={drop.endDateTime} format="HH:mm P" />;
+    } else if (drop.totalTickets || isLimited) {
+      return <p className="text-blue-500">do wyczerpania</p>;
+    } else {
+      return (
+        <p className="text-orange-500 dark:text-yellow-500">bezterminowo</p>
+      );
+    }
+  }
+
+  const pools = await api.pool.getByDropId.query(drop.id);
+
+  const totalTickets = pools?.reduce((acc, pool) => {
+    return acc + pool._count.Ticket;
+  }, 0);
+
   return (
-    <div className="space-y-4 rounded-xl border bg-background p-4">
-      <div className="flex items-center justify-between gap-2 font-mono text-xs leading-none">
-        <DateString date={drop.startDateTime} format="P HH:mm" />
-        <div className="h-[1px] grow bg-muted-foreground/70" />
-        {drop.endDateTime && (
-          <DateString date={drop.endDateTime} format="P HH:mm" />
-        )}
-      </div>
-      {drop.name && <p className="text-foreground">{drop.name}</p>}
-      <PoolSection drop={drop} />
-    </div>
+    <Card>
+      <CardHeader>
+        <CardTitle className="flex justify-between gap-2 pb-2">
+          <p>{drop.name ?? "Drop " + (index! + 1)}</p>
+          <Edit size={16} className="opacity-70" />
+        </CardTitle>
+        <div className="text-muted-foreground text-sm">
+          <div className="flex items-baseline justify-between gap-2">
+            <p>Start: </p>
+            <Separator className="w-fit grow" />
+            <StartIndicatorFactory />
+          </div>
+          <div className="flex items-baseline justify-between gap-2">
+            <p>Koniec: </p>
+            <Separator className="w-fit grow" />
+            <EndIndicatorFactory />
+          </div>
+          <div className="flex items-baseline justify-between gap-2">
+            <p>Limit biletów:</p>
+            <Separator className="w-fit grow" />
+            <p>{drop.totalTickets ?? "bez limitu"}</p>
+          </div>
+          <div className="flex items-baseline justify-between gap-2">
+            <p>Wygenerowanych biletów:</p>
+            <Separator className="w-fit grow" />
+            <p>{totalTickets}</p>
+          </div>
+        </div>
+        <Accordion type="single" collapsible>
+          <AccordionItem value="item-1">
+            <AccordionTrigger className={cn(!pools.length && "text-red-500")}>
+              Pule biletowe: {pools.length}
+            </AccordionTrigger>
+            <AccordionContent>
+              <TicketPoolTable dropId={drop.id} />
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+      </CardHeader>
+    </Card>
   );
 }
 

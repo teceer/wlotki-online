@@ -24,7 +24,7 @@ import { toast } from "sonner";
 
 const formSchema = z.object({
   eventId: z.string(),
-  startDateTime: z.string(),
+  startDateTime: z.string().optional(),
   endDateTime: z.string().optional(),
   name: z.string().optional(),
 });
@@ -75,12 +75,13 @@ export default function AddNewDrop({ eventId }: { eventId: string }) {
           name="startDateTime"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Rozpoczęcie</FormLabel>
+              <FormLabel>Rozpoczęcie (opcjonalnie)</FormLabel>
               <FormControl>
                 <Input type="datetime-local" {...field} />
               </FormControl>
               <FormDescription>
-                Data i godzina rozpoczęcia dropu.
+                W przypadku braku daty rozpoczęcia, drop rozpocznie się
+                automatycznie po zakończeniu poprzedniego.
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -96,7 +97,8 @@ export default function AddNewDrop({ eventId }: { eventId: string }) {
                 <Input type="datetime-local" {...field} />
               </FormControl>
               <FormDescription>
-                Data i godzina zakończenia dropu.
+                W przypadku braku daty zakończenia, drop zakończy się dopiero po
+                wyczerpaniu ustalonego limitu biletów.
               </FormDescription>
               <FormMessage />
             </FormItem>

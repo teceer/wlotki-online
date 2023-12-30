@@ -27,11 +27,21 @@ export default async function page({
       <Tabs defaultValue={defaultTab()}>
         <ScrollArea className="w-full whitespace-nowrap">
           <TabsList className="mx-4">
-            <TabsTrigger value="events">Wydarzenia</TabsTrigger>
-            <TabsTrigger value="analytics">Statystyki</TabsTrigger>
-            <TabsTrigger value="users">Użytkownicy</TabsTrigger>
-            <TabsTrigger value="organizations">Organizacje</TabsTrigger>
-            <TabsTrigger value="settings">Ustawienia</TabsTrigger>
+            <TabsTrigger value="events" className="router-link">
+              Wydarzenia
+            </TabsTrigger>
+            <TabsTrigger value="analytics" className="router-link">
+              Statystyki
+            </TabsTrigger>
+            <TabsTrigger value="users" className="router-link">
+              Użytkownicy
+            </TabsTrigger>
+            <TabsTrigger value="organizations" className="router-link">
+              Organizacje
+            </TabsTrigger>
+            <TabsTrigger value="settings" className="router-link">
+              Ustawienia
+            </TabsTrigger>
           </TabsList>
           <ScrollBar orientation="horizontal" className="invisible" />
         </ScrollArea>

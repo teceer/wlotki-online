@@ -8,13 +8,13 @@ import { Button } from "~/components/ui/button";
 import { PanelLeftInactive, Plus } from "lucide-react";
 
 export default async function TicketPoolTable({ dropId }: { dropId: string }) {
-  const data = await api.ticketPool.getAll.query();
+  const data = await api.ticketPool.getByDropId.query(dropId);
 
   return (
-    <div className="space-y-4 rounded-xl border bg-background/70 p-4 backdrop-blur">
-      <div className="flex items-center justify-between">
+    <div className="space-y-4">
+      {/* <div className="flex items-center justify-between">
         <CardTitle>Pule biletowe</CardTitle>
-      </div>
+      </div> */}
       <DataTable columns={columns} data={data} dropId={dropId} />
     </div>
   );

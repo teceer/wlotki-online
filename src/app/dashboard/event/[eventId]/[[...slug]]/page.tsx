@@ -10,6 +10,23 @@ import EventAnalytics from "./EventAnalytics";
 import EventSettings from "./EventSettings";
 import { api } from "~/trpc/server";
 import DropCard from "~/components/admin/lists/drop/DropCard";
+import TicketPoolTable from "~/components/admin/lists/ticketPool/component";
+import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "~/components/ui/accordion";
+import ActionBar from "~/components/elements/ActionBar";
+import AddNewDrop from "~/components/Drop/AddNewDrop";
+import {
+  Dialog,
+  DialogContent,
+  DialogProvider,
+  DialogTrigger,
+} from "~/components/ui/dialog";
+import { Plus } from "lucide-react";
 
 export default async function page({
   searchParams,
@@ -31,9 +48,15 @@ export default async function page({
       <Tabs defaultValue={defaultTab()}>
         <ScrollArea className="w-full whitespace-nowrap">
           <TabsList className="mx-4">
-            <TabsTrigger value="analytics">Statystyki</TabsTrigger>
-            <TabsTrigger value="drops">Dropy</TabsTrigger>
-            <TabsTrigger value="settings">Ustawienia</TabsTrigger>
+            <TabsTrigger value="analytics" className="router-link">
+              Statystyki
+            </TabsTrigger>
+            <TabsTrigger value="drops" className="router-link">
+              Dropy
+            </TabsTrigger>
+            <TabsTrigger value="settings" className="router-link">
+              Ustawienia
+            </TabsTrigger>
           </TabsList>
           <ScrollBar orientation="horizontal" className="invisible" />
         </ScrollArea>
@@ -42,9 +65,22 @@ export default async function page({
             <EventAnalytics eventId={params.eventId} />
           </TabsContent>
           <TabsContent value="drops" className="space-y-2">
-            {data?.map((drop) => <DropCard drop={drop} key={drop.id} />)}
-            <Suspense fallback={<DropTableSkeleton />}>
-              <DropTable eventId={params.eventId} />
+            <ActionBar>
+              <DialogProvider>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <Plus />
+                  </DialogTrigger>
+                  <DialogContent className="autofocus-0 w-[90vw] rounded-xl border">
+                    <AddNewDrop eventId={params.eventId} />
+                  </DialogContent>
+                </Dialog>
+              </DialogProvider>
+            </ActionBar>
+            <Suspense>
+              {data?.map((drop, index) => (
+                <DropCard drop={drop} key={drop.id} index={index} />
+              ))}
             </Suspense>
           </TabsContent>
           <TabsContent

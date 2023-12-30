@@ -28,7 +28,7 @@ export const dropRouter = createTRPCRouter({
       z.object({
         eventId: z.string(),
         name: z.string().optional(),
-        startDateTime: z.string(),
+        startDateTime: z.string().optional(),
         endDateTime: z.string().optional(),
       }),
     )
@@ -36,7 +36,9 @@ export const dropRouter = createTRPCRouter({
       return ctx.db.drop.create({
         data: {
           ...input,
-          startDateTime: new Date(input.startDateTime),
+          startDateTime: input.startDateTime
+            ? new Date(input.startDateTime)
+            : null,
           endDateTime: input.endDateTime ? new Date(input.endDateTime) : null,
         },
       });
@@ -62,5 +64,20 @@ export const dropRouter = createTRPCRouter({
       });
 
       return input;
+    }),
+
+  isLimited: protectedProcedure
+    .input(z.string())
+    .query(async ({ ctx, input }) => {
+      const pools = await ctx.db.pool.findMany({
+        where: {
+          dropId: input,
+          totalTickets: {
+            gt: 0,
+          },
+        },
+      });
+
+      return pools.length > 0;
     }),
 });

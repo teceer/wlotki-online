@@ -11,6 +11,7 @@ import { ourFileRouter } from "./api/uploadthing/core";
 import AuthButton from "~/components/global/Auth/AuthButton";
 import { Suspense } from "react";
 import { Toaster } from "~/components/ui/sonner";
+import ActionBar from "~/components/elements/ActionBar";
 
 export const metadata = {
   title: process.env.NEXT_PUBLIC_APP_NAME,
