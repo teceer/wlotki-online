@@ -13,6 +13,7 @@ type TBreadCrumbProps = {
   listClasses?: string;
   activeClasses?: string;
   capitalizeLinks?: boolean;
+  currentPath?: string;
 };
 
 const NextBreadcrumb = ({
@@ -22,15 +23,19 @@ const NextBreadcrumb = ({
   listClasses,
   activeClasses,
   capitalizeLinks,
+  currentPath,
 }: TBreadCrumbProps) => {
   const paths = usePathname();
   const pathNames = paths.split("/").filter((path) => path);
 
   function linkFactory(path: string) {
-    return {
-      Dashboard: "Dashboard",
-      Components: "Komponenty",
-    }[path];
+    return (
+      {
+        Dashboard: "Dashboard",
+        Components: "Komponenty",
+        Event: "Wydarzenie",
+      }[path] ?? path
+    );
   }
 
   return (
@@ -50,7 +55,11 @@ const NextBreadcrumb = ({
           return (
             <React.Fragment key={index}>
               <li className={itemClasses}>
-                <Link href={href}>{linkFactory(itemLink)}</Link>
+                <Link href={href}>
+                  {currentPath && pathNames.length === index + 1
+                    ? currentPath
+                    : linkFactory(itemLink)}
+                </Link>
               </li>
               {pathNames.length !== index + 1 && separator}
             </React.Fragment>

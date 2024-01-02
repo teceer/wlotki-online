@@ -29,15 +29,22 @@ const Paragraph = ({
 const Heading = ({
   children,
   className,
+  size,
 }: {
   children: React.ReactNode;
   className?: ClassNameValue;
+  size?: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";
 }) => {
-  return (
-    <h1 className={cn("text-2xl font-medium tracking-tighter", className)}>
-      {children}
-    </h1>
-  );
+  const sizeClasses = {
+    h1: "text-2xl font-medium tracking-tighter",
+    h2: "text-xl font-medium tracking-tighter",
+    h3: "text-lg font-medium tracking-tighter",
+    h4: "text-base font-medium",
+    h5: "text-sm font-medium",
+    h6: "text-xs font-medium",
+  }[size ?? "h1"];
+
+  return <h1 className={cn(sizeClasses, className)}>{children}</h1>;
 };
 
 const Subheading = ({

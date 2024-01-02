@@ -28,24 +28,27 @@ const Main = ({
 const Header = ({
   children,
   className,
+  currentPath,
 }: {
   children: React.ReactNode;
   className?: ClassNameValue;
+  currentPath?: string;
 }) => {
   return (
     <div
       className={cn(
-        "border-b bg-gradient-to-t from-background p-4 text-2xl font-medium tracking-tighter",
+        "border-b bg-gradient-to-t from-background p-4 text-2xl font-medium tracking-tighter space-y-2",
         className,
       )}
     >
       <NextBreadcrumb
-        homeElement={<Home size={16} className="pb-0.5"/>}
+        homeElement={<Home size={16} className="pb-0.5" />}
         separator={<span className="text-muted-foreground"> / </span>}
         activeClasses="text-blue-500"
         containerClasses="flex text-sm font-normal tracking-tight gap-1 items-center"
         listClasses="hover:underline"
         capitalizeLinks
+        currentPath={currentPath}
       />
       <header>{children}</header>
     </div>

@@ -1,27 +1,49 @@
+import { Calendar, MapPin } from "lucide-react";
 import Image from "next/image";
 import React, { Suspense } from "react";
+import BuyTickets from "~/components/BuyTickets";
 import DropSection from "~/components/Event/DropSection";
 import EventHeader from "~/components/Event/EventHeader";
+import ActionBar, { Action } from "~/components/elements/ActionBar";
 import NotFound from "~/components/global/404";
-import Section from "~/components/global/Section";
+import DateString from "~/components/global/DateString";
 import { H1 } from "~/components/global/Typography";
-import { Heading, Paragraph } from "~/components/teceerui/typography";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardHeading,
+} from "~/components/teceerui/card";
+import { Header, Section } from "~/components/teceerui/layout";
+import {
+  Description,
+  Heading,
+  Paragraph,
+  Subheading,
+} from "~/components/teceerui/typography";
+import { Button } from "~/components/ui/button";
+import { Separator } from "~/components/ui/separator";
 import { db } from "~/server/db";
+import { api } from "~/trpc/server";
 
 export default async function page({
   params,
 }: {
   params: { eventId: string };
 }) {
-  // const event = await api.event.findById.mutate(params.eventId);
   const event = await db.event.findFirst({
-    where: { id: params.eventId },
-    select: { id: true, title: true, image: true },
+    where: {
+      id: params.eventId,
+    },
+    include: {
+      Location: true,
+      EventSettings: true,
+    },
   });
 
   if (!event) {
     return (
-      <Section DivClassName="items-center justify-center">
+      <Section>
         <NotFound />
       </Section>
     );
@@ -37,7 +59,7 @@ export default async function page({
             </div>
           </div>
         </div>
-        <Section DivClassName="z-10">
+        <Section>
           <div className="flex items-end justify-between gap-4">
             <div className="pb-8 md:pb-12">
               <div className="h-6 w-32 animate-pulse rounded-lg bg-gradient-to-tr from-accent opacity-70" />
@@ -66,18 +88,38 @@ export default async function page({
 
   return (
     <>
-      {/* <Suspense fallback={<Fallback />}>
-        <EventHeader image={event.image} title={event.title} />
-      </Suspense> */}
-      {/* <DropSection eventId={event.id} /> */}
+      <ActionBar variant="bar">
+        <Action variant="ghost">Koszyk</Action>
+        <Action variant="blue">
+          {event.EventSettings?.buttonText ?? "Kup wlotki"}
+        </Action>
+      </ActionBar>
+      <Header currentPath={event.title}>{event.title}</Header>
       <Section>
-        <div className="relative flex h-36 items-end gap-4 overflow-hidden rounded-xl bg-background p-4">
+        <div className="relative h-48 overflow-hidden rounded-xl border bg-background">
           <EventImage />
-          <div className="absolute left-0 top-0 z-0 h-full w-full bg-gradient-to-t from-black" />
+          {/* <div className="absolute left-0 top-0 z-0 h-full w-full bg-gradient-to-t from-black" /> */}
         </div>
         <div>
-          <Heading>Nazwa wydarzenia testowego</Heading>
+          {/* <Heading>{event.title}</Heading> */}
+          <Description>
+            <Calendar className="mr-0.5 inline-block pb-0.5" size={16} />
+            <DateString date={event.startDateTime} format="PPPP" />
+          </Description>
+          {event.Location && (
+            <Description>
+              <MapPin className="mr-0.5 inline-block pb-0.5" size={16} />
+              {event.Location.name}, {event.Location.city}
+            </Description>
+          )}
         </div>
+        <BuyTickets eventId={event.id} />
+        {event.description && (
+          <div className="space-y-1">
+            <Heading size="h4">Opis wydarzenia</Heading>
+            <Description>{event.description}</Description>
+          </div>
+        )}
       </Section>
     </>
   );

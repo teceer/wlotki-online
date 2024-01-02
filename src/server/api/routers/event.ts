@@ -1,7 +1,7 @@
 import { EventStatus } from "@prisma/client";
 import { z } from "zod";
 
-import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
+import { createTRPCRouter, protectedProcedure, publicProcedure } from "~/server/api/trpc";
 
 export const eventRouter = createTRPCRouter({
   create: protectedProcedure
@@ -30,14 +30,22 @@ export const eventRouter = createTRPCRouter({
       });
     }),
 
-  findById: protectedProcedure.input(z.string()).query(({ ctx, input }) => {
-    const events = ctx.db.event.findUnique({
+  productPage: publicProcedure.input(z.string()).query(({ ctx, input }) => {
+    const data = ctx.db.event.findFirst({
       where: {
         id: input,
       },
     });
-    console.log(events);
-    return events;
+    return data;
+  }),
+
+  findById: publicProcedure.input(z.string()).query(({ ctx, input }) => {
+    const data = ctx.db.event.findFirst({
+      where: {
+        id: input,
+      },
+    });
+    return data;
   }),
 
   update: protectedProcedure

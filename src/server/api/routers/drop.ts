@@ -23,6 +23,25 @@ export const dropRouter = createTRPCRouter({
     });
   }),
 
+  buyTickets: publicProcedure.input(z.string()).query(({ ctx, input }) => {
+    return ctx.db.drop.findMany({
+      where: {
+        eventId: input,
+      },
+      orderBy: [
+        {
+          startDateTime: "asc",
+        },
+        {
+          endDateTime: "asc",
+        },
+      ],
+      include: {
+        Pool: { include: { TicketType: true } },
+      },
+    });
+  }),
+
   create: protectedProcedure
     .input(
       z.object({
