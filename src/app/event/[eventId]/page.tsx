@@ -5,6 +5,7 @@ import EventHeader from "~/components/Event/EventHeader";
 import NotFound from "~/components/global/404";
 import Section from "~/components/global/Section";
 import { H1 } from "~/components/global/Typography";
+import { Heading, Paragraph } from "~/components/teceerui/typography";
 import { db } from "~/server/db";
 
 export default async function page({
@@ -48,12 +49,36 @@ export default async function page({
     );
   }
 
+  function EventImage() {
+    if (event?.image) {
+      return (
+        <Image
+          alt="event image"
+          src={event.image}
+          fill
+          className="object-cover"
+        />
+      );
+    } else {
+      return <div className="bg-gradient-to-tr from-accent opacity-70" />;
+    }
+  }
+
   return (
     <>
-      <Suspense fallback={<Fallback />}>
+      {/* <Suspense fallback={<Fallback />}>
         <EventHeader image={event.image} title={event.title} />
-      </Suspense>
-      <DropSection eventId={event.id} />
+      </Suspense> */}
+      {/* <DropSection eventId={event.id} /> */}
+      <Section>
+        <div className="relative flex h-36 items-end gap-4 overflow-hidden rounded-xl bg-background p-4">
+          <EventImage />
+          <div className="absolute left-0 top-0 z-0 h-full w-full bg-gradient-to-t from-black" />
+        </div>
+        <div>
+          <Heading>Nazwa wydarzenia testowego</Heading>
+        </div>
+      </Section>
     </>
   );
 }

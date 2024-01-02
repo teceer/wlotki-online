@@ -34,8 +34,8 @@ export default async function DropSection({ eventId }: { eventId: string }) {
       </Section>
     );
 
-  return (
-    <Section SectionClassName="px-0 pt-0">
+  function DropBar() {
+    return (
       <Tabs
         defaultValue={
           data?.find((drop) => drop.status === "ACTIVE")?.id ?? // select the first ACTIVE drop
@@ -57,7 +57,6 @@ export default async function DropSection({ eventId }: { eventId: string }) {
                       "_text-green-500 data-[state=active]:text-muted-foreground",
                     drop.status === "UPCOMING" && "opacity-70",
                   )}
-                  //   disabled={drop.status != "ACTIVE"}
                 >
                   {drop.status === "ENDED" && (
                     <div
@@ -89,6 +88,19 @@ export default async function DropSection({ eventId }: { eventId: string }) {
           </TabsContent>
         ))}
       </Tabs>
+    );
+  }
+
+  function DropList() {
+    return <div>DropList</div>;
+  }
+
+  return (
+    <Section SectionClassName="px-0 pt-0">
+      {/* <DropBar /> */}
+      <Section>
+        <DropList />
+      </Section>
     </Section>
   );
 }

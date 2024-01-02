@@ -19,7 +19,7 @@ export default function Section({
       )}
     >
       <div
-        className={cn("flex w-full max-w-7xl flex-col space-y-2", DivClassName)}
+        className={cn("flex w-full max-w-7xl flex-col space-y-4", DivClassName)}
       >
         {children}
       </div>
