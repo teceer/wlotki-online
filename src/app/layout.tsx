@@ -11,7 +11,8 @@ import { ourFileRouter } from "./api/uploadthing/core";
 import AuthButton from "~/components/global/Auth/AuthButton";
 import { Suspense } from "react";
 import { Toaster } from "~/components/ui/sonner";
-import ActionBar from "~/components/elements/ActionBar";
+import ActionBar, { Action } from "~/components/elements/ActionBar";
+import Footer from "~/components/global/Footer";
 
 export const metadata = {
   title: process.env.NEXT_PUBLIC_APP_NAME,
@@ -52,6 +53,8 @@ export default function RootLayout({
               {children}
             </div>
           </main>
+          <div id="actionbar" className="sticky bottom-0 left-0" />
+          <Footer />
           <Toaster richColors closeButton position="top-left" />
         </TRPCReactProvider>
       </body>

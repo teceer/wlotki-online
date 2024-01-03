@@ -6,6 +6,7 @@ import DropSection from "~/components/Event/DropSection";
 import EventHeader from "~/components/Event/EventHeader";
 import ActionBar, { Action } from "~/components/elements/ActionBar";
 import NotFound from "~/components/global/404";
+import ClientPortal from "~/components/global/ClientPortal";
 import DateString from "~/components/global/DateString";
 import { H1 } from "~/components/global/Typography";
 import {
@@ -88,20 +89,12 @@ export default async function page({
 
   return (
     <>
-      <ActionBar variant="bar">
-        <Action variant="ghost">Koszyk</Action>
-        <Action variant="blue">
-          {event.EventSettings?.buttonText ?? "Kup wlotki"}
-        </Action>
-      </ActionBar>
       <Header currentPath={event.title}>{event.title}</Header>
       <Section>
         <div className="relative h-48 overflow-hidden rounded-xl border bg-background">
           <EventImage />
-          {/* <div className="absolute left-0 top-0 z-0 h-full w-full bg-gradient-to-t from-black" /> */}
         </div>
         <div>
-          {/* <Heading>{event.title}</Heading> */}
           <Description>
             <Calendar className="mr-0.5 inline-block pb-0.5" size={16} />
             <DateString date={event.startDateTime} format="PPPP" />

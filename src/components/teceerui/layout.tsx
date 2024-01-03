@@ -37,7 +37,7 @@ const Header = ({
   return (
     <div
       className={cn(
-        "border-b bg-gradient-to-t from-background p-4 text-2xl font-medium tracking-tighter space-y-2",
+        "border-b bg-gradient-to-t from-background p-4 text-2xl font-semibold tracking-tighter space-y-2",
         className,
       )}
     >
