@@ -10,15 +10,11 @@ export const dropExtender = {
         compute(drop: Drop) {
           // return status UPCOMING, ACTIVE, ENDED based on startDateTime and endDateTime
           const now = new Date();
-          if (drop.startDateTime > now) return "UPCOMING";
-          if (drop.startDateTime <= now && !drop.endDateTime) return "ACTIVE";
-          if (
-            drop.startDateTime <= now &&
-            drop.endDateTime &&
-            drop.endDateTime >= now
-          )
+          if (drop.startDateTime! > now) return "UPCOMING";
+          if (drop.startDateTime! <= now && !drop.endDateTime) return "ACTIVE";
+          if (drop.startDateTime! <= now && drop.endDateTime! >= now)
             return "ACTIVE";
-          if (drop.endDateTime && drop.endDateTime < now) return "ENDED";
+          if (drop.endDateTime! < now) return "ENDED";
           return "ACTIVE";
         },
       },
