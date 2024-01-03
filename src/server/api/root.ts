@@ -5,6 +5,7 @@ import { ticketTypeRouter } from "./routers/ticketType";
 import { ticketPoolRouter } from "./routers/ticketPool";
 import { dropRouter } from "./routers/drop";
 import { poolRouter } from "./routers/pool";
+import { cartRouter } from "./routers/cart";
 
 /**
  * This is the primary router for your server.
@@ -18,6 +19,7 @@ export const appRouter = createTRPCRouter({
   ticketPool: ticketPoolRouter,
   drop: dropRouter,
   pool: poolRouter,
+  cart: cartRouter,
 });
 
 // export type definition of API

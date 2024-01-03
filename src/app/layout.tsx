@@ -27,7 +27,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pl" className={`${GeistSans.className} ${GeistMono.variable}`}>
-      <body className="dark:dark relative">
+      <body className="dark:dark relative dark:bg-black bg-neutral-100">
         <NextSSRPlugin
           /**
            * The `extractRouterConfig` will extract **only** the route configs

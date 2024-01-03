@@ -5,7 +5,7 @@ import Image from "next/image";
 export default function Footer() {
   return (
     <Section
-      SectionClassName="pt-8 bg-gradient-to-t from-background"
+      SectionClassName="pt-8 bg-gradient-to-t dark:from-black from-neutral-100"
       DivClassName="space-y-6"
     >
       <div className="flex items-center gap-2">
