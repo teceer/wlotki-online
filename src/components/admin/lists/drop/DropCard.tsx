@@ -14,8 +14,6 @@ import { api } from "~/trpc/server";
 import TicketPoolTable from "../ticketPool/component";
 import {
   Card,
-  CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from "~/components/ui/card";
@@ -47,7 +45,7 @@ export default async function DropCard({
     const isLimited = await api.drop.isLimited.query(drop.id);
     if (drop.endDateTime) {
       return <DateString date={drop.endDateTime} format="HH:mm P" />;
-    } else if (drop.totalTickets || isLimited) {
+    } else if (drop.totalTickets ?? isLimited) {
       return <p className="text-blue-500">do wyczerpania</p>;
     } else {
       return (
