@@ -30,6 +30,9 @@ import {
   SheetTrigger,
 } from "~/components/ui/sheet";
 
+// TODO: Jeżeli jakakolwiek pula jest już w koszyku, to zamiast "Dodaj do koszyka" wyświetl "Zaktualizuj koszyk", aby zapobiec nadmiernemu wysyłaniu zapytań do API, oraz w polu wyboru ilości wyświetl aktualną ilość puli z koszyka, która może być zerem.
+// TODO: Przyspieszyć animację otwierania koszyka.
+
 export default function BuyTickets({ eventId }: { eventId: string }) {
   const { data: drops } = api.drop.buyTickets.useQuery(eventId);
   const defaultValue =
