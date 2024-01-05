@@ -11,7 +11,6 @@ import { ourFileRouter } from "./api/uploadthing/core";
 import AuthButton from "~/components/global/Auth/AuthButton";
 import { Suspense } from "react";
 import { Toaster } from "~/components/ui/sonner";
-import ActionBar, { Action } from "~/components/elements/ActionBar";
 import Footer from "~/components/global/Footer";
 
 export const metadata = {

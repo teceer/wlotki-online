@@ -14,13 +14,21 @@ import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
 import { cn } from "~/lib/utils";
 import ClientPortal from "./global/ClientPortal";
 import ActionBar, { Action } from "./elements/ActionBar";
-import { Minus, Plus, X } from "lucide-react";
+import { Minus, Plus, ShoppingBag, X } from "lucide-react";
 import { Button } from "./ui/button";
 import type { Drop, Pool, TicketType } from "@prisma/client";
 import { getCookie, setCookie } from "cookies-next";
 import { toast } from "sonner";
 import { ScrollArea, ScrollBar } from "./ui/scroll-area";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "~/components/ui/sheet";
 
 export default function BuyTickets({ eventId }: { eventId: string }) {
   const { data: drops } = api.drop.buyTickets.useQuery(eventId);
@@ -47,6 +55,7 @@ export default function BuyTickets({ eventId }: { eventId: string }) {
 
   const cartId = getCookie("cartId") ?? createCartId();
   const utils = api.useUtils();
+  const { data: cart } = api.cart.get.useQuery(cartId);
   const createCart = api.cart.add.useMutation({
     async onMutate({ cartId, poolId, quantity }) {
       await utils.cart.get.cancel();
@@ -65,14 +74,17 @@ export default function BuyTickets({ eventId }: { eventId: string }) {
             id: Math.random().toString(36).substring(2, 15),
             cartId,
             poolId,
-            quantity,
+            quantity:
+              quantity +
+              (cart?.items.find((item) => item.poolId === poolId)?.quantity ??
+                0),
             createdAt: new Date(),
             updatedAt: new Date(),
             Pool: {
               ...selectedPool,
             },
           },
-          ...(cart?.items ?? []),
+          ...(cart?.items.filter((item) => item.poolId !== poolId) ?? []),
         ],
       }));
 
@@ -130,21 +142,33 @@ export default function BuyTickets({ eventId }: { eventId: string }) {
                 setSelectedPool(drop.Pool.find((pool) => pool.id === value))
               }
             >
-              {drop.Pool.map((pool) => (
-                <RadioGroupItem
-                  value={pool.id}
-                  key={pool.id}
-                  className={cn(
-                    "min-w-[150px] grow rounded-xl border bg-background p-3",
-                    pool.id === selectedPool?.id && "ring-1 ring-blue-500",
-                  )}
-                >
-                  <p>{pool.TicketType?.name}</p>
-                  <p className="text-sm text-muted-foreground">
-                    {price(pool.price)}
-                  </p>
-                </RadioGroupItem>
-              ))}
+              {drop.Pool.map((pool) => {
+                const cartQuantity = cart?.items
+                  .filter((item) => item.poolId === pool.id)
+                  .reduce((acc, item) => acc + item.quantity, 0);
+
+                return (
+                  <RadioGroupItem
+                    value={pool.id}
+                    key={pool.id}
+                    className={cn(
+                      "relative min-w-[150px] grow rounded-xl border bg-background p-3",
+                      pool.id === selectedPool?.id && "ring-1 ring-blue-500",
+                    )}
+                  >
+                    <p>{pool.TicketType?.name}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {price(pool.price)}
+                    </p>
+                    {!!cartQuantity && (
+                      <div className="absolute right-2 top-2 flex items-center justify-center gap-1 rounded-full bg-blue-500 px-1 py-0.5 text-center text-xs text-white">
+                        <ShoppingBag size={12} />
+                        {cartQuantity}
+                      </div>
+                    )}
+                  </RadioGroupItem>
+                );
+              })}
             </RadioGroup>
           </TabsContent>
         ))}
@@ -152,14 +176,6 @@ export default function BuyTickets({ eventId }: { eventId: string }) {
       {selectedPool?.id && (
         <ClientPortal selector="actionbar">
           <ActionBar variant="bar" className="space-y-1">
-            <SelectCount
-              count={count}
-              setCount={setCount}
-              pool={drops
-                ?.find((drop) => drop.id === (selectedDrop?.id ?? defaultValue))
-                ?.Pool.find((pool) => pool.id === selectedPool?.id)}
-            />
-            {/* <CartItems cartId={cartId} /> */}
             <div className="relative flex justify-between gap-2 overflow-hidden rounded-full border shadow-md backdrop-blur transition-all">
               <Action
                 variant="ghost"
@@ -174,8 +190,33 @@ export default function BuyTickets({ eventId }: { eventId: string }) {
               >
                 Dodaj do koszyka
               </Action>
+              <div className="flex grow justify-end gap-2">
+                <Button
+                  variant="secondary"
+                  className="w-max rounded-full rounded-r-none px-3 py-6 transition-all"
+                  onClick={() => setCount(count - 1 > 0 ? count - 1 : 1)}
+                >
+                  <Minus />
+                </Button>
+                <div className="flex min-w-[50px] items-center justify-center px-3">
+                  <p className="text-lg font-bold">{count}</p>
+                </div>
+                <Button
+                  variant="secondary"
+                  className="w-max rounded-full rounded-l-none px-3 py-6 transition-all"
+                  onClick={() => setCount(count + 1)}
+                >
+                  <Plus />
+                </Button>
+              </div>
+            </div>
+            <div className="relative flex justify-between gap-2 overflow-hidden rounded-full border shadow-md backdrop-blur transition-all">
+              <Action variant="ghost" disabled className="disabled:opacity-100">
+                Suma: {price((selectedPool?.price ?? 0) * count)}
+              </Action>
               <Action variant="blue">Kup teraz</Action>
             </div>
+            <CartItems cartId={cartId} />
           </ActionBar>
         </ClientPortal>
       )}
@@ -220,7 +261,7 @@ function SelectCount({
   );
 }
 
-function CartItems({ cartId }: { cartId: string }) {
+function _CartItems({ cartId }: { cartId: string }) {
   const { data: cart } = api.cart.get.useQuery(cartId);
   const [parent] = useAutoAnimate();
   if (!cart?.items.length) return null;
@@ -248,6 +289,59 @@ function CartItems({ cartId }: { cartId: string }) {
         </div>
         <ScrollBar orientation="horizontal" className="invisible" />
       </ScrollArea>
+    </div>
+  );
+}
+
+function CartItems({ cartId }: { cartId: string }) {
+  const { data: cart } = api.cart.get.useQuery(cartId);
+  if (!cart?.items.length) return null;
+
+  const itemsQuantity = cart?.items.reduce(
+    (acc, item) => acc + item.quantity,
+    0,
+  );
+
+  return (
+    <div className="relative flex justify-between gap-2 overflow-hidden rounded-full border shadow-md backdrop-blur transition-all">
+      <Sheet>
+        <SheetTrigger asChild>
+          <Action variant="ghost">
+            Wyświetl koszyk{!!itemsQuantity && ` (${itemsQuantity})`}
+          </Action>
+        </SheetTrigger>
+        <SheetContent side="bottom">
+          <SheetHeader>
+            <SheetTitle>
+              <div className="flex items-center gap-2">
+                <p>Twój koszyk</p>
+                <div className="flex items-center justify-center gap-1 rounded-full bg-blue-500 px-1.5 py-0.5 text-center text-sm text-white">
+                  <ShoppingBag size={14} />
+                  {itemsQuantity}
+                </div>
+              </div>
+            </SheetTitle>
+          </SheetHeader>
+          <ScrollArea className="mt-8 h-72">
+            <div className="flex flex-col gap-2">
+              {cart?.items.map((item) => (
+                <div
+                  key={item.id}
+                  className="flex justify-between rounded-xl border bg-background p-2"
+                >
+                  <div className="shrink-0 px-1">
+                    <p>{item.Pool.TicketType?.name}</p>
+                    <p className="text-muted-foreground">
+                      {price(item.Pool.price)}
+                    </p>
+                  </div>
+                  <X className="text-muted-foreground" size={20} />
+                </div>
+              ))}
+            </div>
+          </ScrollArea>
+        </SheetContent>
+      </Sheet>
     </div>
   );
 }

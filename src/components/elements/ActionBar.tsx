@@ -40,17 +40,20 @@ export function Action({
   variant,
   className,
   onClick,
+  disabled,
 }: {
   children: React.ReactNode;
   variant?: ButtonProps["variant"];
   className?: ClassNameValue;
   onClick?: () => void;
+  disabled?: boolean;
 }) {
   return (
     <Button
       variant={variant}
       className={cn("w-full rounded-full px-8 py-6 transition-all", className)}
       onClick={onClick}
+      disabled={disabled}
     >
       {children}
     </Button>

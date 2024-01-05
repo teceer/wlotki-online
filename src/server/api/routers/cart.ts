@@ -25,9 +25,22 @@ export const cartRouter = createTRPCRouter({
         },
         update: {
           items: {
-            create: {
-              poolId: input.poolId,
-              quantity: input.quantity,
+            upsert: {
+              where: {
+                cartId_poolId: {
+                  cartId: input.cartId,
+                  poolId: input.poolId,
+                },
+              },
+              create: {
+                poolId: input.poolId,
+                quantity: input.quantity,
+              },
+              update: {
+                quantity: {
+                  increment: input.quantity,
+                },
+              },
             },
           },
         },
