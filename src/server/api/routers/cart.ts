@@ -61,6 +61,98 @@ export const cartRouter = createTRPCRouter({
       });
     }),
 
+  edit: publicProcedure
+    .input(
+      z.object({
+        cartId: z.string(),
+        poolId: z.string(),
+        quantity: z.number(),
+      }),
+    )
+    .mutation(({ ctx, input }) => {
+      return ctx.db.cart.upsert({
+        create: {
+          id: input.cartId,
+          userId: ctx.session?.user.id,
+          items: {
+            create: {
+              poolId: input.poolId,
+              quantity: input.quantity,
+            },
+          },
+        },
+        update: {
+          items: {
+            upsert: {
+              where: {
+                cartId_poolId: {
+                  cartId: input.cartId,
+                  poolId: input.poolId,
+                },
+              },
+              create: {
+                poolId: input.poolId,
+                quantity: input.quantity,
+              },
+              update: {
+                quantity: input.quantity,
+              },
+            },
+          },
+        },
+        where: {
+          id: input.cartId,
+        },
+        include: {
+          items: {
+            include: {
+              Pool: {
+                include: {
+                  TicketType: true,
+                },
+              },
+            },
+          },
+        },
+      });
+    }),
+
+  remove: publicProcedure
+    .input(
+      z.object({
+        cartId: z.string(),
+        poolId: z.string(),
+      }),
+    )
+    .mutation(({ ctx, input }) => {
+      return ctx.db.cart.update({
+        where: {
+          id: input.cartId,
+        },
+        data: {
+          items: {
+            delete: {
+              cartId_poolId: {
+                cartId: input.cartId,
+                poolId: input.poolId,
+              },
+            },
+          },
+        },
+        include: {
+          items: {
+            include: {
+              Pool: {
+                include: {
+                  TicketType: true,
+                },
+              },
+            },
+          },
+        },
+      });
+    }),
+
   get: publicProcedure.input(z.string()).query(({ ctx, input }) => {
     if (!input) {
       return null;

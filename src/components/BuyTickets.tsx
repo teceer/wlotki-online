@@ -24,13 +24,11 @@ import { useAutoAnimate } from "@formkit/auto-animate/react";
 import {
   Sheet,
   SheetContent,
-  SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
 } from "~/components/ui/sheet";
 
-// TODO: Jeżeli jakakolwiek pula jest już w koszyku, to zamiast "Dodaj do koszyka" wyświetl "Zaktualizuj koszyk", aby zapobiec nadmiernemu wysyłaniu zapytań do API, oraz w polu wyboru ilości wyświetl aktualną ilość puli z koszyka, która może być zerem.
 // TODO: Przyspieszyć animację otwierania koszyka.
 
 export default function BuyTickets({ eventId }: { eventId: string }) {
@@ -59,7 +57,7 @@ export default function BuyTickets({ eventId }: { eventId: string }) {
   const cartId = getCookie("cartId") ?? createCartId();
   const utils = api.useUtils();
   const { data: cart } = api.cart.get.useQuery(cartId);
-  const createCart = api.cart.add.useMutation({
+  const addToCart = api.cart.add.useMutation({
     async onMutate({ cartId, poolId, quantity }) {
       await utils.cart.get.cancel();
       const previousCart = utils.cart.get.getData();
@@ -87,6 +85,79 @@ export default function BuyTickets({ eventId }: { eventId: string }) {
               ...selectedPool,
             },
           },
+          ...(cart?.items.filter((item) => item.poolId !== poolId) ?? []),
+        ],
+      }));
+
+      return { previousCart };
+    },
+    onError(err, data, ctx) {
+      utils.cart.get.setData(cartId, ctx?.previousCart);
+      toast.error(
+        "Coś poszło nie tak. Spróbuj ponownie dodać przedmiot do koszyka.",
+      );
+    },
+    async onSettled() {
+      await utils.cart.get.invalidate();
+    },
+  });
+
+  const editCart = api.cart.edit.useMutation({
+    async onMutate({ cartId, poolId, quantity }) {
+      await utils.cart.get.cancel();
+      const previousCart = utils.cart.get.getData();
+      if (!selectedPool) {
+        toast.error("Wybierz pulę");
+        return { previousCart };
+      }
+      utils.cart.get.setData(cartId, (cart) => ({
+        id: cartId,
+        userId: cart?.userId ?? null,
+        createdAt: cart?.createdAt ?? new Date(),
+        updatedAt: cart?.updatedAt ?? new Date(),
+        items: [
+          {
+            id: Math.random().toString(36).substring(2, 15),
+            cartId,
+            poolId,
+            quantity,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            Pool: {
+              ...selectedPool,
+            },
+          },
+          ...(cart?.items.filter((item) => item.poolId !== poolId) ?? []),
+        ],
+      }));
+
+      return { previousCart };
+    },
+    onError(err, data, ctx) {
+      utils.cart.get.setData(cartId, ctx?.previousCart);
+      toast.error(
+        "Coś poszło nie tak. Spróbuj ponownie dodać przedmiot do koszyka.",
+      );
+    },
+    async onSettled() {
+      await utils.cart.get.invalidate();
+    },
+  });
+
+  const removeCartItem = api.cart.remove.useMutation({
+    async onMutate({ cartId, poolId }) {
+      await utils.cart.get.cancel();
+      const previousCart = utils.cart.get.getData();
+      if (!selectedPool) {
+        toast.error("Wybierz pulę");
+        return { previousCart };
+      }
+      utils.cart.get.setData(cartId, (cart) => ({
+        id: cartId,
+        userId: cart?.userId ?? null,
+        createdAt: cart?.createdAt ?? new Date(),
+        updatedAt: cart?.updatedAt ?? new Date(),
+        items: [
           ...(cart?.items.filter((item) => item.poolId !== poolId) ?? []),
         ],
       }));
@@ -141,9 +212,15 @@ export default function BuyTickets({ eventId }: { eventId: string }) {
           <TabsContent value={drop.id} key={drop.id}>
             <RadioGroup
               className="flex flex-wrap gap-2"
-              onValueChange={(value) =>
-                setSelectedPool(drop.Pool.find((pool) => pool.id === value))
-              }
+              onValueChange={(value) => {
+                setSelectedPool(drop.Pool.find((pool) => pool.id === value));
+                if (cart?.items.length ?? count === 0) {
+                  setCount(
+                    cart?.items.find((item) => item.poolId === value)
+                      ?.quantity ?? 1,
+                  );
+                }
+              }}
             >
               {drop.Pool.map((pool) => {
                 const cartQuantity = cart?.items
@@ -180,24 +257,71 @@ export default function BuyTickets({ eventId }: { eventId: string }) {
         <ClientPortal selector="actionbar">
           <ActionBar variant="bar" className="space-y-1">
             <div className="relative flex justify-between gap-2 overflow-hidden rounded-full border shadow-md backdrop-blur transition-all">
-              <Action
-                variant="ghost"
-                onClick={() => {
-                  createCart.mutate({
-                    cartId,
-                    poolId: selectedPool?.id,
-                    quantity: count,
-                  });
-                  setCount(1);
-                }}
-              >
-                Dodaj do koszyka
-              </Action>
+              {!cart?.items.find((item) => item.poolId === selectedPool?.id) ? (
+                <Action
+                  variant="ghost"
+                  onClick={() => {
+                    addToCart.mutate({
+                      cartId,
+                      poolId: selectedPool?.id,
+                      quantity: count === 0 ? 1 : count,
+                    });
+                  }}
+                >
+                  Dodaj do koszyka
+                </Action>
+              ) : (
+                <Action
+                  variant="ghost"
+                  disabled={
+                    cart?.items.find((item) => item.poolId === selectedPool?.id)
+                      ?.quantity === count
+                  }
+                  onClick={() => {
+                    if (
+                      cart?.items.find(
+                        (item) => item.poolId === selectedPool?.id,
+                      )?.quantity === count
+                    )
+                      return;
+
+                    if (count === 0) {
+                      removeCartItem.mutate({
+                        cartId,
+                        poolId: selectedPool?.id,
+                      });
+                      setCount(1);
+                      return;
+                    }
+
+                    editCart.mutate({
+                      cartId,
+                      poolId: selectedPool?.id,
+                      quantity: count,
+                    });
+                  }}
+                >
+                  Zaktualizuj koszyk
+                </Action>
+              )}
               <div className="flex grow justify-end gap-2">
                 <Button
                   variant="secondary"
                   className="w-max rounded-full rounded-r-none px-3 py-6 transition-all"
-                  onClick={() => setCount(count - 1 > 0 ? count - 1 : 1)}
+                  onClick={() =>
+                    setCount(
+                      // if the cart is not empty, allow to set 0 as the quantity
+                      !!cart?.items.find(
+                        (item) => item.poolId === selectedPool?.id,
+                      )
+                        ? count - 1 > 0
+                          ? count - 1
+                          : 0
+                        : count - 1 > 0
+                          ? count - 1
+                          : 1,
+                    )
+                  }
                 >
                   <Minus />
                 </Button>
@@ -215,7 +339,19 @@ export default function BuyTickets({ eventId }: { eventId: string }) {
             </div>
             <div className="relative flex justify-between gap-2 overflow-hidden rounded-full border shadow-md backdrop-blur transition-all">
               <Action variant="ghost" disabled className="disabled:opacity-100">
-                Suma: {price((selectedPool?.price ?? 0) * count)}
+                Suma:{" "}
+                {
+                  // if the cart is not empty, show the total price of the cart
+                  !!cart?.items.length
+                    ? price(
+                        cart?.items.reduce(
+                          (acc, item) =>
+                            acc + item.quantity * (item.Pool.price ?? 0),
+                          0,
+                        ),
+                      )
+                    : price((selectedPool?.price ?? 0) * count)
+                }
               </Action>
               <Action variant="blue">Kup teraz</Action>
             </div>
@@ -298,6 +434,33 @@ function _CartItems({ cartId }: { cartId: string }) {
 
 function CartItems({ cartId }: { cartId: string }) {
   const { data: cart } = api.cart.get.useQuery(cartId);
+  const utils = api.useUtils();
+  const removeCartItem = api.cart.remove.useMutation({
+    async onMutate({ cartId, poolId }) {
+      await utils.cart.get.cancel();
+      const previousCart = utils.cart.get.getData();
+      utils.cart.get.setData(cartId, (cart) => ({
+        id: cartId,
+        userId: cart?.userId ?? null,
+        createdAt: cart?.createdAt ?? new Date(),
+        updatedAt: cart?.updatedAt ?? new Date(),
+        items: [
+          ...(cart?.items.filter((item) => item.poolId !== poolId) ?? []),
+        ],
+      }));
+
+      return { previousCart };
+    },
+    onError(err, data, ctx) {
+      utils.cart.get.setData(cartId, ctx?.previousCart);
+      toast.error(
+        "Coś poszło nie tak. Spróbuj ponownie dodać przedmiot do koszyka.",
+      );
+    },
+    async onSettled() {
+      await utils.cart.get.invalidate();
+    },
+  });
   if (!cart?.items.length) return null;
 
   const itemsQuantity = cart?.items.reduce(
@@ -335,10 +498,19 @@ function CartItems({ cartId }: { cartId: string }) {
                   <div className="shrink-0 px-1">
                     <p>{item.Pool.TicketType?.name}</p>
                     <p className="text-muted-foreground">
-                      {price(item.Pool.price)}
+                      {item.quantity} x {price(item.Pool.price)}
                     </p>
                   </div>
-                  <X className="text-muted-foreground" size={20} />
+                  <X
+                    className="text-muted-foreground"
+                    size={20}
+                    onClick={() => {
+                      removeCartItem.mutate({
+                        cartId,
+                        poolId: item.poolId,
+                      });
+                    }}
+                  />
                 </div>
               ))}
             </div>
