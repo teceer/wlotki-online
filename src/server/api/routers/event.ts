@@ -1,7 +1,11 @@
 import { EventStatus } from "@prisma/client";
 import { z } from "zod";
 
-import { createTRPCRouter, protectedProcedure, publicProcedure } from "~/server/api/trpc";
+import {
+  createTRPCRouter,
+  protectedProcedure,
+  publicProcedure,
+} from "~/server/api/trpc";
 
 export const eventRouter = createTRPCRouter({
   create: protectedProcedure
@@ -86,4 +90,19 @@ export const eventRouter = createTRPCRouter({
 
       return data;
     }),
+
+  getAll: publicProcedure.query(async ({ ctx }) => {
+    const events = await ctx.db.event.findMany({
+      where: { status: "PUBLISHED" },
+      include: { EventSettings: true, Location: true },
+    });
+    return events.sort((a, b) => {
+      // if events are in the past, sort them descending and put them at the end of the list
+      if (a.endDateTime < new Date() && b.endDateTime < new Date()) {
+        return b.endDateTime.getTime() - a.endDateTime.getTime();
+      } else {
+        return a.startDateTime.getTime() - b.startDateTime.getTime();
+      } // if events are in the future, sort them ascending
+    });
+  }),
 });

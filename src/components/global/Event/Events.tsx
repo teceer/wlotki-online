@@ -1,12 +1,9 @@
 import React from "react";
-import { db } from "~/server/db";
 import EventCard from "./EventCard";
+import { api } from "~/trpc/server";
 
 export default async function Events() {
-  const events = await db.event.findMany({
-    where: { status: "PUBLISHED" },
-    include: { EventSettings: true, Location: true },
-  });
+  const events = await api.event.getAll.query();
   return (
     <>
       {events.map((event) => {
