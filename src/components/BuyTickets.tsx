@@ -14,20 +14,11 @@ import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
 import { cn } from "~/lib/utils";
 import ClientPortal from "./global/ClientPortal";
 import ActionBar, { Action } from "./elements/ActionBar";
-import { Minus, Plus, ShoppingBag, X } from "lucide-react";
+import { Minus, Plus, ShoppingBag } from "lucide-react";
 import { Button } from "./ui/button";
 import type { Drop, Pool, TicketType } from "@prisma/client";
 import { getCookie, setCookie } from "cookies-next";
 import { toast } from "sonner";
-import { ScrollArea, ScrollBar } from "./ui/scroll-area";
-import { useAutoAnimate } from "@formkit/auto-animate/react";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "~/components/ui/sheet";
 import Link from "next/link";
 import CartItems from "./elements/CartItems";
 
@@ -261,7 +252,7 @@ export default function BuyTickets({ eventId }: { eventId: string }) {
             <div className="relative flex justify-between gap-2 overflow-hidden rounded-full border shadow-md backdrop-blur transition-all">
               {!cart?.items.find((item) => item.poolId === selectedPool?.id) ? (
                 <Action
-                  variant="ghost"
+                  variant="secondary"
                   onClick={() => {
                     addToCart.mutate({
                       cartId,
@@ -274,7 +265,7 @@ export default function BuyTickets({ eventId }: { eventId: string }) {
                 </Action>
               ) : (
                 <Action
-                  variant="ghost"
+                  variant="secondary"
                   disabled={
                     cart?.items.find((item) => item.poolId === selectedPool?.id)
                       ?.quantity === count
@@ -366,4 +357,3 @@ export default function BuyTickets({ eventId }: { eventId: string }) {
     </div>
   );
 }
-
