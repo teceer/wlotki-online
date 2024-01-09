@@ -159,7 +159,7 @@ export const cartRouter = createTRPCRouter({
     }
     const cart = ctx.db.cart.findFirst({
       orderBy: { createdAt: "desc" },
-      where: { OR: [{ id: input }, { userId: ctx.session?.user.id }] },
+      where: { OR: [{ userId: ctx.session?.user.id }, { id: input }] },
       include: {
         items: {
           include: {

@@ -62,3 +62,22 @@ export function Action({
     </Button>
   );
 }
+
+export function ActionGroup({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: ClassNameValue;
+}) {
+  return (
+    <div
+      className={cn(
+        "relative flex justify-between gap-2 overflow-hidden rounded-full border shadow-md backdrop-blur transition-all",
+        className,
+      )}
+    >
+      {children}
+    </div>
+  );
+}
