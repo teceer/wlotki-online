@@ -17,11 +17,15 @@ import React from "react";
 import OpenAI from "openai";
 import fs from "fs";
 
+import path from "path";
+
 export default async function page() {
   const apiKey = process.env.OPENAI_API_KEY;
   if (!apiKey) return <div>no api key</div>;
-  const imageFile = fs.createReadStream("public/ai/shoutout.png");
-  const maskFile = fs.createReadStream("public/ai/mask2.png");
+  const imagePath = path.join(process.cwd(), "public/ai/shoutout.png");
+  const maskPath = path.join(process.cwd(), "public/ai/mask.png");
+  const imageFile = fs.createReadStream(imagePath);
+  const maskFile = fs.createReadStream(maskPath);
   const openai = new OpenAI({ apiKey });
   const images = await openai.images.edit({
     image: imageFile,
