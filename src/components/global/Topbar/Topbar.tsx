@@ -44,13 +44,28 @@ export default function Topbar({
     >
       <div
         className={cn(
-          "z-10 flex w-full items-center justify-between gap-2 bg-white/30 px-4 py-3 backdrop-blur duration-500 ease-in-out animate-in slide-in-from-top-full dark:bg-black/30 md:px-32",
+          "z-10 flex w-full items-center justify-center gap-2 bg-white/30 px-4 py-3 backdrop-blur duration-500 ease-in-out animate-in slide-in-from-top-full dark:bg-black/30",
           className,
           !visible && "invisible animate-out slide-out-to-top-full",
         )}
       >
-        {!invisible ? (
-          <Link href="/" className="z-50">
+        <div className="flex w-full max-w-5xl justify-between gap-2 px-2">
+          {!invisible ? (
+            <Link href="/" className="z-50">
+              <div className="flex items-center">
+                <Image
+                  src="/logo.svg"
+                  alt=""
+                  width={24}
+                  height={24}
+                  className="h-[24px] w-[24px] dark:invert"
+                />
+                <p className="bg-gradient-to-tr from-foreground to-foreground/70 bg-clip-text text-xl font-medium tracking-tighter text-transparent">
+                  {process.env.NEXT_PUBLIC_APP_NAME}
+                </p>
+              </div>
+            </Link>
+          ) : (
             <div className="flex items-center">
               <Image
                 src="/logo.svg"
@@ -63,22 +78,9 @@ export default function Topbar({
                 {process.env.NEXT_PUBLIC_APP_NAME}
               </p>
             </div>
-          </Link>
-        ) : (
-          <div className="flex items-center">
-            <Image
-              src="/logo.svg"
-              alt=""
-              width={24}
-              height={24}
-              className="h-[24px] w-[24px] dark:invert"
-            />
-            <p className="bg-gradient-to-tr from-foreground to-foreground/70 bg-clip-text text-xl font-medium tracking-tighter text-transparent">
-              {process.env.NEXT_PUBLIC_APP_NAME}
-            </p>
-          </div>
-        )}
-        {authComponent}
+          )}
+          {authComponent}
+        </div>
       </div>
     </nav>
   );

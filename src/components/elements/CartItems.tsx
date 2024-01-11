@@ -1,15 +1,38 @@
 "use client";
 import React from "react";
 import { api } from "~/trpc/react";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "../ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "../ui/sheet";
 import { Action } from "./ActionBar";
 import { ShoppingBag, X } from "lucide-react";
 import { ScrollArea } from "../ui/scroll-area";
 import price from "../global/price";
 import { toast } from "sonner";
+import { getCookie, setCookie } from "cookies-next";
+import { v4 } from "uuid";
 
-export default function CartItems({ cartId }: { cartId: string }) {
+export default function CartItems() {
+  const [cartId, setCartId] = React.useState<string>("");
   const { data: cart } = api.cart.get.useQuery(cartId);
+  function createCartId() {
+    const id = v4();
+    setCookie("cartId", id);
+    return id;
+  }
+  React.useEffect(() => {
+    if (!cartId && !cart?.id) {
+      setCartId(getCookie("cartId") ?? createCartId());
+    }
+    if (cart?.id) {
+      setCartId(cart.id);
+    }
+  }, [cart?.id, cartId]);
+  
   const utils = api.useUtils();
   const removeCartItem = api.cart.remove.useMutation({
     async onMutate({ cartId, poolId }) {
@@ -37,6 +60,7 @@ export default function CartItems({ cartId }: { cartId: string }) {
       await utils.cart.get.invalidate();
     },
   });
+
   if (!cart?.items.length) return null;
 
   const itemsQuantity = cart?.items.reduce(

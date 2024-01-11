@@ -37,7 +37,9 @@ export const dropRouter = createTRPCRouter({
         },
       ],
       include: {
-        Pool: { include: { TicketType: true } },
+        Pool: {
+          include: { TicketType: true, Drop: { include: { Event: true } } },
+        },
       },
     });
   }),

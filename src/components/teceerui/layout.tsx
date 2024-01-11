@@ -11,7 +11,9 @@ const Section = ({
   className?: ClassNameValue;
 }) => {
   return (
-    <section className={cn("space-y-4 p-4", className)}>{children}</section>
+    <section className={cn("w-full max-w-5xl space-y-4 p-4", className)}>
+      {children}
+    </section>
   );
 };
 
@@ -37,20 +39,22 @@ const Header = ({
   return (
     <div
       className={cn(
-        "border-b bg-gradient-to-t from-background p-4 text-2xl font-semibold tracking-tighter space-y-2",
+        "flex w-full flex-col items-center space-y-2 border-b bg-gradient-to-t from-background text-2xl font-semibold tracking-tighter",
         className,
       )}
     >
-      <NextBreadcrumb
-        homeElement={<Home size={16} className="pb-0.5" />}
-        separator={<span className="text-muted-foreground"> / </span>}
-        activeClasses="text-blue-500"
-        containerClasses="flex text-sm font-normal tracking-tight gap-1 items-center"
-        listClasses="hover:underline"
-        capitalizeLinks
-        currentPath={currentPath}
-      />
-      <header>{children}</header>
+      <Section>
+        <NextBreadcrumb
+          homeElement={<Home size={16} className="pb-0.5" />}
+          separator={<span className="text-muted-foreground"> / </span>}
+          activeClasses="text-blue-500"
+          containerClasses="flex text-sm font-normal tracking-tight gap-1 items-center"
+          listClasses="hover:underline"
+          capitalizeLinks
+          currentPath={currentPath}
+        />
+        <header>{children}</header>
+      </Section>
     </div>
   );
 };

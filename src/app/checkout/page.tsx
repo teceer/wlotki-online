@@ -23,10 +23,10 @@ export default async function page() {
     <>
       <Header currentPath="Podsumowanie">Podsumowanie</Header>
       <Section>
-        <Checkout cartId={cartId} />
+        <Checkout />
       </Section>
       <ActionBar variant="bar">
-        <CartItems cartId={cartId} />
+        <CartItems />
       </ActionBar>
     </>
   );

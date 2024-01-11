@@ -48,7 +48,7 @@ export default function RootLayout({
           />
           <main className="animate-slide-in flex min-h-[100svh] w-full flex-col overflow-hidden bg-gradient-to-b from-neutral-100 transition-all duration-500 ease-in-out dark:from-black">
             <Topbar invisible />
-            <div className="flex w-full grow flex-col transition-all ease-in-out">
+            <div className="flex w-full grow flex-col transition-all ease-in-out items-center">
               {children}
             </div>
           </main>

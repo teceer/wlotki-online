@@ -153,19 +153,19 @@ export const cartRouter = createTRPCRouter({
       });
     }),
 
-  get: publicProcedure.input(z.string()).query(({ ctx, input }) => {
-    if (!input) {
-      return null;
-    }
+  get: publicProcedure.input(z.string().optional()).query(({ ctx, input }) => {
     const cart = ctx.db.cart.findFirst({
       orderBy: { createdAt: "desc" },
-      where: { OR: [{ userId: ctx.session?.user.id }, { id: input }] },
+      where: {
+        OR: [{ userId: ctx.session?.user.id }, { id: input }],
+      },
       include: {
         items: {
           include: {
             Pool: {
               include: {
                 TicketType: true,
+                Drop: { include: { Event: true } },
               },
             },
           },

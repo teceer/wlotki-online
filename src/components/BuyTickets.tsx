@@ -16,13 +16,12 @@ import ClientPortal from "./global/ClientPortal";
 import ActionBar, { Action } from "./elements/ActionBar";
 import { Minus, Plus, ShoppingBag } from "lucide-react";
 import { Button } from "./ui/button";
-import type { Drop, Pool, TicketType } from "@prisma/client";
+import type { Drop, Event, Pool, TicketType } from "@prisma/client";
 import { getCookie, setCookie } from "cookies-next";
 import { toast } from "sonner";
 import Link from "next/link";
 import CartItems from "./elements/CartItems";
-
-// TODO: Przyspieszyć animację otwierania koszyka.
+import { v4 } from "uuid";
 
 export default function BuyTickets({ eventId }: { eventId: string }) {
   const { data: drops } = api.drop.buyTickets.useQuery(eventId);
@@ -38,18 +37,39 @@ export default function BuyTickets({ eventId }: { eventId: string }) {
   );
 
   const [selectedPool, setSelectedPool] = React.useState<
-    (Pool & { TicketType: TicketType | null }) | undefined
+    | (Pool & { TicketType: TicketType | null } & {
+        Drop: (Drop & { Event: Event | null }) | null;
+      })
+    | undefined
   >(undefined);
 
+  // scroll down to the actionbar when the pool is selected
+  React.useEffect(() => {
+    if (selectedPool?.id) {
+      document
+        .querySelector("#" + selectedPool?.id)
+        ?.scrollIntoView({ behavior: "smooth", block: "center" }); // scroll to the pool section
+    }
+  }, [selectedPool?.id]);
+
+  const utils = api.useUtils();
+
+  const [cartId, setCartId] = React.useState<string>("");
+  const { data: cart } = api.cart.get.useQuery(cartId);
   function createCartId() {
-    const id = Math.random().toString(36).substring(2, 15);
+    const id = v4();
     setCookie("cartId", id);
     return id;
   }
+  React.useEffect(() => {
+    if (!cartId && !cart?.id) {
+      setCartId(getCookie("cartId") ?? createCartId());
+    }
+    if (cart?.id) {
+      setCartId(cart.id);
+    }
+  }, [cart?.id, cartId]);
 
-  const cartId = getCookie("cartId") ?? createCartId();
-  const utils = api.useUtils();
-  const { data: cart } = api.cart.get.useQuery(cartId);
   const addToCart = api.cart.add.useMutation({
     async onMutate({ cartId, poolId, quantity }) {
       await utils.cart.get.cancel();
@@ -224,6 +244,7 @@ export default function BuyTickets({ eventId }: { eventId: string }) {
                   <RadioGroupItem
                     value={pool.id}
                     key={pool.id}
+                    id={pool.id}
                     className={cn(
                       "relative min-w-[150px] grow rounded-xl border bg-background p-3",
                       pool.id === selectedPool?.id && "ring-1 ring-blue-500",
@@ -255,7 +276,7 @@ export default function BuyTickets({ eventId }: { eventId: string }) {
                   variant="secondary"
                   onClick={() => {
                     addToCart.mutate({
-                      cartId,
+                      cartId: cartId,
                       poolId: selectedPool?.id,
                       quantity: count === 0 ? 1 : count,
                     });
@@ -280,7 +301,7 @@ export default function BuyTickets({ eventId }: { eventId: string }) {
 
                     if (count === 0) {
                       removeCartItem.mutate({
-                        cartId,
+                        cartId: cartId,
                         poolId: selectedPool?.id,
                       });
                       setCount(1);
@@ -288,7 +309,7 @@ export default function BuyTickets({ eventId }: { eventId: string }) {
                     }
 
                     editCart.mutate({
-                      cartId,
+                      cartId: cart?.id ?? cartId,
                       poolId: selectedPool?.id,
                       quantity: count,
                     });
@@ -346,11 +367,28 @@ export default function BuyTickets({ eventId }: { eventId: string }) {
                     : price((selectedPool?.price ?? 0) * count)
                 }
               </Action>
-              <Action variant="blue" asChild>
+              <Action
+                variant="blue"
+                asChild
+                onClick={() => {
+                  if (
+                    !cart?.items.length ||
+                    cart.items.filter(
+                      (item) => item.poolId === selectedPool?.id,
+                    ).length === cart.items.length
+                  ) {
+                    editCart.mutate({
+                      cartId: cart?.id ?? cartId,
+                      poolId: selectedPool?.id,
+                      quantity: count,
+                    });
+                  }
+                }}
+              >
                 <Link href="/checkout">Kup teraz</Link>
               </Action>
             </div>
-            <CartItems cartId={cartId} />
+            <CartItems />
           </ActionBar>
         </ClientPortal>
       )}
